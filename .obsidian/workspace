@@ -1,0 +1,95 @@
+{
+  "main": {
+    "id": "69c2ce5d4e386f12",
+    "type": "split",
+    "children": [
+      {
+        "id": "3a28320fe583c4b1",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Dev Log/2022-04-22 LitMojo Dev Log.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f26773d20915fca8",
+    "type": "split",
+    "children": [
+      {
+        "id": "3a2423e68d1c1e1a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "94f474eee5ba1489",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "e56ef8b793123462",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200.00078010559082
+  },
+  "right": {
+    "id": "9e3b907cb93400c0",
+    "type": "split",
+    "children": [
+      {
+        "id": "9170f71eaf862cb5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "10b1c20a9b131c78",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Dev Log/2022-04-22 LitMojo Dev Log.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "3a28320fe583c4b1",
+  "lastOpenFiles": [
+    "Dev Log/2022-04-22 LitMojo Dev Log.md",
+    "README.md"
+  ]
+}
