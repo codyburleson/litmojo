@@ -9,8 +9,8 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "README.md",
-            "mode": "preview"
+            "file": "Development/Dev Log/2022-04-28 Dev Log.md",
+            "mode": "source"
           }
         }
       }
@@ -52,7 +52,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 294.01219177246094
+    "width": 368.01219177246094
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Development/Dev Log/2022-04-28 Dev Log.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -83,19 +83,19 @@
       }
     ],
     "direction": "horizontal",
-    "width": 241.61585998535156
+    "width": 385.6158142089844
   },
   "active": "b9b25055216f6005",
   "lastOpenFiles": [
+    "Development/Dev Log/2022-04-28 Dev Log.md",
+    "Development/Dev Log/2022-04-23 Dev Log.md",
+    "Development/Dev Log/2022-04-27 Dev Log.md",
+    "Development/Development.md",
+    "Development/Dev Log/2022-04-22 Dev Log.md",
     "README.md",
     "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
     "Requirements and Design/Glossary of Acronyms and Terms.md",
     "TestContent/Frankenstein/FULL LICENSE.md",
-    "TestContent/Frankenstein/BEGIN.md",
-    "TestContent/Frankenstein/END.md",
-    "Excalidraw/Drawing 2022-04-26 09.26.51.excalidraw.md",
-    "TestContent/Frankenstein/Chapter 24.md",
-    "TestContent/Frankenstein/Chapter 23.md",
-    "TestContent/Frankenstein/Chapter 22.md"
+    "TestContent/Frankenstein/BEGIN.md"
   ]
 }
