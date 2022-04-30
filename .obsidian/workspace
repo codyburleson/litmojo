@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "b9b25055216f6005",
+        "id": "a36b895d410c1f03",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Development/Dev Log/2022-04-28 Dev Log.md",
+            "file": "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Development/Dev Log/2022-04-28 Dev Log.md",
+                "file": "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -80,7 +80,7 @@
             }
           },
           {
-            "id": "bb54ae94446bf1ab",
+            "id": "c50b148ea750bf9e",
             "type": "leaf",
             "state": {
               "type": "collection-manager",
@@ -94,15 +94,15 @@
     "direction": "horizontal",
     "width": 385.6158142089844
   },
-  "active": "b9b25055216f6005",
+  "active": "a36b895d410c1f03",
   "lastOpenFiles": [
+    "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
+    "Development/Development.md",
     "Development/Dev Log/2022-04-28 Dev Log.md",
     "Development/Dev Log/2022-04-23 Dev Log.md",
     "Development/Dev Log/2022-04-27 Dev Log.md",
-    "Development/Development.md",
     "Development/Dev Log/2022-04-22 Dev Log.md",
     "README.md",
-    "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
     "Requirements and Design/Glossary of Acronyms and Terms.md",
     "TestContent/Frankenstein/FULL LICENSE.md",
     "TestContent/Frankenstein/BEGIN.md"
