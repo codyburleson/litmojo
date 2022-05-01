@@ -7,11 +7,8 @@
         "id": "a36b895d410c1f03",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
-            "mode": "source"
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -68,7 +65,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,6 +92,8 @@
   },
   "active": "a36b895d410c1f03",
   "lastOpenFiles": [
+    "Requirements and Design/Specifications.md",
+    "Requirements and Design/Features/Manage Document Notes/Manage Document Notes.md",
     "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
     "Development/Development.md",
     "Development/Dev Log/2022-04-28 Dev Log.md",
@@ -103,8 +101,6 @@
     "Development/Dev Log/2022-04-27 Dev Log.md",
     "Development/Dev Log/2022-04-22 Dev Log.md",
     "README.md",
-    "Requirements and Design/Glossary of Acronyms and Terms.md",
-    "TestContent/Frankenstein/FULL LICENSE.md",
-    "TestContent/Frankenstein/BEGIN.md"
+    "Requirements and Design/Glossary of Acronyms and Terms.md"
   ]
 }
