@@ -1,4 +1,3 @@
-/*
 .App {
   text-align: center;
 }
@@ -36,15 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-*/
-
-body {
-    /* theme light */
-    background-color: #f2f3f5;
-}
-
-.workspace-leaf-content .view-content {
-    padding: 20px 10px;
-    overflow: auto;
 }
