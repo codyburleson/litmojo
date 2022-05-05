@@ -1,0 +1,25 @@
+/*
+Some details element styling tips
+https://stackoverflow.com/questions/10813581/can-i-replace-the-expand-icon-of-the-details-element
+*/
+
+
+details > summary {
+    list-style-type: '▶️';
+    /* list-style-type: ''; */
+}
+
+details[open] > summary {
+    list-style-type: '🔽';
+    /* list-style-type: ''; */
+}
+
+details {
+    border: 1px solid gray;
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+}
+
+details[open] > summary {
+    margin-bottom: 0.5rem;
+}

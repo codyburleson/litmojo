@@ -1,11 +1,8 @@
 import { Component, Prop, h } from '@stencil/core';
 
-// Some details element styling tips
-// https://stackoverflow.com/questions/10813581/can-i-replace-the-expand-icon-of-the-details-element
-
-
 @Component({
   tag: 'glass-tree',
+  styleUrl: 'tree.css'
 })
 export class Tree {
 
@@ -14,9 +11,12 @@ export class Tree {
 
   render() {
     return (
-      <p>
-        My name is {this.name}
-      </p>
+        <details>
+            <summary>{this.name}</summary>
+            ...child nodes go here...
+        </details>
     );
   }
+  
 }
+
