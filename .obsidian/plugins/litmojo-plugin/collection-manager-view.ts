@@ -1,7 +1,4 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { ReactView } from "./ReactView";
 
 export const VIEW_TYPE_COLLECTION_MANAGER = "collection-manager";
 
@@ -15,26 +12,16 @@ export class CollectionManagerView extends ItemView {
   }
 
   getDisplayText() {
-    return "Collection Manager view";
+    return "Example view";
   }
 
-  /*
   async onOpen() {
     const container = this.containerEl.children[1];
     container.empty();
-    container.createEl("h4", { text: "Collection Manager" });
-  }
-  */
-
-  async onOpen() {
-    ReactDOM.render(
-      <ReactView />,
-      this.containerEl.children[1]
-    );
+    container.createEl("h4", { text: "Collection Manager View" });
   }
 
   async onClose() {
-    ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
+    // Nothing to clean up.
   }
-
 }

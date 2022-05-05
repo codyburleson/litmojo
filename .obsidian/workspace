@@ -80,14 +80,6 @@
             }
           },
           {
-            "id": "94563e2e1a38411f",
-            "type": "leaf",
-            "state": {
-              "type": "collection-manager",
-              "state": {}
-            }
-          },
-          {
             "id": "243066d79525adec",
             "type": "leaf",
             "state": {
@@ -95,6 +87,14 @@
               "state": {
                 "file": "Development/Dev Log/2022-05-05 Dev Log.md"
               }
+            }
+          },
+          {
+            "id": "2ea5a59efbb2f492",
+            "type": "leaf",
+            "state": {
+              "type": "collection-manager",
+              "state": {}
             }
           }
         ],

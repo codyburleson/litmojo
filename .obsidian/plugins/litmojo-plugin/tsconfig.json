@@ -15,10 +15,9 @@
       "ES5",
       "ES6",
       "ES7"
-    ],
-    "jsx": "react"
+    ]
   },
   "include": [
     "**/*.ts"
-, "CollectionManagerView.tsx"  ]
+, "collection-manager-view.ts"  ]
 }

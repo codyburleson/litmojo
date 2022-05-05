@@ -1,5 +1,5 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./CollectionManagerView";
+import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./collection-manager-view";
 
 // Remember to rename these classes and interfaces!
 
