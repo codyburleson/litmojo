@@ -9,6 +9,15 @@ export namespace Components {
     interface GlassTree {
         "name": string;
     }
+    interface GlassTreeNode {
+        "iconChecked": string;
+        "iconClosed": string;
+        "iconOpen": string;
+        "iconUnchecked": string;
+        "mouseOutColor": string;
+        "mouseOverColor": string;
+        "name": string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -31,6 +40,12 @@ declare global {
         prototype: HTMLGlassTreeElement;
         new (): HTMLGlassTreeElement;
     };
+    interface HTMLGlassTreeNodeElement extends Components.GlassTreeNode, HTMLStencilElement {
+    }
+    var HTMLGlassTreeNodeElement: {
+        prototype: HTMLGlassTreeNodeElement;
+        new (): HTMLGlassTreeNodeElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -39,11 +54,21 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "glass-tree": HTMLGlassTreeElement;
+        "glass-tree-node": HTMLGlassTreeNodeElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
     interface GlassTree {
+        "name"?: string;
+    }
+    interface GlassTreeNode {
+        "iconChecked"?: string;
+        "iconClosed"?: string;
+        "iconOpen"?: string;
+        "iconUnchecked"?: string;
+        "mouseOutColor"?: string;
+        "mouseOverColor"?: string;
         "name"?: string;
     }
     interface MyComponent {
@@ -62,6 +87,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "glass-tree": GlassTree;
+        "glass-tree-node": GlassTreeNode;
         "my-component": MyComponent;
     }
 }
@@ -70,6 +96,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "glass-tree": LocalJSX.GlassTree & JSXBase.HTMLAttributes<HTMLGlassTreeElement>;
+            "glass-tree-node": LocalJSX.GlassTreeNode & JSXBase.HTMLAttributes<HTMLGlassTreeNodeElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }

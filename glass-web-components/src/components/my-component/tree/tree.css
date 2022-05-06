@@ -4,20 +4,31 @@ https://stackoverflow.com/questions/10813581/can-i-replace-the-expand-icon-of-th
 */
 
 
-details > summary {
-    list-style-type: '▶️';
-    /* list-style-type: ''; */
+summary {
+    padding: 0;
 }
 
-details[open] > summary {
-    list-style-type: '🔽';
-    /* list-style-type: ''; */
+
+
+details > summary {
+    list-style-type: none;
 }
+details > summary:hover {
+    background-color: lightblue;
+}
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+
+
+
 
 details {
     border: 1px solid gray;
     border-radius: 0.2rem;
-    padding: 0.5rem;
+    padding: 0rem;
+    padding-left: 2rem;
 }
 
 details[open] > summary {
