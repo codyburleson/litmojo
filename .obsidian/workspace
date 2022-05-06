@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Development/Dev Log/2022-05-05 Dev Log.md",
+            "file": "README.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Development/Dev Log/2022-05-05 Dev Log.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -85,7 +85,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Development/Dev Log/2022-05-05 Dev Log.md"
+                "file": "README.md"
               }
             }
           },
@@ -106,15 +106,15 @@
   },
   "active": "a36b895d410c1f03",
   "lastOpenFiles": [
-    "Development/Dev Log/2022-05-05 Dev Log.md",
-    "Development/Dev Log/2022-04-28 Dev Log.md",
-    "Development/Dev Log/2022-04-27 Dev Log.md",
+    "README.md",
+    "Requirements and Design/Features/Manage Document Notes/Manage Document Notes.md",
+    "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
+    "Development/Dev Log/2022-05-06 Dev Log.md",
     "Requirements and Design/Technical Design Decisions.md",
-    "Development/Dev Log/2022-04-23 Dev Log.md",
+    "Development/Dev Log/2022-05-05 Dev Log.md",
     "Development/Dev Log/2022-04-22 Dev Log.md",
-    "Development/Dev Log/2022-05-04 Dev Log.md",
-    "Development/Dev Log/2022-05-03 Dev Log.md",
-    "Requirements and Design/Specifications.md",
-    "Requirements and Design/Features/Manage Document Notes/Manage Document Notes.md"
+    "Development/Dev Log/2022-04-23 Dev Log.md",
+    "Development/Dev Log/2022-04-27 Dev Log.md",
+    "Development/Dev Log/2022-04-28 Dev Log.md"
   ]
 }

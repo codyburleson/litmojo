@@ -1,4 +1,4 @@
-Writers must have the ability to organize multiple vault documents into named collections, order the documents within each given collection, and then quickly, easily, and repeatedly compile a collection into one single aggregate result (e.g. one markdown or HTML document).
+Writers must have the ability to organize multiple vault documents into named collections, order the documents within each given collection, and then quickly, easily, and repeatedly compile a collection into one single aggregate result (e.g. one markdown or HTML document). ^8f507b
 
 The process of compiling multiple documents implies the possibility for automatic modifications as well as transformations from one format to another, though those are probably best described more specifically as unique, but related features. For the purposes of adhering to the concept of the Minimum Marketable Feature (MMF), the first phase of Document Assembly will be limited to ordering and aggregating multiple markdown documents into one combined markdown or HTML result.
 

@@ -1,4 +1,4 @@
-Writers must have the ability to keep notes about a given document that, as a kind of metadata about the document, are not considered to be the main content of the document.
+Writers must have the ability to keep notes about a given document that, as a kind of metadata about the document, are not considered to be the main content of the document. ^76bf2c
 
 *Note that "metadata" in this case, should not imply a technical approach to the implementation. Notes may or may not be in frontmatter YAML. They could, for example, be implemented as a special type of code block, which the plugin reads and renders in its own special way.*
 

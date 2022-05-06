@@ -3,8 +3,14 @@
 ## Vision
 Even the very best tools available for writers today are woefully inadequate (IMO). They say that "necessity is the mother of invention." Well, I'm tired of tying a bunch of poorly integrated applications and services together only to leave a plethora of gaps yet unfilled. For writing and publishing, I need something better - I need something more. I'm not waiting for someone else to get it right. I need what I need and I need it yesterday. [Obsidian](https://obsidian.md/) is my favorite app and where I do most of my daily thinking and writing. It has a pluggable architecture, so I think maybe I can use it as an integral part of the platform I need. We'll see how it goes. 
 
-### Features
-- [[Manage and Compile Collections]] - Writers must have the ability to organize multiple vault documents into named collections, order the documents within each given collection, and then quickly, easily, and repeatedly compile a collection into one single aggregate result (e.g. one markdown or HTML document).
+## Feature Concepts
+##### [[Manage and Compile Collections]]
+
+![[Manage and Compile Collections#^8f507b]]
+
+##### [[Manage Document Notes]]
+![[Manage Document Notes#^76bf2c]]
+
  
 ## Chime In
 - Follow my journey on the LitMojo website at: https://publish.obsidian.md/litmojo
