@@ -1,31 +1,8 @@
-/*
-Some details element styling tips
-https://stackoverflow.com/questions/10813581/can-i-replace-the-expand-icon-of-the-details-element
-*/
-
-/*
-summary {
-    padding: 0;
+* {
+    /* This should not be here in PROD; just to simulate BG of container in Obsidian for now */
+    background-color: #f2f3f5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
 }
 
-details > summary {
-    list-style-type: none;
-}
-details > summary:hover {
-    background-color: lightblue;
-}
-details > summary::-webkit-details-marker {
-    display: none;
-}
-
-details {
-    border: 1px solid gray;
-    border-radius: 0.2rem;
-    padding: 0rem;
-    padding-left: 2rem;
-}
-
-details[open] > summary {
-    margin-bottom: 0.5rem;
-}
-*/

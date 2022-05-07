@@ -1,45 +1,39 @@
-
 /*
-details > summary {
-    list-style-type: '▶️';
-}
-
-details[open] > summary {
-    list-style-type: '🔽';
-}
-
-details {
-    border: 1px solid gray;
-    border-radius: 0.2rem;
-    padding: 0.5rem;
-}
-
-details[open] > summary {
-    margin-bottom: 0.5rem;
-}
+Some details element styling tips
+https://stackoverflow.com/questions/10813581/can-i-replace-the-expand-icon-of-the-details-element
 */
-
-summary {
-    padding: 0;
+details {
+    /* border: 1px solid gray; */
+    border-radius: 0.2rem;
+    padding: 0rem;
+    /* padding-left: 1.3rem; */
+    margin-left: 1.3rem;
 }
-
+summary {
+    padding:2px;
+    padding-bottom:4px;
+    background-color: inherit;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
 details > summary {
     list-style-type: none;
 }
 details > summary:hover {
-    background-color: lightblue;
+    background-color: #e3e5e8;
 }
 details > summary::-webkit-details-marker {
     display: none;
 }
-
-details {
-    border: 1px solid gray;
-    border-radius: 0.2rem;
-    padding: 0rem;
-    padding-left: 1.3rem;
-}
-
 details[open] > summary {
     margin-bottom: 0.5rem;
+}
+details > summary > .twisty {
+    background-color: inherit;
+}
+details > summary > .twisty::before {
+    content: '▶️';
+}
+details[open] > summary > .twisty::before {
+    content: "🔽";
 }

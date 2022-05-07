@@ -11,8 +11,6 @@ export namespace Components {
     }
     interface GlassTreeNode {
         "iconChecked": string;
-        "iconClosed": string;
-        "iconOpen": string;
         "iconUnchecked": string;
         "mouseOutColor": string;
         "mouseOverColor": string;
@@ -64,8 +62,6 @@ declare namespace LocalJSX {
     }
     interface GlassTreeNode {
         "iconChecked"?: string;
-        "iconClosed"?: string;
-        "iconOpen"?: string;
         "iconUnchecked"?: string;
         "mouseOutColor"?: string;
         "mouseOverColor"?: string;
