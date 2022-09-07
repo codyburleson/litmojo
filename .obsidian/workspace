@@ -10,7 +10,8 @@
           "type": "markdown",
           "state": {
             "file": "README.md",
-            "mode": "source"
+            "mode": "source",
+            "source": false
           }
         }
       }
@@ -102,7 +103,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 451.3401794433594
+    "width": 375
   },
   "active": "a36b895d410c1f03",
   "lastOpenFiles": [

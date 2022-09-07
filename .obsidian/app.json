@@ -1,7 +1,8 @@
 {
-  "legacyEditor": true,
+  "legacyEditor": false,
   "promptDelete": false,
   "alwaysUpdateLinks": true,
   "newFileLocation": "current",
-  "attachmentFolderPath": "./"
+  "attachmentFolderPath": "./",
+  "livePreview": true
 }
