@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "a36b895d410c1f03",
+        "id": "4e99345049c38266",
         "type": "leaf",
         "state": {
           "type": "markdown",
           "state": {
-            "file": "README.md",
+            "file": "Documentation/Developer Log/2022-10-11.md",
             "mode": "source",
             "source": false
           }
@@ -53,7 +53,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 253.0083885192871
+    "width": 309.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Documentation/Developer Log/2022-10-11.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -86,36 +86,28 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "Documentation/Developer Log/2022-10-11.md"
               }
-            }
-          },
-          {
-            "id": "2ea5a59efbb2f492",
-            "type": "leaf",
-            "state": {
-              "type": "collection-manager",
-              "state": {}
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 375
+    "width": 407.5
   },
-  "active": "a36b895d410c1f03",
+  "active": "4e99345049c38266",
   "lastOpenFiles": [
-    "README.md",
-    "Requirements and Design/Features/Manage Document Notes/Manage Document Notes.md",
-    "Requirements and Design/Features/Manage and Compile Collections/Manage and Compile Collections.md",
-    "Development/Dev Log/2022-05-06 Dev Log.md",
-    "Requirements and Design/Technical Design Decisions.md",
-    "Development/Dev Log/2022-05-05 Dev Log.md",
-    "Development/Dev Log/2022-04-22 Dev Log.md",
-    "Development/Dev Log/2022-04-23 Dev Log.md",
-    "Development/Dev Log/2022-04-27 Dev Log.md",
-    "Development/Dev Log/2022-04-28 Dev Log.md"
+    "TestContent/Frankenstein/Chapter 1.md",
+    "TestContent/Frankenstein/Chapter 4.md",
+    "TestContent/Frankenstein/Chapter 3.md",
+    "TestContent/Frankenstein/Chapter 2.md",
+    "Documentation/To Do.md",
+    "Documentation/Developer Log/2022-10-11.md",
+    "Documentation/Documentation.md",
+    "Documentation/Developer Log/2022-10-10.md",
+    "Documentation/Required Plugins.md",
+    "Documentation/Obsidian Icons.md"
   ]
 }

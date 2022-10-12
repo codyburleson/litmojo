@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 30
+  compile: true
+---
+
 ## Chapter 3
 
 When I had attained the age of seventeen my parents resolved that I should become a student at the university of Ingolstadt. I had hitherto attended the schools of Geneva, but my father thought it necessary for the completion of my education that I should be made acquainted with other customs than those of my native country. My departure was therefore fixed at an early date, but before the day resolved upon could arrive, the first misfortune of my life occurred—an omen, as it were, of my future misery.

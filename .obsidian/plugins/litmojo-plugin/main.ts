@@ -1,21 +1,54 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./collection-manager-view";
 
+// You can use the getAPI() function to obtain the Dataview Plugin API; 
+// this returns a DataviewApi object which provides various utilities, 
+// including rendering dataviews, checking dataview's version, hooking 
+// into the dataview event life cycle, and querying dataview metadata
+// For full API definitions available, check:
+// [index.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/index.ts)
+// or the plugin API definition:
+// [plugin-api.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/api/plugin-api.ts)
+import { getAPI} from "obsidian-dataview";
+// You can access various type utilities which let you check the types of objects and compare them via Values:
+// import { getAPI, Values} from "obsidian-dataview";
+const dvApi = getAPI();
+
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
+interface LitMojoPluginSettings {
     mySetting: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: LitMojoPluginSettings = {
     mySetting: 'default'
 }
 
-export default class MyPlugin extends Plugin {
-    settings: MyPluginSettings;
+export default class LitMojoPlugin extends Plugin {
+    settings: LitMojoPluginSettings;
 
     async onload() {
         await this.loadSettings();
+
+        // new Notice("Hello")
+
+
+        // Dataview events that are trigerred (in case needed later)...
+        /*
+        this.registerEvent(
+            // @ts-ignore
+            this.app.metadataCache.on("dataview:index-ready", () => {
+                console.log('-- LitMojoPlugin > DataView event: dataview:index-ready')
+            })
+        );
+
+        this.registerEvent(
+            // @ts-ignore
+            this.app.metadataCache.on("dataview:metadata-change",(type, file, oldPath?) => {
+                console.log('-- LitMojoPlugin > DataView event: dataview:metadata-change')
+            })
+        );*/
+        
 
         this.registerView(
             VIEW_TYPE_COLLECTION_MANAGER,
@@ -132,9 +165,9 @@ class SampleModal extends Modal {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-    plugin: MyPlugin;
+    plugin: LitMojoPlugin;
 
-    constructor(app: App, plugin: MyPlugin) {
+    constructor(app: App, plugin: LitMojoPlugin) {
         super(app, plugin);
         this.plugin = plugin;
     }
