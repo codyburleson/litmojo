@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 220
+  compile: true
+---
+
 ## Chapter 22
 
 The voyage came to an end. We landed, and proceeded to Paris. I soon found that I had overtaxed my strength and that I must repose before I could continue my journey. My father’s care and attentions were indefatigable, but he did not know the origin of my sufferings and sought erroneous methods to remedy the incurable ill. He wished me to seek amusement in society. I abhorred the face of man. Oh, not abhorred! They were my brethren, my fellow beings, and I felt attracted even to the most repulsive among them, as to creatures of an angelic nature and celestial mechanism. But I felt that I had no right to share their intercourse. I had unchained an enemy among them whose joy it was to shed their blood and to revel in their groans. How they would, each and all, abhor me and hunt me from the world, did they know my unhallowed acts and the crimes which had their source in me!

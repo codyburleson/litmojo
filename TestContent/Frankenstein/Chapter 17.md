@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 170
+  compile: true
+---
+
 ## Chapter 17
 
 The being finished speaking and fixed his looks upon me in the expectation of a reply. But I was bewildered, perplexed, and unable to arrange my ideas sufficiently to understand the full extent of his proposition. He continued,

@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 140
+  compile: true
+---
+
 ## Chapter 14
 
 “Some time elapsed before I learned the history of my friends. It was one which could not fail to impress itself deeply on my mind, unfolding as it did a number of circumstances, each interesting and wonderful to one so utterly inexperienced as I was.

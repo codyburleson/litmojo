@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 160
+  compile: true
+---
+
 ## Chapter 16
 
 “Cursed, cursed creator! Why did I live? Why, in that instant, did I not extinguish the spark of existence which you had so wantonly bestowed? I know not; despair had not yet taken possession of me; my feelings were those of rage and revenge. I could with pleasure have destroyed the cottage and its inhabitants and have glutted myself with their shrieks and misery.

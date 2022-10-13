@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 200
+  compile: true
+---
+
 ## Chapter 20
 
 I sat one evening in my laboratory; the sun had set, and the moon was just rising from the sea; I had not sufficient light for my employment, and I remained idle, in a pause of consideration of whether I should leave my labour for the night or hasten its conclusion by an unremitting attention to it. As I sat, a train of reflection occurred to me which led me to consider the effects of what I was now doing. Three years before, I was engaged in the same manner and had created a fiend whose unparalleled barbarity had desolated my heart and filled it for ever with the bitterest remorse. I was now about to form another being of whose dispositions I was alike ignorant; she might become ten thousand times more malignant than her mate and delight, for its own sake, in murder and wretchedness. He had sworn to quit the neighbourhood of man and hide himself in deserts, but she had not; and she, who in all probability was to become a thinking and reasoning animal, might refuse to comply with a compact made before her creation. They might even hate each other; the creature who already lived loathed his own deformity, and might he not conceive a greater abhorrence for it when it came before his eyes in the female form? She also might turn with disgust from him to the superior beauty of man; she might quit him, and he be again alone, exasperated by the fresh provocation of being deserted by one of his own species.

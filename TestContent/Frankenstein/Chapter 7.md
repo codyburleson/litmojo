@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 70
+  compile: true
+---
+
 ## Chapter 7
 
 On my return, I found the following letter from my father:—

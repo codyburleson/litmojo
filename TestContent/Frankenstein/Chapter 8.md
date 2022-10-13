@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 80
+  compile: true
+---
+
 ## Chapter 8
 
 We passed a few sad hours until eleven o’clock, when the trial was to commence. My father and the rest of the family being obliged to attend as witnesses, I accompanied them to the court. During the whole of this wretched mockery of justice I suffered living torture. It was to be decided whether the result of my curiosity and lawless devices would cause the death of two of my fellow beings: one a smiling babe full of innocence and joy, the other far more dreadfully murdered, with every aggravation of infamy that could make the murder memorable in horror. Justine also was a girl of merit and possessed qualities which promised to render her life happy; now all was to be obliterated in an ignominious grave, and I the cause! A thousand times rather would I have confessed myself guilty of the crime ascribed to Justine, but I was absent when it was committed, and such a declaration would have been considered as the ravings of a madman and would not have exculpated her who suffered through me.

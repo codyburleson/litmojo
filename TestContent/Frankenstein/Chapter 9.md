@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 90
+  compile: true
+---
+
 ## Chapter 9
 
 Nothing is more painful to the human mind than, after the feelings have been worked up by a quick succession of events, the dead calmness of inaction and certainty which follows and deprives the soul both of hope and fear. Justine died, she rested, and I was alive. The blood flowed freely in my veins, but a weight of despair and remorse pressed on my heart which nothing could remove. Sleep fled from my eyes; I wandered like an evil spirit, for I had committed deeds of mischief beyond description horrible, and more, much more (I persuaded myself) was yet behind. Yet my heart overflowed with kindness and the love of virtue. I had begun life with benevolent intentions and thirsted for the moment when I should put them in practice and make myself useful to my fellow beings. Now all was blasted; instead of that serenity of conscience which allowed me to look back upon the past with self-satisfaction, and from thence to gather promise of new hopes, I was seized by remorse and the sense of guilt, which hurried me away to a hell of intense tortures such as no language can describe.

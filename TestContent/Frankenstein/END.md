@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 250
+  compile: true
+---
+
 This file should be named 84-h.htm or 84-h.zip
 
 This and all associated files of various formats will be found in https://www.gutenberg.org/8/84/

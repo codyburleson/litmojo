@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 255
+  compile: true
+---
+
 START: FULL LICENSE  
 THE FULL PROJECT GUTENBERG LICENSE  
 PLEASE READ THIS BEFORE YOU DISTRIBUTE OR USE THIS WORK

@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 150
+  compile: true
+---
+
 ## Chapter 15
 
 “Such was the history of my beloved cottagers. It impressed me deeply. I learned, from the views of social life which it developed, to admire their virtues and to deprecate the vices of mankind.

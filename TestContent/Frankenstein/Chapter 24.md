@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 240
+  compile: true
+---
+
 ## Chapter 24
 
 My present situation was one in which all voluntary thought was swallowed up and lost. I was hurried away by fury; revenge alone endowed me with strength and composure; it moulded my feelings and allowed me to be calculating and calm at periods when otherwise delirium or death would have been my portion.

@@ -3,6 +3,7 @@ import { ItemView, WorkspaceLeaf } from "obsidian";
 export const VIEW_TYPE_COLLECTION_MANAGER = "collection-manager";
 
 export class CollectionManagerView extends ItemView {
+
   constructor(leaf: WorkspaceLeaf) {
     super(leaf);
   }
@@ -24,4 +25,5 @@ export class CollectionManagerView extends ItemView {
   async onClose() {
     // Nothing to clean up.
   }
+
 }

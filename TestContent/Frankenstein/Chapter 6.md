@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 60
+  compile: true
+---
+
 ## Chapter 6
 
 Clerval then put the following letter into my hands. It was from my own Elizabeth:

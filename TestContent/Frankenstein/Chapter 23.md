@@ -1,3 +1,10 @@
+---
+publish: false
+litmojo:
+  order: 230
+  compile: true
+---
+
 ## Chapter 23
 
 It was eight o’clock when we landed; we walked for a short time on the shore, enjoying the transitory light, and then retired to the inn and contemplated the lovely scene of waters, woods, and mountains, obscured in darkness, yet still displaying their black outlines.
