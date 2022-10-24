@@ -11,10 +11,14 @@ import { CompileSettingsModal } from './compile-settings-modal'
 // [index.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/index.ts)
 // or the plugin API definition:
 // [plugin-api.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/api/plugin-api.ts)
-import { getAPI } from "obsidian-dataview";
+
+
+import { DataviewApi, getAPI } from "obsidian-dataview";
+
+
 // You can access various type utilities which let you check the types of objects and compare them via Values:
 // import { getAPI, Values} from "obsidian-dataview";
-const dv = getAPI();
+// const dv = getAPI();
 
 // Remember to rename these classes and interfaces!
 
@@ -28,6 +32,8 @@ const DEFAULT_SETTINGS: LitMojoPluginSettings = {
 
 export default class LitMojoPlugin extends Plugin {
 
+    dvapi: DataviewApi;
+
     settings: LitMojoPluginSettings;
 
     showCompileSettingsModal() {
@@ -35,7 +41,13 @@ export default class LitMojoPlugin extends Plugin {
     }
 
     async onload() {
+        
+       
         await this.loadSettings();
+        console.log('settings loaded');
+        this.dvapi = getAPI();
+        console.log('dvapi: %o', this.dvapi);
+        
 
         // new Notice("Hello")
 
@@ -60,69 +72,98 @@ export default class LitMojoPlugin extends Plugin {
          * folder page with a litmojo compile config in the YAML frontmatter.
          */
         this.registerEvent(
+            
             this.app.workspace.on("file-menu", (menu, file) => {
-                menu.addItem((item) => {
-                    item
-                        .setTitle("Compile")
-                        .setIcon("wand")
-                        .onClick(async () => {
 
-                            console.log('-- LitMojo.compile > file.path: %s',file.path);
+                if (file instanceof TFile) {
 
-                            // cnew Notice(file.path);
+                    menu.addItem((item) => {
+                        item
+                            .setTitle("Publish")
+                            .setIcon("paper-plane")
+                            .onClick(async () => {
+                                new Notice(file.path);
+                            });
+                    });
 
-                            // Determine file or folder
-                            
-                            /*
-                            const folderOrFile = this.app.vault.getAbstractFileByPath(file.path);
 
-                            if (folderOrFile instanceof TFile) {
-                                console.log("It's a file!");
-                            } else if (folderOrFile instanceof TFolder) {
-                                console.log("It's a folder!");
-                            }
-                            */
-                            
-                            //console.log("Test String: " + );
-
-                            //let pages = dv.pages('\"' + file.path + '\"');
-
-                            //console.log('-- LitMojo.compile > pages: %o',pages);
-
-                            dv.pages('\"' + file.path + '\"')
-                                .sort(p => p.litmojo?.order, 'asc')
-                                .map(t => {
-                                    console.log('-- file.name: %s', t.file.name)
-                                })
-
-                            this.showCompileSettingsModal();
-
-                            //for (let i = 0; i < pages.length; i++) {
-
-                                //let page = pages[i];
-
-                                //console.log('-- LitMojo.compile > dv page: %s', page.title);
-
+                } else if (file instanceof TFolder) {
+                    
+                    menu.addItem((item) => {
+                        item
+                            .setTitle("Compile")
+                            .setIcon("wand")
+                            .onClick(async () => {
+    
+                                console.log('-- LitMojo.compile > file.path: %s',file.path);
+    
+                                // cnew Notice(file.path);
+    
+                                // Determine file or folder
+                                
                                 /*
-                                if (page.litmojo) {
-                                    if (page.title) {
-                                        dv.el("strong", dv.fileLink(page.title));
-                                    } else {
-                                        dv.el("strong", dv.fileLink(page.file.name));
-                                    }
-                                    if (page.litmojo?.synopsis) {
-                                        dv.paragraph(page.litmojo.synopsis);
-                                    }
-                                    // Use this to look at the page object in full...
-                                    // dv.paragraph(page)
-                                    dv.paragraph("---")
+                                const folderOrFile = this.app.vault.getAbstractFileByPath(file.path);
+    
+                                if (folderOrFile instanceof TFile) {
+                                    console.log("It's a file!");
+                                } else if (folderOrFile instanceof TFolder) {
+                                    console.log("It's a folder!");
                                 }
                                 */
+                                
+                                //console.log("Test String: " + );
+    
+                                //let pages = dv.pages('\"' + file.path + '\"');
+    
+                                //console.log('-- LitMojo.compile > pages: %o',pages);
+    
+                                console.log('dvapi: %o',this.dvapi);
+    
+                                //const folderOrFile = this.app.vault.getAbstractFileByPath(file.path);
+    
+                                
+    
+                                //const frontmatter = app.metadataCache.getFileCache(file).frontmatter
+    
+                                this.dvapi.pages('\"' + file.path + '\"')
+                                    .sort(p => p.litmojo?.order, 'asc')
+                                    .map(t => {
+                                        console.log('-- file.name: %s', t.file.name)
+                                    })
+    
+                                this.showCompileSettingsModal();
+    
+                                //for (let i = 0; i < pages.length; i++) {
+    
+                                    //let page = pages[i];
+    
+                                    //console.log('-- LitMojo.compile > dv page: %s', page.title);
+    
+                                    /*
+                                    if (page.litmojo) {
+                                        if (page.title) {
+                                            dv.el("strong", dv.fileLink(page.title));
+                                        } else {
+                                            dv.el("strong", dv.fileLink(page.file.name));
+                                        }
+                                        if (page.litmojo?.synopsis) {
+                                            dv.paragraph(page.litmojo.synopsis);
+                                        }
+                                        // Use this to look at the page object in full...
+                                        // dv.paragraph(page)
+                                        dv.paragraph("---")
+                                    }
+                                    */
+    
+                                //}
+    
+                            });
+                    });
 
-                            //}
 
-                        });
-                });
+                }
+
+                
             })
         );
 
@@ -130,7 +171,8 @@ export default class LitMojoPlugin extends Plugin {
          * Registers the Publish menu, which should really only show up when there is a 
          * folder page with a litmojo publish config in the YAML frontmatter.
          */
-        this.registerEvent(
+        /*
+         this.registerEvent(
             this.app.workspace.on("file-menu", (menu, file) => {
                 menu.addItem((item) => {
                     item
@@ -142,6 +184,7 @@ export default class LitMojoPlugin extends Plugin {
                 });
             })
         );
+        */
 
         this.registerView(
             VIEW_TYPE_COLLECTION_MANAGER,

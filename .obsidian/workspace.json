@@ -1,0 +1,124 @@
+{
+  "main": {
+    "id": "69c2ce5d4e386f12",
+    "type": "split",
+    "children": [
+      {
+        "id": "b9c1a0da8627b0f8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4e99345049c38266",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "TestContent/Frankenstein/Chapter 2.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f26773d20915fca8",
+    "type": "split",
+    "children": [
+      {
+        "id": "3a2423e68d1c1e1a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "94f474eee5ba1489",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "e56ef8b793123462",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 275
+  },
+  "right": {
+    "id": "9e3b907cb93400c0",
+    "type": "split",
+    "children": [
+      {
+        "id": "9170f71eaf862cb5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "10b1c20a9b131c78",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "TestContent/Frankenstein/Chapter 2.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "243066d79525adec",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "TestContent/Frankenstein/Chapter 2.md"
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 447
+  },
+  "ribbon": {
+    "mostRecentAction": ""
+  },
+  "active": "4e99345049c38266",
+  "lastOpenFiles": [
+    "TestContent/Frankenstein/Chapter 1.md",
+    "TestContent/Frankenstein/Chapter 2.md",
+    "TestContent/Frankenstein/Frankenstein.md",
+    "Documentation/Developer Log/2022-10-12.md",
+    "TestContent/Frankenstein/FULL LICENSE.md",
+    "TestContent/Frankenstein/END.md",
+    "TestContent/Frankenstein/Letter 4.md",
+    "TestContent/Frankenstein/Letter 3.md",
+    "TestContent/Frankenstein/Letter 2.md",
+    "TestContent/Frankenstein/Letter 1.md"
+  ]
+}
