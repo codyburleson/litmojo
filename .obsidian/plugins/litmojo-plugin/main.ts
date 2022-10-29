@@ -12,13 +12,21 @@ import { CompileSettingsModal } from './compile-settings-modal'
 // or the plugin API definition:
 // [plugin-api.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/api/plugin-api.ts)
 
-
 import { DataviewApi, getAPI } from "obsidian-dataview";
-
 
 // You can access various type utilities which let you check the types of objects and compare them via Values:
 // import { getAPI, Values} from "obsidian-dataview";
 // const dv = getAPI();
+
+
+import markdownParser from 'remark-parse';
+import { unified } from 'unified';
+import remarkStringify from 'remark-stringify';
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkParse from 'remark-parse'
+import {visit, SKIP} from 'unist-util-visit'
+
+
 
 // Remember to rename these classes and interfaces!
 
@@ -42,13 +50,11 @@ export default class LitMojoPlugin extends Plugin {
 
     async onload() {
         
-       
         await this.loadSettings();
         console.log('settings loaded');
         this.dvapi = getAPI();
         console.log('dvapi: %o', this.dvapi);
         
-
         // new Notice("Hello")
 
         // Dataview events that are trigerred (in case needed later)...
@@ -86,7 +92,6 @@ export default class LitMojoPlugin extends Plugin {
                             });
                     });
 
-
                 } else if (file instanceof TFolder) {
                     
                     menu.addItem((item) => {
@@ -115,34 +120,70 @@ export default class LitMojoPlugin extends Plugin {
                                 else if (Values.isLink(field)) // do something
                                 */          
 
-
                                 // get abstract TFile
-
 
                                 this.dvapi.pages('\"' + file.path + '\"')
                                     .sort(p => p.litmojo?.order, 'asc')
-                                    .map(t => {
-                                        console.log('-- file.name: %s', t.file.name)
+                                    .map(page => {
+                                        // console.log('-- file.name: %s', page.file.name)
                                         // get the markdown content
                                         
-                                        const file = this.app.vault.getAbstractFileByPath(t.file.path);
-                                        console.log('-- file: %o', file);
+                                        const file = this.app.vault.getAbstractFileByPath(page.file.path);
 
-                                        //read obsidian markdown document contents
-                                        // @ts-ignore
-                                        await this.app.vault.cachedRead(file).then((content) => {
-                                            console.log('-- content: %s', content);
-                                        });
+                                        //console.log('-- file: %o', file);
+                                        if(page.litmojo?.compile) {
+                                            
+                                            //console.log('-- compiling: %s', page.file.name);
 
+                                            // read obsidian markdown document contents
+                                            // @ts-ignore
+                                            this.app.vault.cachedRead(file).then(async (content) => {
+
+                                                // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (AST)
+                                                const tree = await unified()
+                                                    //.use(remarkParse)
+                                                    .use(markdownParser)
+                                                    .use(remarkFrontmatter, ['yaml'])
+                                                    .parse(content);
+
+                                                    // REMOVE FRONTMATTER FROM AST
+                                                    // See: How to remove a node
+                                                    // https://unifiedjs.com/learn/recipe/remove-node/
+                                                    visit(tree, 'yaml', function (node, index, parent) {
+                                                        parent.children.splice(index, 1)
+                                                        // Do not traverse `node`, continue at the node *now* at `index`.
+                                                        return [SKIP, index]
+                                                    })
+
+                                                console.log('-- magic with: %s', page.file.name);
+                                                console.dir(tree)
+
+                                                /*
+                                                const markdownFile = await unified()
+                                                    //.use(markdownParser)
+                                                    
+                                                    .use(remarkParse)
+                                                    .use(remarkStringify, {})
+                                                    .use(remarkFrontmatter, ['yaml'])
+                                                    .use(() => (tree) => {
+                                                        console.dir(tree)
+                                                    })
+                                                    .process(content);
+
+                                                console.log(String(markdownFile));
+                                                */
+        
+                                            });
+                                            
+                                        }
 
                                         
-                                    })
 
+
+                                    })
 
                                 // this.showCompileSettingsModal();
 
-
-    
                                 //for (let i = 0; i < pages.length; i++) {
     
                                     //let page = pages[i];
@@ -170,10 +211,8 @@ export default class LitMojoPlugin extends Plugin {
                             });
                     });
 
-
                 }
 
-                
             })
         );
 
