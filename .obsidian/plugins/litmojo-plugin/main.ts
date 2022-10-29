@@ -95,43 +95,53 @@ export default class LitMojoPlugin extends Plugin {
                             .setIcon("wand")
                             .onClick(async () => {
     
-                                console.log('-- LitMojo.compile > file.path: %s',file.path);
-    
-                                // cnew Notice(file.path);
-    
-                                // Determine file or folder
+                                // console.log('-- LitMojo.compile > file.path: %s',file.path);
+
+                                // The folder page will hold the global compile settings for the folder.
+                                const folderPage = this.dvapi.page(file.path + "/" + file.name);
+                                 
+                                // This is how we get at a frontmatter attribute..
+                                const field = folderPage.litmojo.test;
+
+                                console.log(`field: ${field}`);
                                 
                                 /*
-                                const folderOrFile = this.app.vault.getAbstractFileByPath(file.path);
-    
-                                if (folderOrFile instanceof TFile) {
-                                    console.log("It's a file!");
-                                } else if (folderOrFile instanceof TFolder) {
-                                    console.log("It's a folder!");
-                                }
-                                */
-                                
-                                //console.log("Test String: " + );
-    
-                                //let pages = dv.pages('\"' + file.path + '\"');
-    
-                                //console.log('-- LitMojo.compile > pages: %o',pages);
-    
-                                console.log('dvapi: %o',this.dvapi);
-    
-                                //const folderOrFile = this.app.vault.getAbstractFileByPath(file.path);
-    
-                                
-    
-                                //const frontmatter = app.metadataCache.getFileCache(file).frontmatter
-    
+                                import { getAPI, Values } from "obsidian-dataview";
+
+                                const field = getAPI(plugin.app)?.page('sample.md').field;
+                                if (!field) return;
+
+                                if (Values.isHtml(field)) // do something
+                                else if (Values.isLink(field)) // do something
+                                */          
+
+
+                                // get abstract TFile
+
+
                                 this.dvapi.pages('\"' + file.path + '\"')
                                     .sort(p => p.litmojo?.order, 'asc')
                                     .map(t => {
                                         console.log('-- file.name: %s', t.file.name)
+                                        // get the markdown content
+                                        
+                                        const file = this.app.vault.getAbstractFileByPath(t.file.path);
+                                        console.log('-- file: %o', file);
+
+                                        //read obsidian markdown document contents
+                                        // @ts-ignore
+                                        await this.app.vault.cachedRead(file).then((content) => {
+                                            console.log('-- content: %s', content);
+                                        });
+
+
+                                        
                                     })
-    
-                                this.showCompileSettingsModal();
+
+
+                                // this.showCompileSettingsModal();
+
+
     
                                 //for (let i = 0; i < pages.length; i++) {
     
