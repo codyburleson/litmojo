@@ -1,4 +1,4 @@
 ---
 litmojo:
-  path: Compiled Manuscripts/Frankenstein.md
+  path: Compiled Manuscripts/Frankenstein.html
 ---

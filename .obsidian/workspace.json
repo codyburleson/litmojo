@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "38590948eae7a657",
+        "id": "972d3a462c7f591a",
         "type": "tabs",
         "children": [
           {
-            "id": "15de71bbcfb1467b",
+            "id": "6e7a60e434fc1efd",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Documentation/Dev Notes/To Do.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -57,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 249.5
+    "width": 347.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -73,6 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Documentation/Dev Notes/To Do.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,7 +93,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Documentation/Dev Notes/To Do.md"
+              }
             }
           }
         ],
@@ -96,19 +103,19 @@
       }
     ],
     "direction": "horizontal",
-    "width": 332.5
+    "width": 268.5
   },
-  "active": "94f474eee5ba1489",
+  "active": "6e7a60e434fc1efd",
   "lastOpenFiles": [
-    "Compiled Manuscripts/Frankenstein.md",
-    "Example Manuscripts/Frankenstein/Frankenstein.md",
     "README.md",
-    "Example Manuscripts/Frankenstein/2 Letters/Letter 1.md",
+    "Example Manuscripts/Frankenstein/Frankenstein.md",
+    "Documentation/attachments/Pasted image 20221010225322.png",
     "Documentation/Documentation.md",
-    "Documentation/Required Plugins.md",
-    "Documentation/To Do.md",
-    "Documentation/Unified.md",
-    "TestContent/Compile/Frankenstein.md",
-    "Example Manuscripts/FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md"
+    "Documentation/Recommended Plugins.md",
+    "Documentation/Dev Notes/Unified.md",
+    "Documentation/Dev Notes/To Do.md",
+    "Documentation/Dev Notes/Obsidian Icons.md",
+    "Compiled Manuscripts/About.md",
+    "Compiled Manuscripts/Frankenstein.md"
   ]
 }

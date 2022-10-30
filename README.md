@@ -8,7 +8,7 @@ We're just getting started, so we only offer one feature now:
 
 The Longform Compiler feature allows you to compile a manuscript into markdown or HTML from multiple markdown files.
 
-## Getting Started
+## User Guide
 
 ### Step One - Configure Manuscript Compile Settings
 
@@ -45,3 +45,7 @@ litmojo:
 ### Step Three - Compile
 
 Right-click on your manuscript folder and choose Compile. Your manuscript will be compiled into the file specified by the path you gave in the frontmatter of the manuscript's folder note.
+
+#### Notes
+
+- Under Settings > Files and Links, turn on Detect all File Extensions if you want to see HTML manuscript files in Obsidian's file explorer after they've been compiled.

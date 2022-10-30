@@ -1,1 +1,0 @@
-- Under Settings > Files and Links, turn on Detect all File Extensions if you want to see HTML manuscript files in Obsidian's file explorer after they've been compiled.

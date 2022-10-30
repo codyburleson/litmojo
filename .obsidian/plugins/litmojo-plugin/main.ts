@@ -1,7 +1,7 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
-import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./collection-manager-view";
+//import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./collection-manager-view";
 
-import { CompileSettingsModal } from './compile-settings-modal'
+//import { CompileSettingsModal } from './compile-settings-modal'
 
 // You can use the getAPI() function to obtain the Dataview Plugin API; 
 // this returns a DataviewApi object which provides various utilities, 
@@ -12,7 +12,7 @@ import { CompileSettingsModal } from './compile-settings-modal'
 // or the plugin API definition:
 // [plugin-api.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/api/plugin-api.ts)
 
-import { DataviewApi, getAPI } from "obsidian-dataview";
+//import { DataviewApi, getAPI } from "obsidian-dataview";
 
 // You can access various type utilities which let you check the types of objects and compare them via Values:
 // import { getAPI, Values} from "obsidian-dataview";
@@ -38,22 +38,25 @@ const DEFAULT_SETTINGS: LitMojoPluginSettings = {
 
 export default class LitMojoPlugin extends Plugin {
 
-    dvapi: DataviewApi;
+    //dvapi: DataviewApi;
 
     settings: LitMojoPluginSettings;
 
     compilePath: string;
 
+    /*
     showCompileSettingsModal() {
         new CompileSettingsModal(this.app).open();
     }
+    */
 
     async onload() {
 
         await this.loadSettings();
-        console.log('settings loaded');
-        this.dvapi = getAPI();
-        console.log('dvapi: %o', this.dvapi);
+        // console.log('settings loaded');
+
+        // this.dvapi = getAPI();
+        // console.log('dvapi: %o', this.dvapi);
 
         // new Notice("Hello")
 
@@ -83,6 +86,7 @@ export default class LitMojoPlugin extends Plugin {
 
                 if (file instanceof TFile) {
 
+                    /*
                     menu.addItem((item) => {
                         item
                             .setTitle("Publish")
@@ -91,6 +95,7 @@ export default class LitMojoPlugin extends Plugin {
                                 new Notice(file.path);
                             });
                     });
+                    */
 
                 } else if (file instanceof TFolder) {
 
@@ -124,7 +129,7 @@ export default class LitMojoPlugin extends Plugin {
                                     return orderA - orderB;
                                 });
 
-                                console.log('-- filesToCompile: %o', filesToCompile);
+                                //console.log('-- filesToCompile: %o', filesToCompile);
 
                                 let compiledContent: string = '';
 
@@ -188,8 +193,24 @@ export default class LitMojoPlugin extends Plugin {
                                     // If it exists, delete it before we create a new one
                                     this.app.vault.delete(previouslyCompiledFile);
                                 }
+
+                                if(this.compilePath.endsWith('.html')){
+                                    compiledContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    ${compiledContent}
+</body>
+</html>`
+                                }
+
                                 this.app.vault.create(this.compilePath, compiledContent).then((newFile) => {
-                                    new Notice('Manuscript compiled: ' + newFile.path);
+                                    new Notice('Manuscript compiled to: ' + newFile.path);
                                 });
 
                                 // this.showCompileSettingsModal();
@@ -221,14 +242,14 @@ export default class LitMojoPlugin extends Plugin {
         );
         */
 
-        this.registerView(
-            VIEW_TYPE_COLLECTION_MANAGER,
-            (leaf) => new CollectionManagerView(leaf)
-        );
+        // this.registerView(
+        //     VIEW_TYPE_COLLECTION_MANAGER,
+        //     (leaf) => new CollectionManagerView(leaf)
+        // );
 
-        this.addRibbonIcon("dice", "Activate Colelction Manager view", () => {
-            this.activateCollectionManagerView();
-        });
+        // this.addRibbonIcon("dice", "Activate Colelction Manager view", () => {
+        //     this.activateCollectionManagerView();
+        // });
 
         // This creates an icon in the left ribbon. When clicked, it shows a notice.
         /*
@@ -242,11 +263,11 @@ export default class LitMojoPlugin extends Plugin {
         */
 
         // This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-        const statusBarItemEl = this.addStatusBarItem();
-        statusBarItemEl.setText('Status Bar Text');
-
+        //const statusBarItemEl = this.addStatusBarItem();
+        //statusBarItemEl.setText('Status Bar Text');
 
         // This adds a simple command that can be triggered anywhere
+        /*
         this.addCommand({
             id: 'open-sample-modal-simple',
             name: 'Open sample modal (simple)',
@@ -255,8 +276,10 @@ export default class LitMojoPlugin extends Plugin {
                 this.showCompileSettingsModal();
             }
         });
+        */
 
         // This adds an editor command that can perform some operation on the current editor instance
+        /*
         this.addCommand({
             id: 'sample-editor-command',
             name: 'Sample editor command',
@@ -265,7 +288,10 @@ export default class LitMojoPlugin extends Plugin {
                 editor.replaceSelection('Sample Editor Command');
             }
         });
+        */
+        
         // This adds a complex command that can check whether the current state of the app allows execution of the command
+        /*
         this.addCommand({
             id: 'open-sample-modal-complex',
             name: 'Open sample modal (complex)',
@@ -285,6 +311,7 @@ export default class LitMojoPlugin extends Plugin {
                 }
             }
         });
+        */
 
         // This adds a settings tab so the user can configure various aspects of the plugin
         this.addSettingTab(new SampleSettingTab(this.app, this));
@@ -298,11 +325,11 @@ export default class LitMojoPlugin extends Plugin {
         */
 
         // When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-        this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+        // this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
     }
 
     async onunload() {
-        this.app.workspace.detachLeavesOfType(VIEW_TYPE_COLLECTION_MANAGER);
+        // this.app.workspace.detachLeavesOfType(VIEW_TYPE_COLLECTION_MANAGER);
     }
 
     async loadSettings() {
@@ -313,6 +340,7 @@ export default class LitMojoPlugin extends Plugin {
         await this.saveData(this.settings);
     }
 
+    /*
     async activateCollectionManagerView() {
         this.app.workspace.detachLeavesOfType(VIEW_TYPE_COLLECTION_MANAGER);
 
@@ -325,6 +353,7 @@ export default class LitMojoPlugin extends Plugin {
             this.app.workspace.getLeavesOfType(VIEW_TYPE_COLLECTION_MANAGER)[0]
         );
     }
+    */
 
     getFilesToCompile(folder: TFolder): TFile[] {
         let filesToCompile: TFile[] = [];
@@ -365,6 +394,7 @@ export default class LitMojoPlugin extends Plugin {
     }
 
 }
+
 
 class SampleSettingTab extends PluginSettingTab {
     plugin: LitMojoPlugin;

@@ -1,3 +1,0 @@
-- Check for required plugins and warn if not found
-	- Provide a link in the settings like the Folder Note plugin does.
-	- Something about isPluginEnabled()?
