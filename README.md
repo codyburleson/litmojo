@@ -1,10 +1,12 @@
-LitMojo is a plugin for writers with a vision to deliver a variety of features for writing and publishing. 
+# LitMojo Plugin for Obsidian
 
-### Features
+LitMojo is an Obsidian plugin for writers with a vision to enhance writing and publishing. 
 
-We're just getting started, so we only offer one feature now:
+## Features
 
-#### Longform Compiler
+We're just getting started, so we only offer one feature for now:
+
+### Longform Compiler
 
 The Longform Compiler feature allows you to compile a manuscript into markdown or HTML from multiple markdown files.
 
