@@ -1,7 +1,7 @@
 {
 	"id": "litmojo",
 	"name": "LitMojo",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"minAppVersion": "0.15.9",
 	"description": "Great tools for writing and publishing.",
 	"author": "Cody Burleson",
