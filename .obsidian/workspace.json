@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "c24b8316098efcac",
+        "id": "38590948eae7a657",
         "type": "tabs",
         "children": [
           {
-            "id": "e4ec4305616a62b6",
+            "id": "15de71bbcfb1467b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Documentation/Documentation.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -61,7 +57,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 347.5
+    "width": 249.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -77,7 +73,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/Documentation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,9 +88,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Documentation/Documentation.md"
-              }
+              "state": {}
             }
           }
         ],
@@ -103,19 +96,19 @@
       }
     ],
     "direction": "horizontal",
-    "width": 447
+    "width": 332.5
   },
-  "active": "e4ec4305616a62b6",
+  "active": "94f474eee5ba1489",
   "lastOpenFiles": [
-    "TestContent/Compile/Frankenstein.md",
-    "TestContent/Frankenstein/Frankenstein.md",
+    "Compiled Manuscripts/Frankenstein.md",
+    "Example Manuscripts/Frankenstein/Frankenstein.md",
     "README.md",
-    "TestContent/FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md",
-    "TestContent/Frankenstein/4 Backmatter/FULL LICENSE.md",
-    "TestContent/Frankenstein/3 Chapters/Chapter 1.md",
-    "TestContent/Frankenstein/1 Frontmatter/BEGIN.md",
-    "TestContent/Frankenstein/4 Backmatter/END.md",
-    "TestContent/Frankenstein/2 Letters/Letter 1.md",
-    "TestContent/Frankenstein/3 Chapters/Chapter 2.md"
+    "Example Manuscripts/Frankenstein/2 Letters/Letter 1.md",
+    "Documentation/Documentation.md",
+    "Documentation/Required Plugins.md",
+    "Documentation/To Do.md",
+    "Documentation/Unified.md",
+    "TestContent/Compile/Frankenstein.md",
+    "Example Manuscripts/FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md"
   ]
 }

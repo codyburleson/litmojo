@@ -21,13 +21,10 @@ import { DataviewApi, getAPI } from "obsidian-dataview";
 import markdownParser from 'remark-parse';
 import { unified } from 'unified';
 import remarkFrontmatter from 'remark-frontmatter'
-import {visit, SKIP} from 'unist-util-visit'
+import { visit, SKIP } from 'unist-util-visit'
 import remarkStringify from 'remark-stringify';
 import remark2rehype from 'remark-rehype';
-import remarkRehype from 'remark-rehype'
-import remarkParse from 'remark-parse'
 import rehypeStringify from 'rehype-stringify'
-
 
 // Remember to rename these classes and interfaces!
 
@@ -46,19 +43,18 @@ export default class LitMojoPlugin extends Plugin {
     settings: LitMojoPluginSettings;
 
     compilePath: string;
-    compileType: string = 'text/markdown';
 
     showCompileSettingsModal() {
         new CompileSettingsModal(this.app).open();
     }
 
     async onload() {
-        
+
         await this.loadSettings();
         console.log('settings loaded');
         this.dvapi = getAPI();
         console.log('dvapi: %o', this.dvapi);
-        
+
         // new Notice("Hello")
 
         // Dataview events that are trigerred (in case needed later)...
@@ -82,7 +78,7 @@ export default class LitMojoPlugin extends Plugin {
          * folder page with a litmojo compile config in the YAML frontmatter.
          */
         this.registerEvent(
-            
+
             this.app.workspace.on("file-menu", (menu, file) => {
 
                 if (file instanceof TFile) {
@@ -97,7 +93,7 @@ export default class LitMojoPlugin extends Plugin {
                     });
 
                 } else if (file instanceof TFolder) {
-                    
+
                     menu.addItem((item) => {
                         item
                             .setTitle("Compile")
@@ -107,7 +103,7 @@ export default class LitMojoPlugin extends Plugin {
                                 // Get folder note
                                 const folderNote: TAbstractFile = this.app.vault.getAbstractFileByPath(file.path + '/' + file.name + '.md');
 
-                                if(! this.validateAndLoadCompileSettings(folderNote)) {
+                                if (!this.validateAndLoadCompileSettings(folderNote)) {
                                     return;
                                 }
 
@@ -115,9 +111,9 @@ export default class LitMojoPlugin extends Plugin {
                                 // From the selected manuscript folder, pick out only the 
                                 // files that are actually markdown files and that have 
                                 // the litmojo.compile flag set to true.
-                                
-                                let filesToCompile = this.getFilesToCompile(file);                                
-                                
+
+                                let filesToCompile = this.getFilesToCompile(file);
+
                                 // SORT MANUSCRIPT PAGES =================================
                                 filesToCompile.sort((a, b) => {
                                     const cacheA = this.app.metadataCache.getFileCache(a);
@@ -130,18 +126,12 @@ export default class LitMojoPlugin extends Plugin {
 
                                 console.log('-- filesToCompile: %o', filesToCompile);
 
-                                let compiledContent : string = '';
+                                let compiledContent: string = '';
 
 
                                 for (let index = 0; index < filesToCompile.length; index++) {
                                     const file = filesToCompile[index];
-                                    
-                                //}
 
-                                // For each file:
-                                //   - Read the file (cached read)
-                                //filesToCompile.forEach((file) => {
-                                    
                                     await this.app.vault.cachedRead(file).then(async (content) => {
 
                                         // console.log(content);
@@ -149,7 +139,6 @@ export default class LitMojoPlugin extends Plugin {
                                         // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (AST)
                                         // More specifically: Markdown Abstract Syntax Tree (MDAST)
                                         const mdast = await unified()
-                                            //.use(remarkParse)
                                             .use(markdownParser)
                                             .use(remarkFrontmatter, ['yaml'])
                                             .parse(content);
@@ -161,12 +150,10 @@ export default class LitMojoPlugin extends Plugin {
                                             return [SKIP, index]
                                         })
 
-                                        // const transformer = unified().use(remark2rehype);
-
-                                        console.log('-- magic with: %s', file.name);
+                                        //console.log('-- magic with: %s', file.name);
                                         //console.dir(mdast);
 
-                                        if(this.compileType === 'text/markdown') {
+                                        if (this.compilePath.endsWith('.md')) {
                                             // CONVERT MDAST TO MARKDOWN
                                             const markdown = await unified()
                                                 .use(remarkStringify)
@@ -174,8 +161,7 @@ export default class LitMojoPlugin extends Plugin {
                                             //console.log(markdown);
                                             //compiledContent.push(markdown);
                                             compiledContent += markdown;
-                                           
-                                        } else if(this.compileType === 'text/html') {
+                                        } else if (this.compilePath.endsWith('.html')) {
                                             // CONVERT MDAST TO HTML
                                             const transformer = unified().use(remark2rehype);
                                             const hast = transformer.runSync(mdast);
@@ -183,113 +169,30 @@ export default class LitMojoPlugin extends Plugin {
                                             const compiler = unified().use(rehypeStringify);
                                             // @ts-ignore
                                             const html = compiler.stringify(hast);
-                                            // console.log(html);
+                                            //console.log(html);
                                             //compiledContent.push(html);
                                             compiledContent += html;
                                         } else {
-                                            new Notice('Compile type not supported: ' + this.compileType);
+                                            new Notice('Compile type not supported. Accepted file types in path are: .md and .html');
                                         }
 
                                     });
 
-                                //});
-                                
                                 }
 
                                 // console.log('compiledContent: %o', compiledContent);
 
-                                // if(this.compileType === 'text/markdown') {
-                                // } else if(this.compileType === 'text/html') {
-                                //     const newFile = this.app.vault.create(this.compilePath, compiledContent);
-                                // }
-                                // create(path: string, data: string, options?: DataWriteOptions): Promise<TFile>;
-
                                 // First, try to get the compiled manustcript file to see if it already exists
-
                                 const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compilePath);
-                                if(previouslyCompiledFile) {
+                                if (previouslyCompiledFile) {
+                                    // If it exists, delete it before we create a new one
                                     this.app.vault.delete(previouslyCompiledFile);
                                 }
                                 this.app.vault.create(this.compilePath, compiledContent).then((newFile) => {
-                                    new Notice('Compiled file created: ' + newFile.path);
+                                    new Notice('Manuscript compiled: ' + newFile.path);
                                 });
-                                                                
-                                /*
-                                this.dvapi.pages('\"' + file.path + '\"')
-                                    .sort(p => p.litmojo?.order, 'asc')
-                                    .map(page => {
-                                        // console.log('-- file.name: %s', page.file.name)
-                                        // get the markdown content
-                                        
-                                        const file = this.app.vault.getAbstractFileByPath(page.file.path);
-
-                                        //console.log('-- file: %o', file);
-                                        if(page.litmojo?.compile) {
-                                            
-                                            //console.log('-- compiling: %s', page.file.name);
-
-                                            // read obsidian markdown document contents
-                                            // @ts-ignore
-                                            this.app.vault.cachedRead(file).then(async (content) => {
-
-                                                // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (AST)
-                                                // More specifically: Markdown Abstract Syntax Tree (MDAST)
-                                                const mdast = await unified()
-                                                    //.use(remarkParse)
-                                                    .use(markdownParser)
-                                                    .use(remarkFrontmatter, ['yaml'])
-                                                    // .use(() => async (tree) => {
-                                                    //     // await console.dir(tree)
-                                                    //     return visit(tree, 'yaml', function (node, index, parent) {
-                                                    //         parent.children.splice(index, 1)
-                                                    //         // Do not traverse `node`, continue at the node *now* at `index`.
-                                                    //         return [SKIP, index]
-                                                    //     })
-                                                    // })
-                                                    .parse(content);
-
-                                                // REMOVE FRONTMATTER FROM AST
-                                                // See: How to remove a node
-                                                // https://unifiedjs.com/learn/recipe/remove-node/
-                                                visit(mdast, 'yaml', function (node, index, parent) {
-                                                     parent.children.splice(index, 1)
-                                                     // Do not traverse `node`, continue at the node *now* at `index`.
-                                                    return [SKIP, index]
-                                                })
-
-                                                console.log('-- magic with: %s', page.file.name);
-                                                console.dir(mdast);
-
-                                            });
-                                            
-                                        }
-
-
-                                    })
 
                                 // this.showCompileSettingsModal();
-
-                                */
-
-
-                                
-
-
-
-                                
-                                
-                                /*
-                                const files = this.app.vault.getMarkdownFiles();
-
-                                const filesToCompile = files.filter((file) => {
-                                    const cache = this.app.metadataCache.getFileCache(file);
-                                    return cache?.frontmatter?.litmojo?.compile;
-                                });
-
-                                console.log('-- filesToCompile: %o', filesToCompile);
-
-
-                                */
 
                             });
                     });
@@ -425,20 +328,21 @@ export default class LitMojoPlugin extends Plugin {
 
     getFilesToCompile(folder: TFolder): TFile[] {
         let filesToCompile: TFile[] = [];
-        Vault.recurseChildren(folder, (childFile) => {;
+        Vault.recurseChildren(folder, (childFile) => {
+            ;
             if (childFile instanceof TFile) {
-               // if(childFile.extension === 'md') {
-                    const childFileMeta = this.app.metadataCache.getFileCache(childFile);
-                    if (childFileMeta.frontmatter?.litmojo?.compile) {
-                        filesToCompile.push(childFile);   
-                    }
+                // if(childFile.extension === 'md') {
+                const childFileMeta = this.app.metadataCache.getFileCache(childFile);
+                if (childFileMeta.frontmatter?.litmojo?.compile) {
+                    filesToCompile.push(childFile);
+                }
                 //}
-            } 
+            }
         });
         return filesToCompile;
     }
 
-    validateAndLoadCompileSettings(folderNote: TAbstractFile) : boolean {
+    validateAndLoadCompileSettings(folderNote: TAbstractFile): boolean {
         if (!folderNote) {
             new Notice('Compile aborted. No folder note found.');
             return false;
@@ -446,16 +350,11 @@ export default class LitMojoPlugin extends Plugin {
             // Check if folder note has litmojo.path in frontmatter
             // If so, set it as the compilePath
             // If not, abort compile with prompt to user;
-            if(folderNote instanceof TFile) {
+            if (folderNote instanceof TFile) {
                 const folderNoteMeta = this.app.metadataCache.getFileCache(folderNote);
                 if (folderNoteMeta.frontmatter?.litmojo?.path) {
                     this.compilePath = folderNoteMeta.frontmatter.litmojo.path;
                     console.log('Got compile path %s', this.compilePath);
-                    // Type is not required (we default to markdown), but we 
-                    // set it globally so that it's quick and easy to get to
-                    if (folderNoteMeta.frontmatter?.litmojo?.type) {
-                        this.compileType = folderNoteMeta.frontmatter.litmojo.type;
-                    }
                     return true;
                 } else {
                     new Notice('Compile aborted: litmojo.path not found in folder note frontmatter.');

@@ -1,4 +1,47 @@
-**Welcome to the LitMojo project** - my totally open, totally transparent, community-centered mission to create a killer Obsidian plugin for writing and publishing.
+LitMojo is a plugin for writers with a vision to deliver a variety of features for writing and publishing. 
 
-## Vision
-Even the very best tools available for writers today are woefully inadequate (IMO). They say that "necessity is the mother of invention." Well, I'm tired of tying a bunch of poorly integrated applications and services together only to leave a plethora of gaps yet unfilled. For writing and publishing, I need something better - I need something more. I'm not waiting for someone else to get it right. I need what I need and I need it yesterday. [Obsidian](https://obsidian.md/) is my favorite app and where I do most of my daily thinking and writing. It has a pluggable architecture, so I think maybe I can use it as an integral part of the platform I need. We'll see how it goes.
+### Features
+
+We're just getting started, so we only offer one feature now:
+
+#### Longform Compiler
+
+The Longform Compiler feature allows you to compile a manuscript into markdown or HTML from multiple markdown files.
+
+## Getting Started
+
+### Step One - Configure Manuscript Compile Settings
+
+Create a folder note inside the folder containing your manuscript pages—a markdown file that must be named the same as the parent folder. This is the file where you will configure the compile settings for your manuscript.
+
+Tip: We recommend using AidenLx's Folder Note plugin for Obsidian to manage folder notes.
+
+In the folder note for your manuscript, you must create a frontmatter section with YAML that looks like this:
+
+```
+---
+litmojo:
+  path: TestContent/Compile/Frankenstein.md
+---
+```
+ 
+**path** - is where you define the file path for the compiled manuscript. You must manually create any folders in the specified path if they do not exist. The file extension determines the type of file that will be created. At this time, only `.md` for markdown and `.html` for HTML are supported. You can create a PDF from the compiled manuscript using Obsidian's native Export to PDF feature.
+
+### Step Two - Configure Individual Pages
+
+Each markdown document in your manuscript folder must have a frontmatter section that looks like the following:
+
+```
+---
+litmojo:
+  order: 5
+  compile: true
+---
+```
+
+- **order** - a number that specifies the order in which the document will be inserted in the compiled manuscript. We recommend using increments of 5 or 10 so that you you'll have a little elbow room to insert pages in between two others without having to modify the order of remaining pages.
+- **compile** - a boolean value (true|false) that specifies whether or not the given page should be included in the manuscript when compiled. 
+
+### Step Three - Compile
+
+Right-click on your manuscript folder and choose Compile. Your manuscript will be compiled into the file specified by the path you gave in the frontmatter of the manuscript's folder note.
