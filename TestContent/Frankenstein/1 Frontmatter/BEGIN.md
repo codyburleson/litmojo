@@ -1,7 +1,7 @@
 ---
 publish: false
 litmojo:
-  order: 5
+  order: 4
   compile: true
 ---
 

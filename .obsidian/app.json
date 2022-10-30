@@ -4,5 +4,6 @@
   "alwaysUpdateLinks": true,
   "newFileLocation": "current",
   "attachmentFolderPath": "./",
-  "livePreview": true
+  "livePreview": true,
+  "showUnsupportedFiles": true
 }

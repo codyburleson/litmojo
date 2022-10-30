@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Documentation/Unified.md",
+                "file": "Documentation/Documentation.md",
                 "mode": "source",
                 "source": false
               }
@@ -61,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 275
+    "width": 347.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/Unified.md",
+                "file": "Documentation/Documentation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Documentation/Unified.md"
+                "file": "Documentation/Documentation.md"
               }
             }
           }
@@ -107,15 +107,15 @@
   },
   "active": "e4ec4305616a62b6",
   "lastOpenFiles": [
-    "TestContent/Frankenstein/Chapter 23.md",
-    "TestContent/Frankenstein/Chapter 22.md",
-    "TestContent/Frankenstein/Chapter 21.md",
-    "TestContent/Frankenstein/Chapter 20.md",
-    "TestContent/Frankenstein/Letter 4.md",
-    "TestContent/Frankenstein/Letter 3.md",
-    "TestContent/Frankenstein/Letter 2.md",
-    "TestContent/Frankenstein/Letter 1.md",
-    "Documentation/Developer Log/2022-10-12.md",
-    "TestContent/Frankenstein/Chapter 1.md"
+    "TestContent/Compile/Frankenstein.md",
+    "TestContent/Frankenstein/Frankenstein.md",
+    "README.md",
+    "TestContent/FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md",
+    "TestContent/Frankenstein/4 Backmatter/FULL LICENSE.md",
+    "TestContent/Frankenstein/3 Chapters/Chapter 1.md",
+    "TestContent/Frankenstein/1 Frontmatter/BEGIN.md",
+    "TestContent/Frankenstein/4 Backmatter/END.md",
+    "TestContent/Frankenstein/2 Letters/Letter 1.md",
+    "TestContent/Frankenstein/3 Chapters/Chapter 2.md"
   ]
 }

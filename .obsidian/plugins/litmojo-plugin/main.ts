@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder } from 'obsidian';
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
 import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./collection-manager-view";
 
 import { CompileSettingsModal } from './compile-settings-modal'
@@ -18,14 +18,15 @@ import { DataviewApi, getAPI } from "obsidian-dataview";
 // import { getAPI, Values} from "obsidian-dataview";
 // const dv = getAPI();
 
-
 import markdownParser from 'remark-parse';
 import { unified } from 'unified';
-import remarkStringify from 'remark-stringify';
 import remarkFrontmatter from 'remark-frontmatter'
-import remarkParse from 'remark-parse'
 import {visit, SKIP} from 'unist-util-visit'
-
+import remarkStringify from 'remark-stringify';
+import remark2rehype from 'remark-rehype';
+import remarkRehype from 'remark-rehype'
+import remarkParse from 'remark-parse'
+import rehypeStringify from 'rehype-stringify'
 
 
 // Remember to rename these classes and interfaces!
@@ -43,6 +44,9 @@ export default class LitMojoPlugin extends Plugin {
     dvapi: DataviewApi;
 
     settings: LitMojoPluginSettings;
+
+    compilePath: string;
+    compileType: string = 'text/markdown';
 
     showCompileSettingsModal() {
         new CompileSettingsModal(this.app).open();
@@ -99,29 +103,118 @@ export default class LitMojoPlugin extends Plugin {
                             .setTitle("Compile")
                             .setIcon("wand")
                             .onClick(async () => {
-    
-                                // console.log('-- LitMojo.compile > file.path: %s',file.path);
 
-                                // The folder page will hold the global compile settings for the folder.
-                                const folderPage = this.dvapi.page(file.path + "/" + file.name);
-                                 
-                                // This is how we get at a frontmatter attribute..
-                                const field = folderPage.litmojo.test;
+                                // Get folder note
+                                const folderNote: TAbstractFile = this.app.vault.getAbstractFileByPath(file.path + '/' + file.name + '.md');
 
-                                console.log(`field: ${field}`);
+                                if(! this.validateAndLoadCompileSettings(folderNote)) {
+                                    return;
+                                }
+
+                                // GET FILES TO COMPILE =================================
+                                // From the selected manuscript folder, pick out only the 
+                                // files that are actually markdown files and that have 
+                                // the litmojo.compile flag set to true.
                                 
+                                let filesToCompile = this.getFilesToCompile(file);                                
+                                
+                                // SORT MANUSCRIPT PAGES =================================
+                                filesToCompile.sort((a, b) => {
+                                    const cacheA = this.app.metadataCache.getFileCache(a);
+                                    const cacheB = this.app.metadataCache.getFileCache(b);
+
+                                    const orderA = cacheA?.frontmatter?.litmojo?.order;
+                                    const orderB = cacheB?.frontmatter?.litmojo?.order;
+                                    return orderA - orderB;
+                                });
+
+                                console.log('-- filesToCompile: %o', filesToCompile);
+
+                                let compiledContent : string = '';
+
+
+                                for (let index = 0; index < filesToCompile.length; index++) {
+                                    const file = filesToCompile[index];
+                                    
+                                //}
+
+                                // For each file:
+                                //   - Read the file (cached read)
+                                //filesToCompile.forEach((file) => {
+                                    
+                                    await this.app.vault.cachedRead(file).then(async (content) => {
+
+                                        // console.log(content);
+
+                                        // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (AST)
+                                        // More specifically: Markdown Abstract Syntax Tree (MDAST)
+                                        const mdast = await unified()
+                                            //.use(remarkParse)
+                                            .use(markdownParser)
+                                            .use(remarkFrontmatter, ['yaml'])
+                                            .parse(content);
+
+                                        // REMOVE FRONTMATTER FROM MDAST
+                                        // Reference: [How to remove a node](https://unifiedjs.com/learn/recipe/remove-node/)
+                                        visit(mdast, 'yaml', function (node, index, parent) {
+                                            parent.children.splice(index, 1)
+                                            return [SKIP, index]
+                                        })
+
+                                        // const transformer = unified().use(remark2rehype);
+
+                                        console.log('-- magic with: %s', file.name);
+                                        //console.dir(mdast);
+
+                                        if(this.compileType === 'text/markdown') {
+                                            // CONVERT MDAST TO MARKDOWN
+                                            const markdown = await unified()
+                                                .use(remarkStringify)
+                                                .stringify(mdast);
+                                            //console.log(markdown);
+                                            //compiledContent.push(markdown);
+                                            compiledContent += markdown;
+                                           
+                                        } else if(this.compileType === 'text/html') {
+                                            // CONVERT MDAST TO HTML
+                                            const transformer = unified().use(remark2rehype);
+                                            const hast = transformer.runSync(mdast);
+                                            // console.log(JSON.stringify(hast, null, 2));
+                                            const compiler = unified().use(rehypeStringify);
+                                            // @ts-ignore
+                                            const html = compiler.stringify(hast);
+                                            // console.log(html);
+                                            //compiledContent.push(html);
+                                            compiledContent += html;
+                                        } else {
+                                            new Notice('Compile type not supported: ' + this.compileType);
+                                        }
+
+                                    });
+
+                                //});
+                                
+                                }
+
+                                // console.log('compiledContent: %o', compiledContent);
+
+                                // if(this.compileType === 'text/markdown') {
+                                // } else if(this.compileType === 'text/html') {
+                                //     const newFile = this.app.vault.create(this.compilePath, compiledContent);
+                                // }
+                                // create(path: string, data: string, options?: DataWriteOptions): Promise<TFile>;
+
+                                // First, try to get the compiled manustcript file to see if it already exists
+
+                                const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compilePath);
+                                if(previouslyCompiledFile) {
+                                    this.app.vault.delete(previouslyCompiledFile);
+                                }
+                                this.app.vault.create(this.compilePath, compiledContent).then((newFile) => {
+                                    new Notice('Compiled file created: ' + newFile.path);
+                                });
+                                                                
                                 /*
-                                import { getAPI, Values } from "obsidian-dataview";
-
-                                const field = getAPI(plugin.app)?.page('sample.md').field;
-                                if (!field) return;
-
-                                if (Values.isHtml(field)) // do something
-                                else if (Values.isLink(field)) // do something
-                                */          
-
-                                // get abstract TFile
-
                                 this.dvapi.pages('\"' + file.path + '\"')
                                     .sort(p => p.litmojo?.order, 'asc')
                                     .map(page => {
@@ -140,74 +233,64 @@ export default class LitMojoPlugin extends Plugin {
                                             this.app.vault.cachedRead(file).then(async (content) => {
 
                                                 // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (AST)
-                                                const tree = await unified()
+                                                // More specifically: Markdown Abstract Syntax Tree (MDAST)
+                                                const mdast = await unified()
                                                     //.use(remarkParse)
                                                     .use(markdownParser)
                                                     .use(remarkFrontmatter, ['yaml'])
+                                                    // .use(() => async (tree) => {
+                                                    //     // await console.dir(tree)
+                                                    //     return visit(tree, 'yaml', function (node, index, parent) {
+                                                    //         parent.children.splice(index, 1)
+                                                    //         // Do not traverse `node`, continue at the node *now* at `index`.
+                                                    //         return [SKIP, index]
+                                                    //     })
+                                                    // })
                                                     .parse(content);
 
-                                                    // REMOVE FRONTMATTER FROM AST
-                                                    // See: How to remove a node
-                                                    // https://unifiedjs.com/learn/recipe/remove-node/
-                                                    visit(tree, 'yaml', function (node, index, parent) {
-                                                        parent.children.splice(index, 1)
-                                                        // Do not traverse `node`, continue at the node *now* at `index`.
-                                                        return [SKIP, index]
-                                                    })
+                                                // REMOVE FRONTMATTER FROM AST
+                                                // See: How to remove a node
+                                                // https://unifiedjs.com/learn/recipe/remove-node/
+                                                visit(mdast, 'yaml', function (node, index, parent) {
+                                                     parent.children.splice(index, 1)
+                                                     // Do not traverse `node`, continue at the node *now* at `index`.
+                                                    return [SKIP, index]
+                                                })
 
                                                 console.log('-- magic with: %s', page.file.name);
-                                                console.dir(tree)
+                                                console.dir(mdast);
 
-                                                /*
-                                                const markdownFile = await unified()
-                                                    //.use(markdownParser)
-                                                    
-                                                    .use(remarkParse)
-                                                    .use(remarkStringify, {})
-                                                    .use(remarkFrontmatter, ['yaml'])
-                                                    .use(() => (tree) => {
-                                                        console.dir(tree)
-                                                    })
-                                                    .process(content);
-
-                                                console.log(String(markdownFile));
-                                                */
-        
                                             });
                                             
                                         }
-
-                                        
 
 
                                     })
 
                                 // this.showCompileSettingsModal();
 
-                                //for (let i = 0; i < pages.length; i++) {
-    
-                                    //let page = pages[i];
-    
-                                    //console.log('-- LitMojo.compile > dv page: %s', page.title);
-    
-                                    /*
-                                    if (page.litmojo) {
-                                        if (page.title) {
-                                            dv.el("strong", dv.fileLink(page.title));
-                                        } else {
-                                            dv.el("strong", dv.fileLink(page.file.name));
-                                        }
-                                        if (page.litmojo?.synopsis) {
-                                            dv.paragraph(page.litmojo.synopsis);
-                                        }
-                                        // Use this to look at the page object in full...
-                                        // dv.paragraph(page)
-                                        dv.paragraph("---")
-                                    }
-                                    */
-    
-                                //}
-    
+                                */
+
+
+                                
+
+
+
+                                
+                                
+                                /*
+                                const files = this.app.vault.getMarkdownFiles();
+
+                                const filesToCompile = files.filter((file) => {
+                                    const cache = this.app.metadataCache.getFileCache(file);
+                                    return cache?.frontmatter?.litmojo?.compile;
+                                });
+
+                                console.log('-- filesToCompile: %o', filesToCompile);
+
+
+                                */
+
                             });
                     });
 
@@ -339,6 +422,49 @@ export default class LitMojoPlugin extends Plugin {
             this.app.workspace.getLeavesOfType(VIEW_TYPE_COLLECTION_MANAGER)[0]
         );
     }
+
+    getFilesToCompile(folder: TFolder): TFile[] {
+        let filesToCompile: TFile[] = [];
+        Vault.recurseChildren(folder, (childFile) => {;
+            if (childFile instanceof TFile) {
+               // if(childFile.extension === 'md') {
+                    const childFileMeta = this.app.metadataCache.getFileCache(childFile);
+                    if (childFileMeta.frontmatter?.litmojo?.compile) {
+                        filesToCompile.push(childFile);   
+                    }
+                //}
+            } 
+        });
+        return filesToCompile;
+    }
+
+    validateAndLoadCompileSettings(folderNote: TAbstractFile) : boolean {
+        if (!folderNote) {
+            new Notice('Compile aborted. No folder note found.');
+            return false;
+        } else {
+            // Check if folder note has litmojo.path in frontmatter
+            // If so, set it as the compilePath
+            // If not, abort compile with prompt to user;
+            if(folderNote instanceof TFile) {
+                const folderNoteMeta = this.app.metadataCache.getFileCache(folderNote);
+                if (folderNoteMeta.frontmatter?.litmojo?.path) {
+                    this.compilePath = folderNoteMeta.frontmatter.litmojo.path;
+                    console.log('Got compile path %s', this.compilePath);
+                    // Type is not required (we default to markdown), but we 
+                    // set it globally so that it's quick and easy to get to
+                    if (folderNoteMeta.frontmatter?.litmojo?.type) {
+                        this.compileType = folderNoteMeta.frontmatter.litmojo.type;
+                    }
+                    return true;
+                } else {
+                    new Notice('Compile aborted: litmojo.path not found in folder note frontmatter.');
+                    return false;
+                }
+            }
+        }
+    }
+
 }
 
 class SampleSettingTab extends PluginSettingTab {

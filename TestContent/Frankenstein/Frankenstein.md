@@ -1,4 +1,5 @@
 ---
 litmojo:
-  test: mojo jojo pojo
+  path: TestContent/Compile/Frankenstein.html
+  type: text/html
 ---
