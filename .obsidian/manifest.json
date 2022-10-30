@@ -1,0 +1,10 @@
+{
+	"id": "litmojo",
+	"name": "LitMojo",
+	"version": "0.0.1",
+	"minAppVersion": "0.15.9",
+	"description": "Great tools for writing and publishing.",
+	"author": "Cody Burleson",
+	"authorUrl": "https://publish.obsidian.md/litmojo/LitMojo/README",
+	"isDesktopOnly": true
+}

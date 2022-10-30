@@ -1,6 +1,6 @@
 {
 	"name": "litmojo",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "An Obsidian plugin for writing and publishing.",
 	"main": "main.js",
 	"scripts": {
