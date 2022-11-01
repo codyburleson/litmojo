@@ -2,6 +2,8 @@ Great Article: https://pcarion.com/posts/markdown-unified/
 
 # Markdown parser with unified pipeline
 
+**Unified = parser + transformers + compiler**
+
 2020-06-23
 
 5 min read

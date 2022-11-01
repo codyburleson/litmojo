@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "972d3a462c7f591a",
+        "id": "faa8902e30001bcd",
         "type": "tabs",
         "children": [
           {
-            "id": "6e7a60e434fc1efd",
+            "id": "5902d197d9f5460e",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Documentation/Developer Documentation/Preparing a Release.md",
+                "file": "Developer Guide/Unified.md",
                 "mode": "source",
                 "source": false
               }
@@ -61,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 304.5
+    "width": 237.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/Developer Documentation/Preparing a Release.md",
+                "file": "Developer Guide/Unified.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Documentation/Developer Documentation/Preparing a Release.md"
+                "file": "Developer Guide/Unified.md"
               }
             }
           }
@@ -103,19 +103,19 @@
       }
     ],
     "direction": "horizontal",
-    "width": 268.5
+    "width": 392.5
   },
-  "active": "6e7a60e434fc1efd",
+  "active": "5902d197d9f5460e",
   "lastOpenFiles": [
+    "Compiled Manuscripts/BeaverCage.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/Beaver Cage.md",
     "Example Manuscripts/55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md",
-    "Documentation/Developer Documentation/To Do.md",
-    "README.md",
-    "Example Manuscripts/Frankenstein/Frankenstein.md",
-    "Documentation/attachments/Pasted image 20221010225322.png",
-    "Documentation/Documentation.md",
-    "Documentation/Recommended Plugins.md",
-    "Documentation/Developer Documentation/Unified.md",
-    "Documentation/Developer Documentation/Obsidian Icons.md",
-    "Compiled Manuscripts/About.md"
+    "Example Manuscripts/55 ⭐ Beaver Cage/BeaverCage_Manuscript.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.999 Beaver Cage -  Beaver Cage - Intro.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.150 Beaver Cage - Bird on Fire.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.140 Beaver Cage - Jesse Makes a Run.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.135 Beaver Cage - Ken Delivers the VC Suspect.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.130 Beaver Cage - Jesse is WIA.md",
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.120 Beaver Cage - DePope Tends to Sgt. Brackins.md"
   ]
 }

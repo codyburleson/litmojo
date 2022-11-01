@@ -4,3 +4,4 @@
 - When compile is finsihed successfully, add a modal with:
 	- A happy animated party confetti splash and
 	- Confirmation of the output path
+- Insert callouts (so you don't have to memorize the syntax)

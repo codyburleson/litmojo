@@ -18,31 +18,34 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Set
 // import { getAPI, Values} from "obsidian-dataview";
 // const dv = getAPI();
 
-import markdownParser from 'remark-parse';
 import { unified } from 'unified';
-import remarkFrontmatter from 'remark-frontmatter'
+import { remove } from 'unist-util-remove'
 import { visit, SKIP } from 'unist-util-visit'
+
+import markdownParser from 'remark-parse';
+import remarkFrontmatter from 'remark-frontmatter'
 import remarkStringify from 'remark-stringify';
 import remark2rehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify'
 
-// Remember to rename these classes and interfaces!
 
 interface LitMojoPluginSettings {
     mySetting: string;
+    debug: string;
 }
 
 const DEFAULT_SETTINGS: LitMojoPluginSettings = {
-    mySetting: 'default'
+    mySetting: 'default',
+    debug: 'false'
 }
 
 export default class LitMojoPlugin extends Plugin {
 
-    //dvapi: DataviewApi;
-
     settings: LitMojoPluginSettings;
+    
+    debug: boolean = false;
 
-    compilePath: string;
+    compileSettings: any;
 
     /*
     showCompileSettingsModal() {
@@ -53,6 +56,11 @@ export default class LitMojoPlugin extends Plugin {
     async onload() {
 
         await this.loadSettings();
+
+        if(this.settings.debug === 'true') {
+            this.debug = true;
+        }
+
         // console.log('settings loaded');
 
         // this.dvapi = getAPI();
@@ -105,68 +113,102 @@ export default class LitMojoPlugin extends Plugin {
                             .setIcon("wand")
                             .onClick(async () => {
 
-                                // Get folder note
+                                if(this.debug) {
+                                    console.debug('>> LitMojo > Compile > %o', file);
+                                }
+                        
+                                // ====================================================================================
+                                // LOAD COMPILE SETTINGS FROM FOLDER NOTE
+                                // ====================================================================================
+
                                 const folderNote: TAbstractFile = this.app.vault.getAbstractFileByPath(file.path + '/' + file.name + '.md');
 
                                 if (!this.validateAndLoadCompileSettings(folderNote)) {
                                     return;
                                 }
 
-                                // GET FILES TO COMPILE =================================
+                                if(this.debug) {
+                                    console.debug('-- LitMojo > Compile >compileSettings: %o', this.compileSettings);
+                                }
+
+                                // ====================================================================================
+                                // SET DEFAULTS FOR MISSING COMPILE SETTINGS
+                                // ====================================================================================
+
+                                let bulletSetting = (this.compileSettings.bullet) ? this.compileSettings.bullet : '-';                      
+                                
+                                let compiledContent: string = '';
+                                
+                                // ====================================================================================
+                                // GET FILES TO COMPILE
+                                // ====================================================================================
                                 // From the selected manuscript folder, pick out only the 
                                 // files that are actually markdown files and that have 
                                 // the litmojo.compile flag set to true.
 
                                 let filesToCompile = this.getFilesToCompile(file);
 
-                                // SORT MANUSCRIPT PAGES =================================
+                                // ====================================================================================
+                                // SORT MANUSCRIPT PAGES
+                                // ====================================================================================
                                 filesToCompile.sort((a, b) => {
                                     const cacheA = this.app.metadataCache.getFileCache(a);
                                     const cacheB = this.app.metadataCache.getFileCache(b);
-
                                     const orderA = cacheA?.frontmatter?.litmojo?.order;
                                     const orderB = cacheB?.frontmatter?.litmojo?.order;
                                     return orderA - orderB;
                                 });
 
-                                //console.log('-- filesToCompile: %o', filesToCompile);
+                                if(this.debug) {
+                                    console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
+                                }
 
-                                let compiledContent: string = '';
-
-
+                                // ====================================================================================
+                                // FOR EACH FILE TO COMPILE...
+                                // ====================================================================================
                                 for (let index = 0; index < filesToCompile.length; index++) {
+                                    
                                     const file = filesToCompile[index];
 
                                     await this.app.vault.cachedRead(file).then(async (content) => {
 
-                                        // console.log(content);
+                                        // ====================================================================================
+                                        // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (MDAST)
+                                        // ====================================================================================
 
-                                        // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (AST)
-                                        // More specifically: Markdown Abstract Syntax Tree (MDAST)
                                         const mdast = await unified()
                                             .use(markdownParser)
                                             .use(remarkFrontmatter, ['yaml'])
                                             .parse(content);
-
+                                        
+                                        // ====================================================================================
                                         // REMOVE FRONTMATTER FROM MDAST
+                                        // ====================================================================================
                                         // Reference: [How to remove a node](https://unifiedjs.com/learn/recipe/remove-node/)
+                                        // ------------------------------------------------------------------------------------
+
+                                        remove(mdast, 'yaml')
+
+                                        /*
+                                        // This vistor version of removing the frontmatter is working, but not as simple 
+                                        // as the remove() function above. Keeping this here for reference.
                                         visit(mdast, 'yaml', function (node, index, parent) {
                                             parent.children.splice(index, 1)
                                             return [SKIP, index]
                                         })
+                                        */
 
-                                        //console.log('-- magic with: %s', file.name);
-                                        //console.dir(mdast);
+                                        console.dir(mdast);
 
-                                        if (this.compilePath.endsWith('.md')) {
+                                        if (this.compileSettings.path.endsWith('.md')) {
                                             // CONVERT MDAST TO MARKDOWN
                                             const markdown = await unified()
-                                                .use(remarkStringify)
+                                                .use(remarkStringify, {bullet: bulletSetting})
                                                 .stringify(mdast);
                                             //console.log(markdown);
-                                            //compiledContent.push(markdown);
+
                                             compiledContent += markdown;
-                                        } else if (this.compilePath.endsWith('.html')) {
+                                        } else if (this.compileSettings.path.endsWith('.html')) {
                                             // CONVERT MDAST TO HTML
                                             const transformer = unified().use(remark2rehype);
                                             const hast = transformer.runSync(mdast);
@@ -188,13 +230,13 @@ export default class LitMojoPlugin extends Plugin {
                                 // console.log('compiledContent: %o', compiledContent);
 
                                 // First, try to get the compiled manustcript file to see if it already exists
-                                const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compilePath);
+                                const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compileSettings.path);
                                 if (previouslyCompiledFile) {
                                     // If it exists, delete it before we create a new one
                                     this.app.vault.delete(previouslyCompiledFile);
                                 }
 
-                                if(this.compilePath.endsWith('.html')){
+                                if(this.compileSettings.path.endsWith('.html')){
                                     compiledContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,7 +251,7 @@ export default class LitMojoPlugin extends Plugin {
 </html>`
                                 }
 
-                                this.app.vault.create(this.compilePath, compiledContent).then((newFile) => {
+                                this.app.vault.create(this.compileSettings.path, compiledContent).then((newFile) => {
                                     new Notice('Manuscript compiled to: ' + newFile.path);
                                 });
 
@@ -382,8 +424,9 @@ export default class LitMojoPlugin extends Plugin {
             if (folderNote instanceof TFile) {
                 const folderNoteMeta = this.app.metadataCache.getFileCache(folderNote);
                 if (folderNoteMeta.frontmatter?.litmojo?.path) {
-                    this.compilePath = folderNoteMeta.frontmatter.litmojo.path;
-                    console.log('Got compile path %s', this.compilePath);
+                    this.compileSettings = folderNoteMeta.frontmatter.litmojo;
+                    this.compileSettings.path = folderNoteMeta.frontmatter.litmojo.path;                    
+                    console.log('Got compile path %s', this.compileSettings.path);
                     return true;
                 } else {
                     new Notice('Compile aborted: litmojo.path not found in folder note frontmatter.');
@@ -420,6 +463,23 @@ class SampleSettingTab extends PluginSettingTab {
                 .onChange(async (value) => {
                     console.log('Secret: ' + value);
                     this.plugin.settings.mySetting = value;
+                    await this.plugin.saveSettings();
+                }));
+        
+        new Setting(containerEl)
+            .setName('Debug')
+            .setDesc('true | false to log debug messages')
+            .addText(text => text
+                .setPlaceholder('false')
+                .setValue(this.plugin.settings.debug)
+                .onChange(async (value) => {
+                    console.log('Debug: ' + value);
+                    this.plugin.settings.debug = value;
+                    if(this.plugin.settings.debug === 'true') {
+                        this.plugin.debug = true;
+                    } else {
+                        this.plugin.debug = false;
+                    }
                     await this.plugin.saveSettings();
                 }));
     }

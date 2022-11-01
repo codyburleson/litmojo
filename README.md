@@ -29,6 +29,8 @@ litmojo:
  
 **path** - is where you define the file path for the compiled manuscript. You must manually create any folders in the specified path if they do not exist. The file extension determines the type of file that will be created. At this time, only `.md` for markdown and `.html` for HTML are supported. You can create a PDF from the compiled manuscript using Obsidian's native Export to PDF feature.
 
+See [[Manuscript Compiler Settings]] for more.
+
 ### Step Two - Configure Individual Pages
 
 Each markdown document in your manuscript folder must have a frontmatter section that looks like the following:
