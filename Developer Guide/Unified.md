@@ -4,9 +4,45 @@ Great Article: https://pcarion.com/posts/markdown-unified/
 
 **Unified = parser + transformers + compiler**
 
-2020-06-23
+[unified](https://unifiedjs.com/explore/package/unified/) itself is a rather small module that acts as an interface to unify the handling of different content formats. Around a certain format, there sits an ecosystem, such as [remark](https://unifiedjs.com/explore/project/remarkjs/remark/) for Markdown. Several ecosystems exist for [unified](https://unifiedjs.com/explore/package/unified/). Together with other tools and specifications, they form the [unified](https://unifiedjs.com/explore/package/unified/) collective.
 
-5 min read
+-   [remark](https://unifiedjs.com/explore/project/remarkjs/remark/) — Markdown
+-   [rehype](https://unifiedjs.com/explore/project/rehypejs/rehype/) — HTML
+-   [retext](https://unifiedjs.com/explore/project/retextjs/retext/) — Natural language
+-   [redot](https://unifiedjs.com/explore/project/redotjs/redot/) — Graphviz
+
+The specifications for syntax trees:
+
+-   [unist](https://github.com/syntax-tree/unist) — Universal Syntax Tree
+-   [mdast](https://github.com/syntax-tree/mdast) — Markdown Abstract Syntax Tree format
+-   [hast](https://github.com/syntax-tree/hast) — HTML Abstract Syntax Tree format
+-   [xast](https://github.com/syntax-tree/xast) — XML Abstract Syntax Tree format
+-   [esast](https://github.com/syntax-tree/esast) — ECMAScript Abstract Syntax Tree format
+-   [nlcst](https://github.com/syntax-tree/nlcst) — Natural Language Concrete Syntax Tree format
+
+Other building blocks:
+
+-   [syntax-tree](https://github.com/syntax-tree) — Low-level utilities for building plugins
+-   [vfile](https://unifiedjs.com/explore/package/vfile/) — Virtual file format for text processing
+-   [MDX](https://unifiedjs.com/explore/project/mdx-js/mdx/) — Markdown and JSX
+
+These processors, specifications, and tools come together in a **three part act**. The process of a processor:
+
+1.  **Parse**: Whether your input is Markdown, HTML, or prose — it needs to be parsed to a workable format. Such a format is called a syntax tree. The specifications (for example [mdast](https://github.com/syntax-tree/mdast)) define how such a syntax tree looks. The processors (such as [remark](https://unifiedjs.com/explore/project/remarkjs/remark/) for [mdast](https://github.com/syntax-tree/mdast)) are responsible for creating them.
+2.  **Transform**: This is where the magic happens. Users compose plugins and the order they run in. Plugins plug into this phase and transform and inspect the format they get.
+3.  **Stringify**: The final step is to take the (adjusted) format and stringify it to Markdown, HTML, or prose (which could be different from the input format!)
+
+The following plugins bridge formats:
+
+-   [`remark-rehype`](https://unifiedjs.com/explore/package/remark-rehype/) — Markdown to HTML
+-   [`rehype-remark`](https://unifiedjs.com/explore/package/rehype-remark/) — HTML to Markdown
+-   [`remark-retext`](https://unifiedjs.com/explore/package/remark-retext/) — Markdown to prose
+-   [`rehype-retext`](https://unifiedjs.com/explore/package/rehype-retext/) — HTML to prose
+
+---
+
+https://unifiedjs.com/explore/package/remark-textr/
+hast-util-find-and-replace
 
 The markdown format is a _natural_ format to store structured content for a content management system:
 

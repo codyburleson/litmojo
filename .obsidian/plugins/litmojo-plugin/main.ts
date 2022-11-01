@@ -22,11 +22,13 @@ import { unified } from 'unified';
 import { remove } from 'unist-util-remove'
 import { visit, SKIP } from 'unist-util-visit'
 
-import markdownParser from 'remark-parse';
+import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkStringify from 'remark-stringify';
-import remark2rehype from 'remark-rehype';
+import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify'
+import rehypeDocument from 'rehype-document'
+import {toHast} from 'mdast-util-to-hast'
 
 
 interface LitMojoPluginSettings {
@@ -163,6 +165,12 @@ export default class LitMojoPlugin extends Plugin {
                                     console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
                                 }
 
+
+                                // As we loop, we'll parse all markdown files into mdast and then concatenate the child 
+                                // nodes into a single array. We'll then use that array to create a new mdast and then
+                                // convert that to a markdown string, HTML string, etc.
+                                let mdastManuscript:any = {};
+
                                 // ====================================================================================
                                 // FOR EACH FILE TO COMPILE...
                                 // ====================================================================================
@@ -177,55 +185,63 @@ export default class LitMojoPlugin extends Plugin {
                                         // ====================================================================================
 
                                         const mdast = await unified()
-                                            .use(markdownParser)
+                                            .use(remarkParse) // remark-parse
                                             .use(remarkFrontmatter, ['yaml'])
+                                            //.use(() => (tree) => remove(tree, 'yaml')) // remove yml frontmatter
                                             .parse(content);
+                                            //console.log('mdast:%o',mdast.children)
                                         
                                         // ====================================================================================
                                         // REMOVE FRONTMATTER FROM MDAST
                                         // ====================================================================================
-                                        // Reference: [How to remove a node](https://unifiedjs.com/learn/recipe/remove-node/)
-                                        // ------------------------------------------------------------------------------------
 
                                         remove(mdast, 'yaml')
 
-                                        /*
-                                        // This vistor version of removing the frontmatter is working, but not as simple 
-                                        // as the remove() function above. Keeping this here for reference.
-                                        visit(mdast, 'yaml', function (node, index, parent) {
-                                            parent.children.splice(index, 1)
-                                            return [SKIP, index]
-                                        })
-                                        */
-
-                                        console.dir(mdast);
-
-                                        if (this.compileSettings.path.endsWith('.md')) {
-                                            // CONVERT MDAST TO MARKDOWN
-                                            const markdown = await unified()
-                                                .use(remarkStringify, {bullet: bulletSetting})
-                                                .stringify(mdast);
-                                            //console.log(markdown);
-
-                                            compiledContent += markdown;
-                                        } else if (this.compileSettings.path.endsWith('.html')) {
-                                            // CONVERT MDAST TO HTML
-                                            const transformer = unified().use(remark2rehype);
-                                            const hast = transformer.runSync(mdast);
-                                            // console.log(JSON.stringify(hast, null, 2));
-                                            const compiler = unified().use(rehypeStringify);
-                                            // @ts-ignore
-                                            const html = compiler.stringify(hast);
-                                            //console.log(html);
-                                            //compiledContent.push(html);
-                                            compiledContent += html;
+                                        // ====================================================================================
+                                        // CONCATENATE MDAST TREES OR SET INITIAL TREE
+                                        // ====================================================================================
+                                        if(mdastManuscript.children) {
+                                            mdastManuscript.children = mdastManuscript.children.concat(mdast.children);
                                         } else {
-                                            new Notice('Compile type not supported. Accepted file types in path are: .md and .html');
+                                            mdastManuscript = mdast;
                                         }
+                                    
+                                        // } else if (this.compileSettings.path.endsWith('.html')) {
+                                            
+                                        //     // CONVERT MDAST TO HTML
+                                           
+                                        //     const transformer = unified().use(remarkRehype); // remark-rehype
+
+                                        //     const hast = transformer.runSync(mdast);
+
+                                        //     const compiler = unified().use(rehypeStringify);
+
+                                        //     // @ts-ignore
+                                        //     const html = compiler.stringify(hast);
+
+                                        //     compiledContent += html;
+                                            
+                                        //     /*
+                                        //     const htmlFile = await unified()
+                                        //         .use(remarkParse) // Parse markdown to MDAST
+                                        //         .use(remarkFrontmatter, ['yaml'])
+                                        //         //.use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter
+                                        //         .use(remarkRehype) // Convert MDAST to HAST
+                                        //         .use(rehypeDocument, {title: 'Hello World!'}) // Wrap HAST in HTML document
+                                        //         .use(rehypeStringify) // Convert HAST to HTML
+                                        //         .process(content);
+                                        //         compiledContent = String(htmlFile);
+                                        //         */
+                                                
+                                        // } else {
+                                        //     new Notice('Compile type not supported. Accepted file types in path are: .md and .html');
+                                        // }
 
                                     });
 
                                 }
+
+                                console.dir(mdastManuscript);
 
                                 // console.log('compiledContent: %o', compiledContent);
 
@@ -236,19 +252,30 @@ export default class LitMojoPlugin extends Plugin {
                                     this.app.vault.delete(previouslyCompiledFile);
                                 }
 
-                                if(this.compileSettings.path.endsWith('.html')){
-                                    compiledContent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    ${compiledContent}
-</body>
-</html>`
+                                if (this.compileSettings.path.endsWith('.md')) {
+                                    // CONVERT MDAST TO MARKDOWN
+                                    const markdown = await unified()
+                                        .use(remarkStringify, {bullet: bulletSetting})
+                                        .stringify(mdastManuscript);
+                                    compiledContent += markdown;
+                                }
+                                if(this.compileSettings.path.endsWith('.html')) {
+                                    // CONVERT MDAST TO MARKDOWN
+                                    const markdown = await unified()
+                                        .use(remarkStringify, {bullet: bulletSetting})
+                                        .stringify(mdastManuscript);
+                                    // ABOVE IT REDUNTANT TO ABOVE ABOVE
+                                    // Also, do I need to concvert MDAST to String and then Parse it yet again?
+                                    // Certainly there's a way to just use the MDAST I've already got.
+                                    const htmlFile = await unified()
+                                        .use(remarkParse) // Parse markdown to MDAST
+                                        .use(remarkFrontmatter, ['yaml'])
+                                        .use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter
+                                        .use(remarkRehype) // Convert MDAST to HAST
+                                        .use(rehypeDocument, {title: 'Hello World!'}) // Wrap HAST in HTML document
+                                        .use(rehypeStringify) // Convert HAST to HTML
+                                        .process(markdown); // or .process(content);
+                                        compiledContent = String(htmlFile);            
                                 }
 
                                 this.app.vault.create(this.compileSettings.path, compiledContent).then((newFile) => {

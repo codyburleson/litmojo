@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "faa8902e30001bcd",
+        "id": "92d3d0e550d8f759",
         "type": "tabs",
         "children": [
           {
-            "id": "5902d197d9f5460e",
+            "id": "b33053bd6c1042d7",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Developer Guide/Unified.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -77,7 +73,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Developer Guide/Unified.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,9 +88,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Developer Guide/Unified.md"
-              }
+              "state": {}
             }
           }
         ],
@@ -105,17 +98,17 @@
     "direction": "horizontal",
     "width": 392.5
   },
-  "active": "5902d197d9f5460e",
+  "active": "b33053bd6c1042d7",
   "lastOpenFiles": [
+    "Compiled Manuscripts/Frankenstein.md",
+    "Example Manuscripts/Frankenstein/4 Backmatter/END.md",
+    "Example Manuscripts/Frankenstein/4 Backmatter/FULL LICENSE.md",
+    "Example Manuscripts/Frankenstein/3 Chapters/Chapter 24.md",
+    "Example Manuscripts/Frankenstein/Frankenstein.md",
+    "Developer Guide/Unified.md",
+    "Example Manuscripts/Frankenstein/1 Frontmatter/BEGIN.md",
     "Compiled Manuscripts/BeaverCage.md",
     "Example Manuscripts/55 ⭐ Beaver Cage/Beaver Cage.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/BeaverCage_Manuscript.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.999 Beaver Cage -  Beaver Cage - Intro.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.150 Beaver Cage - Bird on Fire.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.140 Beaver Cage - Jesse Makes a Run.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.135 Beaver Cage - Ken Delivers the VC Suspect.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.130 Beaver Cage - Jesse is WIA.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.120 Beaver Cage - DePope Tends to Sgt. Brackins.md"
+    "Example Manuscripts/55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md"
   ]
 }
