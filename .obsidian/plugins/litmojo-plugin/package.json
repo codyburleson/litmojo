@@ -1,6 +1,6 @@
 {
 	"name": "litmojo",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "An Obsidian plugin for writing and publishing.",
 	"main": "main.js",
 	"scripts": {
@@ -30,6 +30,7 @@
 		"remark-parse": "^10.0.1",
 		"remark-rehype": "^10.1.0",
 		"remark-stringify": "^10.0.2",
+		"remark-wiki-link": "^1.0.4",
 		"unified": "^10.1.2",
 		"unist-util-visit": "^4.1.1"
 	}

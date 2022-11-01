@@ -28,7 +28,10 @@ import remarkStringify from 'remark-stringify';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify'
 import rehypeDocument from 'rehype-document'
-import {toHast} from 'mdast-util-to-hast'
+import {toHast} from 'mdast-util-to-hast';
+//@ts-expect-error remark-wiki-link does not have declaration file
+import remarkWikiLink from 'remark-wiki-link'
+
 
 
 interface LitMojoPluginSettings {
@@ -130,7 +133,7 @@ export default class LitMojoPlugin extends Plugin {
                                 }
 
                                 if(this.debug) {
-                                    console.debug('-- LitMojo > Compile >compileSettings: %o', this.compileSettings);
+                                    console.debug('-- LitMojo > Compile > compileSettings: %o', this.compileSettings);
                                 }
 
                                 // ====================================================================================
@@ -180,13 +183,15 @@ export default class LitMojoPlugin extends Plugin {
                                     await this.app.vault.cachedRead(file).then(async (content) => {
 
                                         // ====================================================================================
-                                        // PARSE MARKDOWN INTO ABSTRACT SYNTAX TREE (MDAST)
+                                        // PARSE MARKDOWN DOCUMENT INTO ABSTRACT SYNTAX TREE (MDAST)
                                         // ====================================================================================
 
                                         const mdast = await unified()
                                             .use(remarkParse) // remark-parse
                                             .use(remarkFrontmatter, ['yaml'])
+                                            .use(remarkWikiLink, { aliasDivider: '|' })
                                             .parse(content);
+          
                                         
                                         // ====================================================================================
                                         // REMOVE FRONTMATTER FROM MDAST
@@ -207,7 +212,7 @@ export default class LitMojoPlugin extends Plugin {
 
                                 } // END FOR EACH FILE TO COMPILE
 
-                                //console.dir(mdastManuscript);
+                                console.dir(mdastManuscript);
 
                                 // ====================================================================================
                                 // DELETE EXISTING COMPILED MANUSCRIPT (if it exists)
@@ -225,6 +230,7 @@ export default class LitMojoPlugin extends Plugin {
                                 if (this.compileSettings.path.endsWith('.md')) {
                                     // CONVERT MDAST TO MARKDOWN
                                     const markdown = await unified()
+                                        .use(remarkWikiLink, { aliasDivider: '|' })
                                         .use(remarkStringify, {bullet: bulletSetting})
                                         .stringify(mdastManuscript);
                                     compiledContent += markdown;
@@ -243,15 +249,22 @@ export default class LitMojoPlugin extends Plugin {
 
                                     // CONVERT MDAST TO MARKDOWN
                                     const markdown = await unified()
+                                        .use(remarkWikiLink, { aliasDivider: '|' })
                                         .use(remarkStringify, {bullet: bulletSetting})
                                         .stringify(mdastManuscript);
+
                                     // ABOVE IT REDUNTANT TO ABOVE ABOVE
                                     // Also, do I need to concvert MDAST to String and then Parse it yet again?
                                     // Certainly there's a way to just use the MDAST I've already got.
                                     const htmlFile = await unified()
                                         .use(remarkParse) // Parse markdown to MDAST
+                                        // .use(remarkWikiLink, { 
+                                        //     aliasDivider: '|', 
+                                        //     hrefTemplate: (permalink:string) => `${permalink}`,
+                                        //     pageResolver: (pageName:string) => [pageName.replace(/ /g, '-').toLowerCase()]
+                                        //  })
                                         .use(remarkFrontmatter, ['yaml'])
-                                        .use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter
+                                        .use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter // is this needed?
                                         .use(remarkRehype) // Convert MDAST to HAST
                                         .use(rehypeDocument, {title: titleSetting}) // Wrap HAST in HTML document
                                         .use(rehypeStringify) // Convert HAST to HTML
@@ -436,9 +449,7 @@ export default class LitMojoPlugin extends Plugin {
             if (folderNote instanceof TFile) {
                 const folderNoteMeta = this.app.metadataCache.getFileCache(folderNote);
                 if (folderNoteMeta.frontmatter?.litmojo?.path) {
-                    this.compileSettings = folderNoteMeta.frontmatter.litmojo;
-                    this.compileSettings.path = folderNoteMeta.frontmatter.litmojo.path;                    
-                    console.log('Got compile path %s', this.compileSettings.path);
+                    this.compileSettings = folderNoteMeta.frontmatter.litmojo;                    
                     return true;
                 } else {
                     new Notice('Compile aborted: litmojo.path not found in folder note frontmatter.');
