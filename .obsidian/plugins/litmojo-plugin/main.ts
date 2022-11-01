@@ -165,7 +165,6 @@ export default class LitMojoPlugin extends Plugin {
                                     console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
                                 }
 
-
                                 // As we loop, we'll parse all markdown files into mdast and then concatenate the child 
                                 // nodes into a single array. We'll then use that array to create a new mdast and then
                                 // convert that to a markdown string, HTML string, etc.
@@ -187,9 +186,7 @@ export default class LitMojoPlugin extends Plugin {
                                         const mdast = await unified()
                                             .use(remarkParse) // remark-parse
                                             .use(remarkFrontmatter, ['yaml'])
-                                            //.use(() => (tree) => remove(tree, 'yaml')) // remove yml frontmatter
                                             .parse(content);
-                                            //console.log('mdast:%o',mdast.children)
                                         
                                         // ====================================================================================
                                         // REMOVE FRONTMATTER FROM MDAST
@@ -206,45 +203,15 @@ export default class LitMojoPlugin extends Plugin {
                                             mdastManuscript = mdast;
                                         }
                                     
-                                        // } else if (this.compileSettings.path.endsWith('.html')) {
-                                            
-                                        //     // CONVERT MDAST TO HTML
-                                           
-                                        //     const transformer = unified().use(remarkRehype); // remark-rehype
-
-                                        //     const hast = transformer.runSync(mdast);
-
-                                        //     const compiler = unified().use(rehypeStringify);
-
-                                        //     // @ts-ignore
-                                        //     const html = compiler.stringify(hast);
-
-                                        //     compiledContent += html;
-                                            
-                                        //     /*
-                                        //     const htmlFile = await unified()
-                                        //         .use(remarkParse) // Parse markdown to MDAST
-                                        //         .use(remarkFrontmatter, ['yaml'])
-                                        //         //.use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter
-                                        //         .use(remarkRehype) // Convert MDAST to HAST
-                                        //         .use(rehypeDocument, {title: 'Hello World!'}) // Wrap HAST in HTML document
-                                        //         .use(rehypeStringify) // Convert HAST to HTML
-                                        //         .process(content);
-                                        //         compiledContent = String(htmlFile);
-                                        //         */
-                                                
-                                        // } else {
-                                        //     new Notice('Compile type not supported. Accepted file types in path are: .md and .html');
-                                        // }
-
                                     });
 
-                                }
+                                } // END FOR EACH FILE TO COMPILE
 
-                                console.dir(mdastManuscript);
+                                //console.dir(mdastManuscript);
 
-                                // console.log('compiledContent: %o', compiledContent);
-
+                                // ====================================================================================
+                                // DELETE EXISTING COMPILED MANUSCRIPT (if it exists)
+                                // ====================================================================================
                                 // First, try to get the compiled manustcript file to see if it already exists
                                 const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compileSettings.path);
                                 if (previouslyCompiledFile) {
@@ -252,6 +219,9 @@ export default class LitMojoPlugin extends Plugin {
                                     this.app.vault.delete(previouslyCompiledFile);
                                 }
 
+                                // ====================================================================================
+                                // IF MARKDOWN, STRINGIFY MARKDOWN
+                                // ====================================================================================
                                 if (this.compileSettings.path.endsWith('.md')) {
                                     // CONVERT MDAST TO MARKDOWN
                                     const markdown = await unified()
@@ -259,7 +229,18 @@ export default class LitMojoPlugin extends Plugin {
                                         .stringify(mdastManuscript);
                                     compiledContent += markdown;
                                 }
+
+                                // ====================================================================================
+                                // IF HTML STRINGIFY HTML
+                                // ====================================================================================
                                 if(this.compileSettings.path.endsWith('.html')) {
+                                    
+                                    // For title, default to file name, but allow for override in frontmatter
+                                    let titleSetting = file.name;
+                                    if(this.compileSettings.title) {
+                                        titleSetting = this.compileSettings.title;
+                                    }
+
                                     // CONVERT MDAST TO MARKDOWN
                                     const markdown = await unified()
                                         .use(remarkStringify, {bullet: bulletSetting})
@@ -272,11 +253,15 @@ export default class LitMojoPlugin extends Plugin {
                                         .use(remarkFrontmatter, ['yaml'])
                                         .use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter
                                         .use(remarkRehype) // Convert MDAST to HAST
-                                        .use(rehypeDocument, {title: 'Hello World!'}) // Wrap HAST in HTML document
+                                        .use(rehypeDocument, {title: titleSetting}) // Wrap HAST in HTML document
                                         .use(rehypeStringify) // Convert HAST to HTML
                                         .process(markdown); // or .process(content);
                                         compiledContent = String(htmlFile);            
                                 }
+
+                                // ====================================================================================
+                                // WRITE COMPILED MANUSCRIPT AND NOTIFY SUCCESS
+                                // ====================================================================================
 
                                 this.app.vault.create(this.compileSettings.path, compiledContent).then((newFile) => {
                                     new Notice('Manuscript compiled to: ' + newFile.path);
