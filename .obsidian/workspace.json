@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Developer Guide/Preparing a Release.md",
+                "file": "Example Manuscripts/Frankenstein/Frankenstein.md",
                 "mode": "source",
                 "source": false
               }
@@ -77,6 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Example Manuscripts/Frankenstein/Frankenstein.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -92,7 +93,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Example Manuscripts/Frankenstein/Frankenstein.md"
+              }
             }
           }
         ],
@@ -102,17 +105,17 @@
     "direction": "horizontal",
     "width": 301.5
   },
-  "active": "ddb50cf3f1c9ee31",
+  "active": "94f474eee5ba1489",
   "lastOpenFiles": [
+    "User Guide/Manuscript Compiler Settings.md",
+    "README.md",
+    "Example Manuscripts/Frankenstein/Frankenstein.md",
+    "Compiled Manuscripts/Frankenstein.md",
+    "Example Manuscripts/FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md",
     "Developer Guide/Preparing a Release.md",
     "Compiled Manuscripts/BeaverCage.md",
     "Example Manuscripts/55 ⭐ Beaver Cage/55.10 Beaver Cage - Introduction.md",
     "Example Manuscripts/55 ⭐ Beaver Cage/55.03 Beaver Cage - Frontmatter.md",
-    "README.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.30 Beaver Cage - Red Beach.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md",
-    "Developer Guide/Unified.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.20 Beaver Cage - A Dark Prelude.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.05 Beaver Cage - Outline and Notes.md"
+    "Example Manuscripts/55 ⭐ Beaver Cage/55.30 Beaver Cage - Red Beach.md"
   ]
 }

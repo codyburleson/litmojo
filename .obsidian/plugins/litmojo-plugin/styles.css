@@ -1,5 +1,23 @@
 /* Sets all the text color to red! */
+
+/*
 body {
-    /* color: red; */
+    color: red;
+}
+*/
+
+#compile-settings-modal > #contentPanel {
+    display: flex;
+    flex-direction: row;
 }
 
+.flex-left {
+    width: 30%;
+    /*height: 100vh;*/
+    border:1px solid #CCC;
+}
+
+.flex-right {
+    width: 70%;
+    border:1px solid blue;
+}
