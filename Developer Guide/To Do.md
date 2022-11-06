@@ -5,3 +5,4 @@
 	- A happy animated party confetti splash and
 	- Confirmation of the output path
 - Insert callouts (so you don't have to memorize the syntax)
+- Drag and drop hover color should differ dpending on light or dark theme.

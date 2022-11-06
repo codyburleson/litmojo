@@ -5,7 +5,7 @@ export class CompileSettingsModal extends Modal {
 
   manuscriptFolder: TFolder;
   filesToCompile: TFile[] = [];
-  
+
   compileSettings: CompileSettings;
   onCompile: (filesToCompile: TFile[]) => void;
 
@@ -15,6 +15,8 @@ export class CompileSettingsModal extends Modal {
     this.compileSettings = compileSettings;
     this.onCompile = onCompile;
   }
+
+
 
   onOpen() {
 
@@ -52,21 +54,20 @@ export class CompileSettingsModal extends Modal {
     const settingsSubtitleEl = contentEl.createEl("h2");
     settingsSubtitleEl.setText("Manuscript Settings");
 
-    new Setting(contentEl).addText((text) => 
+    new Setting(contentEl).addText((text) =>
       text.setValue(this.compileSettings.path).onChange((value) => {
         console.log(value);
-      })).setName("Path");
+      })).setName("Path").setDesc("The path to the manuscript output file, including the complete manuscript output file name; for example: 'Compiled Manuscripts/Frankenstein.md'. Supported extensions are .md and .html. Folders specified in the path must already exist in the vault.");
 
-    new Setting(contentEl).addText((text) => 
+    new Setting(contentEl).addText((text) =>
       text.setValue(this.compileSettings.title).onChange((value) => {
         console.log(value);
-      })).setName("Title");
+      })).setName("Title").setDesc("Specifies, for example, HTML document title when compiling to HTML.");
 
     new Setting(contentEl).addDropdown((dropdown) =>
       dropdown.addOption("-", "-").addOption("*", "*").addOption("+", "+").setValue(this.compileSettings.bullet).onChange((value) => {
         console.log(value);
-      })).setName("Bullet");
-
+      })).setName("Bullet").setDesc("Specifies the bullet character to use for unordered lists when compiling to Markdown.");
 
     const pagesSubtitleEl = contentEl.createEl("h2");
     pagesSubtitleEl.setText("Manuscript Pages");
@@ -87,15 +88,38 @@ export class CompileSettingsModal extends Modal {
     column2.addClass("flex-right");
 
     this.filesToCompile.forEach((file, index) => {
-      // Add file to left panel
+
+      const dropTarget = column1.createEl("div");
+      dropTarget.id = `dropTarget-${index}`;
+      dropTarget.addClass("drop-target");
+      dropTarget.addEventListener('dragover', this.dragOver);
+      dropTarget.addEventListener('dragleave', this.dragLeave);
+      dropTarget.addEventListener('drop', this.drop);
+
+      // DRAG AND DROP
+      // See: https://www.javascripttutorial.net/web-apis/javascript-drag-and-drop/
 
       const fileEl = column1.createEl("div");
       fileEl.id = `file-${index}`;
+      fileEl.addClass("file");
       // THIS SHOULD BE THE TITLE IN THE FILE'S META FRONTMATTER IF IT EXISTS...
       fileEl.setAttr("title", file.basename);
+      fileEl.setAttr("draggable", "true");
       fileEl.setText(file.basename);
+      fileEl.addEventListener('dragstart', this.dragStart);
+      //fileEl.addEventListener('drop', this.drop);
+
     });
 
+    // One final drop target
+    
+    const dropTargetLast = column1.createEl("div");
+    dropTargetLast.id = `dropTarget-${this.filesToCompile.length + 1}`;
+    dropTargetLast.addClass("drop-target");
+    dropTargetLast.addEventListener('dragover', this.dragOver);
+    dropTargetLast.addEventListener('dragleave', this.dragLeave);
+    dropTargetLast.addEventListener('drop', this.drop);
+    
     new Setting(contentEl)
       .addButton((btn) =>
         btn
@@ -111,12 +135,45 @@ export class CompileSettingsModal extends Modal {
             this.close();
             this.onCompile(this.filesToCompile);
           }));
-
   }
 
   onClose() {
     let { contentEl } = this;
     contentEl.empty();
+  }
+
+  dragStart(e: DragEvent) {
+    //@ts-ignore
+    e.dataTransfer.setData('text/plain', e.target.id);
+    setTimeout(() => {
+      //@ts-ignore
+      e.target.classList.add('hide');
+    }, 0);
+  }
+
+  dragOver(e: DragEvent) {
+    e.preventDefault();
+    //@ts-ignore
+    e.target.classList.add('drag-over');
+  }
+  dragLeave(e: DragEvent) {
+    //@ts-ignore
+    e.target.classList.remove('drag-over');
+  }
+  drop(e: DragEvent) {
+    console.log(e);
+    //@ts-ignore
+    e.target.classList.remove('drag-over');
+
+    const id = e.dataTransfer.getData('text/plain');
+    const draggable = document.getElementById(id);
+
+    // add it to the drop target
+    //@ts-ignore
+    e.target.appendChild(draggable);
+
+    // display the draggable element
+    draggable.classList.remove('hide');
   }
 
 }

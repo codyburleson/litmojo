@@ -11,13 +11,37 @@ body {
     flex-direction: row;
 }
 
-.flex-left {
+#compile-settings-modal .flex-left {
     width: 30%;
     /*height: 100vh;*/
     border:1px solid #CCC;
 }
 
-.flex-right {
+#compile-settings-modal .flex-right {
     width: 70%;
     border:1px solid blue;
+}
+
+#compile-settings-modal .drop-target {
+    height:6px;
+    /* border:1px dashed babyblue; */
+    background-color: #DED6F9;
+}
+
+#compile-settings-modal .file {
+    border:1px solid #CCC;
+}
+
+/*
+#compile-settings-modal .file:hover {
+    cursor: hand    ;
+}
+*/
+
+.drag-over {
+    border: dashed 3px #9478F0;
+}
+
+.hide {
+    display: none;
 }
