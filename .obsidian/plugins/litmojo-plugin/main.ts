@@ -21,12 +21,12 @@ import { buildMDASTManuscript, CompileSettings, getFilesToCompile, validateAndLo
 
 import { unified } from 'unified';
 import { remove } from 'unist-util-remove'
-import { visit, SKIP } from 'unist-util-visit'
+//import { visit, SKIP } from 'unist-util-visit'
 
 import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter'
 
-import {Options} from 'remark-stringify';
+import { Options } from 'remark-stringify';
 import remarkStringify from 'remark-stringify';
 
 import remarkRehype from 'remark-rehype';
@@ -36,19 +36,17 @@ import rehypeDocument from 'rehype-document'
 import remarkWikiLink from 'remark-wiki-link'
 
 interface LitMojoPluginSettings {
-    mySetting: string;
     debug: string;
 }
 
 const DEFAULT_SETTINGS: LitMojoPluginSettings = {
-    mySetting: 'default',
     debug: 'false'
 }
 
 export default class LitMojoPlugin extends Plugin {
 
     settings: LitMojoPluginSettings;
-    
+
     debug: boolean = false;
 
     compileSettings: CompileSettings;
@@ -57,32 +55,10 @@ export default class LitMojoPlugin extends Plugin {
 
         await this.loadSettings();
 
-        if(this.settings.debug === 'true') {
+        if (this.settings.debug === 'true') {
             this.debug = true;
+            console.log('settings loaded');
         }
-
-        // console.log('settings loaded');
-
-        // this.dvapi = getAPI();
-        // console.log('dvapi: %o', this.dvapi);
-
-        // new Notice("Hello")
-
-        // Dataview events that are trigerred (in case needed later)...
-        /*
-        this.registerEvent(
-            // @ts-ignore
-            this.app.metadataCache.on("dataview:index-ready", () => {
-                console.log('-- LitMojoPlugin > DataView event: dataview:index-ready')
-            })
-        );
-
-        this.registerEvent(
-            // @ts-ignore
-            this.app.metadataCache.on("dataview:metadata-change",(type, file, oldPath?) => {
-                console.log('-- LitMojoPlugin > DataView event: dataview:metadata-change')
-            })
-        );*/
 
         /**
          * Registers the Compile menu, which should really only show up when there is a 
@@ -113,10 +89,10 @@ export default class LitMojoPlugin extends Plugin {
                             .setIcon("wand")
                             .onClick(async () => {
 
-                                if(this.debug) {
+                                if (this.debug) {
                                     console.debug('>> LitMojo > Compile > %o', file);
                                 }
-                        
+
                                 // ====================================================================================
                                 // LOAD COMPILE SETTINGS FROM FOLDER NOTE
                                 // ====================================================================================
@@ -124,11 +100,12 @@ export default class LitMojoPlugin extends Plugin {
                                 const folderNote: TAbstractFile = this.app.vault.getAbstractFileByPath(file.path + '/' + file.name + '.md');
 
                                 this.compileSettings = validateAndLoadCompileSettings(folderNote);
+
                                 if (!this.compileSettings) {
                                     return;
                                 }
 
-                                if(this.debug) {
+                                if (this.debug) {
                                     console.debug('-- LitMojo > Compile > compileSettings: %o', this.compileSettings);
                                 }
 
@@ -137,18 +114,23 @@ export default class LitMojoPlugin extends Plugin {
                                 // ====================================================================================
 
                                 //let bulletSetting = (this.compileSettings.bullet) ? this.compileSettings.bullet : '-';                      
-                                
+
                                 let compiledContent: string = '';
 
+                                //new CompileSettingsModal(this.app, file, this.compileSettings, async (result) => {
 
-                                new CompileSettingsModal(this.app, file, this.compileSettings, async (result) => {
+                                    // Uncomment when using compile settings modal...
+                                    // let filesToCompile = result;
+                                    // ...and comment out this line:
+                                    let filesToCompile = getFilesToCompile(file);
 
-                                    let filesToCompile = result;
-                                    if(this.debug) {
+                                    if (this.debug) {
                                         console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
                                     }
-                                    let mdastManuscript:any = await buildMDASTManuscript(this.app, filesToCompile);
-                                    if(this.debug) {
+
+                                    let mdastManuscript: any = await buildMDASTManuscript(this.app, filesToCompile, this.compileSettings.exclude);
+                                    
+                                    if (this.debug) {
                                         console.debug('-- LitMojo > Compile > mdastManuscript: %o', mdastManuscript);
                                     }
 
@@ -156,6 +138,7 @@ export default class LitMojoPlugin extends Plugin {
                                     // DELETE EXISTING COMPILED MANUSCRIPT (if it exists)
                                     // ====================================================================================
                                     // First, try to get the compiled manustcript file to see if it already exists
+
                                     const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compileSettings.path);
                                     if (previouslyCompiledFile) {
                                         // If it exists, delete it before we create a new one
@@ -165,7 +148,7 @@ export default class LitMojoPlugin extends Plugin {
                                     const remarkStringifyOptions: Options = {
                                         bullet: this.compileSettings.bullet ? this.compileSettings.bullet : '-',
                                     };
-    
+
                                     // ====================================================================================
                                     // IF MARKDOWN, STRINGIFY MARKDOWN
                                     // ====================================================================================
@@ -177,19 +160,19 @@ export default class LitMojoPlugin extends Plugin {
                                             .stringify(mdastManuscript);
                                         compiledContent += markdown;
                                     }
-    
+
                                     // ====================================================================================
                                     // IF HTML STRINGIFY HTML
                                     // ====================================================================================
-                                    
-                                    if(this.compileSettings.path.endsWith('.html')) {
-                                        
+
+                                    if (this.compileSettings.path.endsWith('.html')) {
+
                                         // CONVERT MDAST TO MARKDOWN
                                         const markdown = await unified()
                                             .use(remarkWikiLink, { aliasDivider: '|' })
                                             .use(remarkStringify, remarkStringifyOptions)
                                             .stringify(mdastManuscript);
-    
+
                                         // ABOVE IT REDUNTANT TO ABOVE ABOVE
                                         // Also, do I need to concvert MDAST to String and then Parse it yet again?
                                         // Certainly there's a way to just use the MDAST I've already got.
@@ -203,21 +186,35 @@ export default class LitMojoPlugin extends Plugin {
                                             .use(remarkFrontmatter, ['yaml'])
                                             .use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter // is this needed?
                                             .use(remarkRehype) // Convert MDAST to HAST
-                                            .use(rehypeDocument, {title: this.compileSettings.title}) // Wrap HAST in HTML document
+                                            .use(rehypeDocument, { title: this.compileSettings.title }) // Wrap HAST in HTML document
                                             .use(rehypeStringify) // Convert HAST to HTML
                                             .process(markdown); // or .process(content);
-                                            compiledContent = String(htmlFile);            
+                                        compiledContent = String(htmlFile);
                                     }
-    
+
                                     // ====================================================================================
                                     // WRITE COMPILED MANUSCRIPT AND NOTIFY SUCCESS
                                     // ====================================================================================
-    
-                                    this.app.vault.create(this.compileSettings.path, compiledContent).then((newFile) => {
-                                        new Notice('Manuscript compiled to: ' + newFile.path);
+
+                                    let compileFolder = this.compileSettings.path.substring(0, this.compileSettings.path.lastIndexOf('/'));
+                                    if(this.debug)  {  
+                                        console.debug('-- LitMojo > Compile > compileFolder: %o', compileFolder);
+                                    }
+
+                                    this.fileExists( compileFolder ).then((exists) => {
+
+                                        if (exists) {
+                                            this.app.vault.create(this.compileSettings.path, compiledContent).then((newFile) => {
+                                                new Notice('Manuscript compiled to: ' + newFile.path);
+                                            });
+                                        } else {
+                                            new Notice('Compile folder does not exist: ' + compileFolder,7000);
+                                        }
+
                                     });
 
-                                }).open();
+
+                                //}).open();
 
 
                             });
@@ -294,7 +291,7 @@ export default class LitMojoPlugin extends Plugin {
             }
         });
         */
-        
+
         // This adds a complex command that can check whether the current state of the app allows execution of the command
         /*
         this.addCommand({
@@ -360,9 +357,9 @@ export default class LitMojoPlugin extends Plugin {
     }
     */
 
-    
-
-    
+    async fileExists(filePath: string): Promise<boolean> {
+        return await this.app.vault.adapter.exists(filePath);
+    }
 
 }
 
@@ -380,20 +377,8 @@ class SampleSettingTab extends PluginSettingTab {
 
         containerEl.empty();
 
-        containerEl.createEl('h2', { text: 'Settings for my awesome plugin.' });
+        containerEl.createEl('h2', { text: 'LitMojo Plugin Settings' });
 
-        new Setting(containerEl)
-            .setName('Setting #1')
-            .setDesc('It\'s a secret')
-            .addText(text => text
-                .setPlaceholder('Enter your secret')
-                .setValue(this.plugin.settings.mySetting)
-                .onChange(async (value) => {
-                    console.log('Secret: ' + value);
-                    this.plugin.settings.mySetting = value;
-                    await this.plugin.saveSettings();
-                }));
-        
         new Setting(containerEl)
             .setName('Debug')
             .setDesc('true | false to log debug messages')
@@ -403,7 +388,7 @@ class SampleSettingTab extends PluginSettingTab {
                 .onChange(async (value) => {
                     console.log('Debug: ' + value);
                     this.plugin.settings.debug = value;
-                    if(this.plugin.settings.debug === 'true') {
+                    if (this.plugin.settings.debug === 'true') {
                         this.plugin.debug = true;
                     } else {
                         this.plugin.debug = false;

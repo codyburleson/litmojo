@@ -16,8 +16,6 @@ export class CompileSettingsModal extends Modal {
     this.onCompile = onCompile;
   }
 
-
-
   onOpen() {
 
     // ====================================================================================
@@ -28,17 +26,6 @@ export class CompileSettingsModal extends Modal {
     // the litmojo.compile flag set to true.
 
     this.filesToCompile = getFilesToCompile(this.manuscriptFolder);
-
-    // ====================================================================================
-    // SORT MANUSCRIPT PAGES
-    // ====================================================================================
-    this.filesToCompile.sort((a, b) => {
-      const cacheA = this.app.metadataCache.getFileCache(a);
-      const cacheB = this.app.metadataCache.getFileCache(b);
-      const orderA = cacheA?.frontmatter?.litmojo?.order;
-      const orderB = cacheB?.frontmatter?.litmojo?.order;
-      return orderA - orderB;
-    });
 
     //console.dir(this.filesToCompile);
     // if(this.debug) {
@@ -156,10 +143,12 @@ export class CompileSettingsModal extends Modal {
     //@ts-ignore
     e.target.classList.add('drag-over');
   }
+  
   dragLeave(e: DragEvent) {
     //@ts-ignore
     e.target.classList.remove('drag-over');
   }
+
   drop(e: DragEvent) {
     console.log(e);
     //@ts-ignore
