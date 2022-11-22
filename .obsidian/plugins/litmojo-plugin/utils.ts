@@ -6,6 +6,7 @@ import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter'
 //@ts-expect-error remark-wiki-link does not have declaration file
 import remarkWikiLink from 'remark-wiki-link'
+// import { Console } from 'console';
 
 /*
 export type Options = {
@@ -38,8 +39,9 @@ export interface CompileSettings {
     path: string,
     bullet?: "-" | "*" | "+" | undefined,
     title: string,
-    exclude?: string[]
+    exclude?: { headings?: string[];}
 }
+
 
 export function getFilesToCompile(folder: TFolder): TFile[] {
     let filesToCompile: TFile[] = [];
@@ -106,9 +108,7 @@ export function validateAndLoadCompileSettings(folderNote: TAbstractFile): Compi
     }
 }
 
-
-export async function buildMDASTManuscript(app: App, filesToCompile: TFile[], exclude: string[] | undefined): Promise<any> {
-
+export async function buildMDASTManuscript(app: App, filesToCompile: TFile[], compileSettings: CompileSettings): Promise<any> {
 
     // As we loop, we'll parse all markdown files into mdast and then concatenate the child 
     // nodes into a single array. We'll then use that array to create a new mdast
@@ -138,46 +138,64 @@ export async function buildMDASTManuscript(app: App, filesToCompile: TFile[], ex
             // If exclude is defined, remove sections from mdast that match the exclude criteria
             // ====================================================================================
 
-            /*
-            if(exclude) {
+            // if (compileSettings.exclude !== undefined) {
+            //     console.log('ALL GOOD!')
+            // }
+            
+            // If compileSettings.exclude.headings is defined, remove those headings from the mdast
+            
+            if (compileSettings.exclude?.headings) {
+
                 let culling = false;
                 let cullingDepth = -1;
                 mdast = remove(mdast, (node:any) => {
 
-                    // If we are culling, and we encounter something other than a heading,
-                    // keep culling, but if we encounter a heading, we should stop culling
-                    // when the heading depth is less than or equal to the depth of the heading
-                    // that started the culling.
-                    if(culling && node.type !== 'heading') {
-                        return true;
-                    } else if(culling && node.type === 'heading') {
-                        if(node.depth <= cullingDepth) {
-                            culling = false;
-                            return false;
-                        } else {
-                            return true;
+                    if(node.type === 'heading') {
+
+                        if(! culling) {
+                            // If we reach an exclude node, set culling to true
+                            // and set the cullingDepth to the current node depth
+                            // and return true to remove the node
+                            if(compileSettings.exclude.headings.includes(node.children[0].value)) {
+                                cullingDepth = node.depth;
+                                culling = true;
+                                return true;
+                            }
                         }
-                    } else if(node.type === 'heading') {
-                        // If we are not culling, and we encounter a heading, check if it matches
-                        if(exclude.includes(node.children[0].value)) {
-                            console.log(`Going to remove depth, ${node.depth}, heading, ${node.children[0].value}`);
-                            culling = true;
-                            cullingDepth = node.depth;
+
+                        if(culling && node.depth > cullingDepth) {
                             return true;
+                        } else {
+                            if(compileSettings.exclude.headings.includes(node.children[0].value)) {
+                                cullingDepth = node.depth;
+                                culling = true;
+                                return true;
+                            } else {
+                                culling = false;
+                                cullingDepth = -1;
+                                return false;
+                            }
+                        }
+                    } else {
+                        if(culling) {
+                            return true;
+                        } else {
+                            return false;
                         }
                     }
 
                 });
+                
             }
-            */
-
+            
             // ====================================================================================
 
             // UNCOMMENT TO LOG MDAST FOR EACH FILE BEFORE IT IS CONCATENATED TO THE MANUSCRIPT 
             // MDAST
 
-            console.log(`utils.ts: mdast for ${file.name}`, mdast);
+            //console.log(`utils.ts: mdast for ${file.name}`, mdast);
 
+        
             // ====================================================================================
             // REMOVE FRONTMATTER FROM MDAST
             // ====================================================================================

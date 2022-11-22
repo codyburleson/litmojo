@@ -23,11 +23,16 @@ In the folder note for your manuscript, you must create a frontmatter section wi
 ```
 ---
 litmojo:
-  path: TestContent/Compile/Frankenstein.md
+  path: TestContent/Compile/Frankenstein.md,
+  exclude:
+    headings:
+      - "Heading Title for Section to Exclude 1"
+      - "Heading Title for Section to Exclude 2"
 ---
 ```
  
-**path** - is where you define the file path for the compiled manuscript. You must manually create any folders in the specified path if they do not exist. The file extension determines the type of file that will be created. At this time, only `.md` for markdown and `.html` for HTML are supported. You can create a PDF from the compiled manuscript using Obsidian's native Export to PDF feature.
+**path** - required; is where you define the file path for the compiled manuscript. You must manually create any folders in the specified path if they do not exist. The file extension determines the type of file that will be created. At this time, only `.md` for markdown and `.html` for HTML are supported. You can create a PDF from the compiled manuscript using Obsidian's native Export to PDF feature.
+**exclude** - optional; defines sections to exclude. Supports a string array of one or more heading titles. Any section with a heading that has a matching title will be ommited from the compilation.
 
 See [[Manuscript Compiler Settings]] for more.
 

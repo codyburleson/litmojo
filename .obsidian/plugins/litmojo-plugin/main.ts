@@ -128,7 +128,7 @@ export default class LitMojoPlugin extends Plugin {
                                         console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
                                     }
 
-                                    let mdastManuscript: any = await buildMDASTManuscript(this.app, filesToCompile, this.compileSettings.exclude);
+                                    let mdastManuscript: any = await buildMDASTManuscript(this.app, filesToCompile, this.compileSettings);
                                     
                                     if (this.debug) {
                                         console.debug('-- LitMojo > Compile > mdastManuscript: %o', mdastManuscript);
