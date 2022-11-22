@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "e7ba5dc45752cb6c",
+        "id": "6cb48331aed70890",
         "type": "tabs",
         "children": [
           {
-            "id": "ddb50cf3f1c9ee31",
+            "id": "1588b1610df45e0f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Developer Guide/Preparing a Release.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               }
@@ -48,7 +48,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "aborted",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -61,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 276.5
+    "width": 315.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -77,6 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -92,7 +93,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "README.md"
+              }
             }
           }
         ],
@@ -100,19 +103,19 @@
       }
     ],
     "direction": "horizontal",
-    "width": 301.5
+    "width": 415.5
   },
-  "active": "ddb50cf3f1c9ee31",
+  "active": "1588b1610df45e0f",
   "lastOpenFiles": [
-    "Developer Guide/Preparing a Release.md",
-    "Compiled Manuscripts/BeaverCage.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.10 Beaver Cage - Introduction.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.03 Beaver Cage - Frontmatter.md",
-    "README.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.30 Beaver Cage - Red Beach.md",
+    "Example Manuscripts/Exclude Sections/Exclude Sections.md",
+    "Example Manuscripts/Exclude Sections/Chapter 1.md",
+    "Compiled Manuscripts/Exclude Sections.md",
     "Example Manuscripts/55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md",
-    "Developer Guide/Unified.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.20 Beaver Cage - A Dark Prelude.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55.05 Beaver Cage - Outline and Notes.md"
+    "Compiled Manuscripts/Cage_Manuscript.md",
+    "Example Manuscripts/Exclude Sections/Chapter 3/Chapter 3.md",
+    "Example Manuscripts/Exclude Sections/Chapter 2.md",
+    "Compiled Manuscripts/About.md",
+    "Example Manuscripts/Frankenstein/Frankenstein.md",
+    "Example Manuscripts/Frankenstein/3 Chapters/Chapter 0.md"
   ]
 }
