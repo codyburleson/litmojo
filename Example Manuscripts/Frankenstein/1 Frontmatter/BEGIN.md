@@ -23,3 +23,5 @@ Character set encoding: UTF-8
 
 Produced by: Judith Boss, Christy Phillips, Lynn Hanninen, and David Meltzer. HTML version by Al Haines.  
 Further corrections by Menno de Leeuw.
+
+![Frankenstein 1818 Edition Cover Page](Frankenstein_1818_edition_title_page.jpg)

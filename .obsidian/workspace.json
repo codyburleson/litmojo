@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "6cb48331aed70890",
+        "id": "ad638789d8158ebf",
         "type": "tabs",
         "children": [
           {
-            "id": "1588b1610df45e0f",
+            "id": "b1d055a88600d86f",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -48,7 +48,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "aborted",
+                "query": "tag",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -61,7 +61,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 315.5
+    "width": 282.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -103,19 +103,19 @@
       }
     ],
     "direction": "horizontal",
-    "width": 415.5
+    "width": 250.5
   },
-  "active": "1588b1610df45e0f",
+  "active": "b1d055a88600d86f",
   "lastOpenFiles": [
-    "Example Manuscripts/Exclude Sections/Exclude Sections.md",
-    "Example Manuscripts/Exclude Sections/Chapter 1.md",
-    "Compiled Manuscripts/Exclude Sections.md",
-    "Example Manuscripts/55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md",
-    "Compiled Manuscripts/Cage_Manuscript.md",
-    "Example Manuscripts/Exclude Sections/Chapter 3/Chapter 3.md",
-    "Example Manuscripts/Exclude Sections/Chapter 2.md",
-    "Compiled Manuscripts/About.md",
+    "Untitled.md",
+    "README.md",
+    "Example Manuscripts/Frankenstein/1 Frontmatter/BEGIN.md",
     "Example Manuscripts/Frankenstein/Frankenstein.md",
-    "Example Manuscripts/Frankenstein/3 Chapters/Chapter 0.md"
+    "Compiled Manuscripts/Frankenstein.md",
+    "Example Manuscripts/Frankenstein/Frankenstein_1818_edition_title_page.jpg",
+    "User Guide/Manuscript Compiler Settings.md",
+    "User Guide/Recommended Plugins.md",
+    "Developer Guide/Obsidian Icons.md",
+    "Developer Guide/Preparing a Release.md"
   ]
 }

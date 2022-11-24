@@ -1,7 +1,0 @@
-- [Folder Note Core](https://github.com/aidenlx/folder-note-core)
-	- LitMojo uses folder notes to store metadata for the collection the folder represents, whether a manuscript, section, chapter, scene, or snippet. Folder Note Core is required by AidenLx's Folder Note plugin and it also provides the core API funtionality for other plugins to leverage.
-		- Recommended Note FIle Storage Strategy: `Inside Folder, With Same Name`
-		- Note: Folder Overview (folderv) is an optional component, and you can go to the Folder Overview section of the setting tab to install it when you have AidenLx's Folder Note plugin.
-- [AidenLx's Folder Note](https://github.com/aidenlx/alx-folder-note)
-- [Obsidian Dataview](https://github.com/blacksmithgu/obsidian-dataview). Github
-	- [Dataview Documentation](https://blacksmithgu.github.io/obsidian-dataview/)
