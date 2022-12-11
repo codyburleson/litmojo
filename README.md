@@ -59,3 +59,6 @@ Right-click on your manuscript folder and choose Compile. Your manuscript will b
 	- Not this: `![[image.jpg]]`
 - When compiling to HTML, image src paths in the manuscript may need to be manually edited to create proper relative or fully qualified URLs (sorry; we'll fix this soon).
 
+## Other Documentation
+
+- [Developer Guide](developer-guide/developer-guide.md)

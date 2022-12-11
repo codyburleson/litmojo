@@ -1,168 +1,196 @@
 import { App, Modal, Setting, TFile, TFolder } from "obsidian";
 import { CompileSettings, getFilesToCompile, validateAndLoadCompileSettings } from './utils'
 
+// Default SortableJS
+//import Sortable from 'sortablejs';
+
+// Core SortableJS (without default plugins)
+import Sortable from 'sortablejs/modular/sortable.core.esm.js';
+
+// Complete SortableJS (with all plugins)
+//import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+
 export class CompileSettingsModal extends Modal {
 
-  manuscriptFolder: TFolder;
-  filesToCompile: TFile[] = [];
+	manuscriptFolder: TFolder;
+	filesToCompile: TFile[] = [];
 
-  compileSettings: CompileSettings;
-  onCompile: (filesToCompile: TFile[]) => void;
+	compileSettings: CompileSettings;
+	onCompile: (filesToCompile: TFile[]) => void;
 
-  constructor(app: App, folder: TFolder, compileSettings: CompileSettings, onCompile: (filesToCompile: TFile[]) => void) {
-    super(app);
-    this.manuscriptFolder = folder;
-    this.compileSettings = compileSettings;
-    this.onCompile = onCompile;
-  }
+	constructor(app: App, folder: TFolder, compileSettings: CompileSettings, onCompile: (filesToCompile: TFile[]) => void) {
+		super(app);
+		this.manuscriptFolder = folder;
+		this.compileSettings = compileSettings;
+		this.onCompile = onCompile;
+	}
 
-  onOpen() {
+	showTabContent(elmId: string) {
+		document.getElementById(elmId).classList.remove('hidden');
+		document.getElementById(elmId + '-nav').classList.add('is-active');
+	}
 
-    // ====================================================================================
-    // GET FILES TO COMPILE
-    // ====================================================================================
-    // From the selected manuscript folder, pick out only the 
-    // files that are actually markdown files and that have 
-    // the litmojo.compile flag set to true.
+	hideAllTabs() {
+		document.getElementById('manuscript-settings-tab').classList.add('hidden');
+		document.getElementById('pages-tab').classList.add('hidden');
+		document.getElementById('manuscript-settings-tab-nav').classList.remove('is-active');
+		document.getElementById('pages-tab-nav').classList.remove('is-active');
+	}
 
-    this.filesToCompile = getFilesToCompile(this.manuscriptFolder);
+	onOpen() {
 
-    //console.dir(this.filesToCompile);
-    // if(this.debug) {
-    //   console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
-    // }
+		// ====================================================================================
+		// GET FILES TO COMPILE
+		// ====================================================================================
+		// From the selected manuscript folder, pick out only the 
+		// files that are actually markdown files and that have 
+		// the litmojo.compile flag set to true.
 
-    let { contentEl } = this;
-    contentEl.id = 'compile-settings-modal';
+		this.filesToCompile = getFilesToCompile(this.manuscriptFolder);
 
-    const titleEl = contentEl.createEl("h1");
-    titleEl.setText("LitMojo Compile");
+		//console.dir(this.filesToCompile);
+		// if(this.debug) {
+		//   console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
+		// }
 
-    const settingsSubtitleEl = contentEl.createEl("h2");
-    settingsSubtitleEl.setText("Manuscript Settings");
+		// ====================================================================================
+		// SETUP MODAL ID AND CLASSES
+		// ====================================================================================
+		let { contentEl } = this; // class="modal-content"
+		contentEl.id = 'compile-settings-modal';
 
-    new Setting(contentEl).addText((text) =>
-      text.setValue(this.compileSettings.path).onChange((value) => {
-        console.log(value);
-      })).setName("Path").setDesc("The path to the manuscript output file, including the complete manuscript output file name; for example: 'Compiled Manuscripts/Frankenstein.md'. Supported extensions are .md and .html. Folders specified in the path must already exist in the vault.");
+		contentEl.parentElement.classList.add('mod-settings');
+		contentEl.parentElement.classList.add('mod-sidebar-layout');
 
-    new Setting(contentEl).addText((text) =>
-      text.setValue(this.compileSettings.title).onChange((value) => {
-        console.log(value);
-      })).setName("Title").setDesc("Specifies, for example, HTML document title when compiling to HTML.");
+			const vTabsContainer = contentEl.createEl("div");
+			vTabsContainer.className = "vertical-tabs-container";
 
-    new Setting(contentEl).addDropdown((dropdown) =>
-      dropdown.addOption("-", "-").addOption("*", "*").addOption("+", "+").setValue(this.compileSettings.bullet).onChange((value) => {
-        console.log(value);
-      })).setName("Bullet").setDesc("Specifies the bullet character to use for unordered lists when compiling to Markdown.");
+				const vTabHeader = vTabsContainer.createEl("div");
+				vTabHeader.className = "vertical-tab-header";
 
-    const pagesSubtitleEl = contentEl.createEl("h2");
-    pagesSubtitleEl.setText("Manuscript Pages");
+					const vTabHeaderGroup = vTabHeader.createEl("div");
+					vTabHeaderGroup.className = "vertical-tab-header-group";
 
-    const pagesTipEl = contentEl.createEl("p");
-    pagesTipEl.setText("Select a page to modify individual page properties. Drag and drop to reorder pages.");
+						const vTabHeaderGroupTitle = vTabHeaderGroup.createEl("div");
+						vTabHeaderGroupTitle.className = "vertical-tab-header-group-title";
+						vTabHeaderGroupTitle.setText("LitMojo Compile Options");
+			
+						const vTabHeaderGroupItems = vTabHeaderGroup.createEl("div");
+						vTabHeaderGroupItems.className = "vertical-tab-header-group-items";
 
-    const contentPanel = contentEl.createEl("div");
-    contentPanel.id = "contentPanel";
+							const vTabNavItem1 = vTabHeaderGroupItems.createEl("div");
+							vTabNavItem1.className = "vertical-tab-nav-item";
+							vTabNavItem1.setText("Manuscript Settings");
+							vTabNavItem1.classList.add("is-active");
+							vTabNavItem1.id = "manuscript-settings-tab-nav";
+							vTabNavItem1.addEventListener('click', () => {
+								this.hideAllTabs();
+								this.showTabContent('manuscript-settings-tab');
+							});
 
-    const column1 = contentPanel.createEl("div");
-    //column1.id = "column1";
-    column1.addClass("flex-left");
+							const vTabNavItem2 = vTabHeaderGroupItems.createEl("div");
+							vTabNavItem2.className = "vertical-tab-nav-item";
+							vTabNavItem2.setText("Pages");
+							vTabNavItem2.id = "pages-tab-nav";
+							vTabNavItem2.addEventListener('click', () => {
+								this.hideAllTabs();
+								this.showTabContent('pages-tab');
+							});
 
-    const column2 = contentPanel.createEl("div");
-    //column2.id = "column2";
-    column2.setText('COLUMN 2')
-    column2.addClass("flex-right");
+				const vTabContentContainer = vTabsContainer.createEl("div");
+				vTabContentContainer.className = "vertical-tab-content-container";
+					
+					const vTabContent = vTabContentContainer.createEl("div");
+					vTabContentContainer.className = "vertical-tab-content";
 
-    this.filesToCompile.forEach((file, index) => {
+						const vTabManuscriptSettings = vTabContent.createEl("div");
+						vTabManuscriptSettings.id = "manuscript-settings-tab";
 
-      const dropTarget = column1.createEl("div");
-      dropTarget.id = `dropTarget-${index}`;
-      dropTarget.addClass("drop-target");
-      dropTarget.addEventListener('dragover', this.dragOver);
-      dropTarget.addEventListener('dragleave', this.dragLeave);
-      dropTarget.addEventListener('drop', this.drop);
+							new Setting(vTabManuscriptSettings).addText((text) =>
+							text.setValue(this.compileSettings.path).onChange((value) => {
+								console.log(value);
+							})).setName("Path").setDesc("The path to the manuscript output file, including the complete manuscript output file name; for example: 'Compiled Manuscripts/Frankenstein.md'. Supported extensions are .md and .html. Folders specified in the path must already exist in the vault.");
+				
+							new Setting(vTabManuscriptSettings).addText((text) =>
+								text.setValue(this.compileSettings.title).onChange((value) => {
+									console.log(value);
+								})).setName("Title").setDesc("Specifies, for example, HTML document title when compiling to HTML.");
+					
+							new Setting(vTabManuscriptSettings).addDropdown((dropdown) =>
+								dropdown.addOption("-", "-").addOption("*", "*").addOption("+", "+").setValue(this.compileSettings.bullet).onChange((value) => {
+									console.log(value);
+								})).setName("Bullet").setDesc("Specifies the bullet character to use for unordered lists when compiling to Markdown.");
+						
+						const vTabPages = vTabContent.createEl("div");
+						vTabPages.id = "pages-tab";
+						vTabPages.classList.add("hidden");
 
-      // DRAG AND DROP
-      // See: https://www.javascripttutorial.net/web-apis/javascript-drag-and-drop/
+							//const contentPanel = vTabPages.createEl("div");
+							//contentPanel.id = "contentPanel";
 
-      const fileEl = column1.createEl("div");
-      fileEl.id = `file-${index}`;
-      fileEl.addClass("file");
-      // THIS SHOULD BE THE TITLE IN THE FILE'S META FRONTMATTER IF IT EXISTS...
-      fileEl.setAttr("title", file.basename);
-      fileEl.setAttr("draggable", "true");
-      fileEl.setText(file.basename);
-      fileEl.addEventListener('dragstart', this.dragStart);
-      //fileEl.addEventListener('drop', this.drop);
+							const column1 = vTabPages.createEl("div");
+							column1.addClass("flex-left");
 
-    });
+								const uList = column1.createEl("ul");
+								uList.id = "items";
 
-    // One final drop target
-    
-    const dropTargetLast = column1.createEl("div");
-    dropTargetLast.id = `dropTarget-${this.filesToCompile.length + 1}`;
-    dropTargetLast.addClass("drop-target");
-    dropTargetLast.addEventListener('dragover', this.dragOver);
-    dropTargetLast.addEventListener('dragleave', this.dragLeave);
-    dropTargetLast.addEventListener('drop', this.drop);
-    
-    new Setting(contentEl)
-      .addButton((btn) =>
-        btn
-          .setButtonText("Cancel")
-          .onClick(() => {
-            this.close();
-          }))
-      .addButton((btn) =>
-        btn
-          .setButtonText("Compile")
-          .setCta()
-          .onClick(() => {
-            this.close();
-            this.onCompile(this.filesToCompile);
-          }));
-  }
+									this.filesToCompile.forEach((file, index) => {
+										const fileEl = uList.createEl("li");
+										fileEl.id = `file-${index}`;
+										fileEl.setAttr('data-id', file.path);
+										// fileEl.addClass("file");
+										// THIS SHOULD BE THE TITLE IN THE FILE'S META FRONTMATTER IF IT EXISTS...
+										fileEl.setAttr("title", file.basename);
+										fileEl.setText(file.basename);
+										
+										// onlcick of fileEl, show the file's content in the right column
+										fileEl.addEventListener('dblclick', () => {
+											//this.showFileContent(fileEl, file);
+											console.log(file);
+											
+											// get all DOM elements with class 'is-active' and remove the class
+											const activeEls = document.querySelectorAll('.is-active');
+											activeEls.forEach((el) => {
+												el.classList.remove('is-active');
+											});
 
-  onClose() {
-    let { contentEl } = this;
-    contentEl.empty();
-  }
+											fileEl.classList.add('is-active');
 
-  dragStart(e: DragEvent) {
-    //@ts-ignore
-    e.dataTransfer.setData('text/plain', e.target.id);
-    setTimeout(() => {
-      //@ts-ignore
-      e.target.classList.add('hide');
-    }, 0);
-  }
+										});
 
-  dragOver(e: DragEvent) {
-    e.preventDefault();
-    //@ts-ignore
-    e.target.classList.add('drag-over');
-  }
-  
-  dragLeave(e: DragEvent) {
-    //@ts-ignore
-    e.target.classList.remove('drag-over');
-  }
+									});
 
-  drop(e: DragEvent) {
-    console.log(e);
-    //@ts-ignore
-    e.target.classList.remove('drag-over');
+									var sortable = new Sortable(uList, {
+										animation: 150,
+										ghostClass: 'sortable-ghost',
+										dataIdAttr: 'data-id',
+									});
 
-    const id = e.dataTransfer.getData('text/plain');
-    const draggable = document.getElementById(id);
+							const column2 = vTabPages.createEl("div");
+							column2.setText('COLUMN 2')
+							column2.addClass("flex-right");
+							new Setting(vTabContentContainer)
+							.addButton((btn) =>
+								btn
+									.setButtonText("Cancel")
+									.onClick(() => {
+										this.close();
+									}))
+							.addButton((btn) =>
+								btn
+									.setButtonText("Compile")
+									.setCta()
+									.onClick(() => {
+										this.close();
+										console.log('-- sortable: %o', sortable.toArray());
+										this.onCompile(this.filesToCompile);
+									}));
+					
+	}
 
-    // add it to the drop target
-    //@ts-ignore
-    e.target.appendChild(draggable);
-
-    // display the draggable element
-    draggable.classList.remove('hide');
-  }
+	onClose() {
+		let { contentEl } = this;
+		contentEl.empty();
+	}
 
 }

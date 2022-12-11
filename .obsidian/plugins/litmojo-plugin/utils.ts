@@ -42,7 +42,6 @@ export interface CompileSettings {
     exclude?: { headings?: string[];}
 }
 
-
 export function getFilesToCompile(folder: TFolder): TFile[] {
     let filesToCompile: TFile[] = [];
     Vault.recurseChildren(folder, (childFile) => {
@@ -195,7 +194,6 @@ export async function buildMDASTManuscript(app: App, filesToCompile: TFile[], co
 
             //console.log(`utils.ts: mdast for ${file.name}`, mdast);
 
-        
             // ====================================================================================
             // REMOVE FRONTMATTER FROM MDAST
             // ====================================================================================
@@ -222,7 +220,6 @@ export async function buildMDASTManuscript(app: App, filesToCompile: TFile[], co
         });
 
     } // END FOR EACH FILE TO COMPILE
-
 
     return mdastManuscript;
 }

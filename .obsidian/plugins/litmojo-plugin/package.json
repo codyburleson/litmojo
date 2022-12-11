@@ -30,6 +30,7 @@
 		"remark-rehype": "^10.1.0",
 		"remark-stringify": "^10.0.2",
 		"remark-wiki-link": "^1.0.4",
+		"sortablejs": "^1.15.0",
 		"unified": "^10.1.2",
 		"unist-util-visit": "^4.1.1"
 	}

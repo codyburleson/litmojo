@@ -1,47 +1,59 @@
-/* Sets all the text color to red! */
-
-/*
-body {
-    color: red;
-}
-*/
-
-#compile-settings-modal > #contentPanel {
+#pages-tab {
     display: flex;
     flex-direction: row;
+    /*width: 63vw;*/
+	width:100%;
 }
 
-#compile-settings-modal .flex-left {
-    width: 30%;
-    /*height: 100vh;*/
-    border:1px solid #CCC;
+
+#pages-tab .flex-left {
+    border-top:1px solid #CCC;
+    border-left:1px solid #CCC;
+    border-right:1px solid #CCC;
+	box-sizing: border-box;
+	width:25%;
 }
 
-#compile-settings-modal .flex-right {
-    width: 70%;
-    border:1px solid blue;
+#pages-tab .flex-right {
+	/*flex-shrink: 0;*/
+	box-sizing: border-box;
+	width:75%;
+	padding-left:30px;
+	padding-right:30px;
 }
 
-#compile-settings-modal .drop-target {
-    height:6px;
-    /* border:1px dashed babyblue; */
+
+#items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; 
+}
+
+#items li {
+    padding: 6px;
+    border-bottom: 1px solid #CCC;  
+}
+
+/* Class name for the drop placeholder */
+.sortable-ghost {
+    border: dashed 2px #9478F0;
     background-color: #DED6F9;
 }
 
-#compile-settings-modal .file {
-    border:1px solid #CCC;
+.hide, .hidden {
+    display: none !important;
 }
 
-/*
-#compile-settings-modal .file:hover {
-    cursor: hand    ;
-}
-*/
-
-.drag-over {
-    border: dashed 3px #9478F0;
+.modal {
+    --dialog-width: 80vw;
+    /*height: 80vh;*/
 }
 
-.hide {
-    display: none;
+.vertical-tabs-container, .vertical-tab-content {
+	width: 100%;
+}
+
+#items .is-active {
+    background-color: var(--interactive-accent);
+    color: var(--text-on-accent);
 }
