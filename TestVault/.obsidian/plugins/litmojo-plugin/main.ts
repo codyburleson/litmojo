@@ -1,7 +1,7 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
 
 import {
-	SampleSettingTab
+	LitMojoSettingTab
 } from 'settings';
 
 import { CompileSettingsModal } from './compile-settings-modal'
@@ -244,7 +244,7 @@ export default class LitMojoPlugin extends Plugin {
         //statusBarItemEl.setText('Status Bar Text');
 
         // This adds a settings tab so the user can configure various aspects of the plugin
-        this.addSettingTab(new SampleSettingTab(this.app, this));
+        this.addSettingTab(new LitMojoSettingTab(this.app, this));
 
     }
 

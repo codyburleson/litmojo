@@ -1,7 +1,7 @@
 import { App, PluginSettingTab,Setting } from "obsidian";
 import LitMojoPlugin from 'main';
 
-export class SampleSettingTab extends PluginSettingTab {
+export class LitMojoSettingTab extends PluginSettingTab {
 
     plugin: LitMojoPlugin;
 
