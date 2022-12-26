@@ -1,5 +1,8 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
-//import { CollectionManagerView, VIEW_TYPE_COLLECTION_MANAGER } from "./collection-manager-view";
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
+
+import {
+	SampleSettingTab
+} from 'settings';
 
 import { CompileSettingsModal } from './compile-settings-modal'
 import { buildMDASTManuscript, CompileSettings, getFilesToCompile, validateAndLoadCompileSettings } from './utils'
@@ -43,7 +46,7 @@ export default class LitMojoPlugin extends Plugin {
 
     compileSettings: CompileSettings;
 
-    async onload() {
+    async onload(): Promise<void> {
 
         await this.loadSettings();
 
@@ -261,39 +264,4 @@ export default class LitMojoPlugin extends Plugin {
         return await this.app.vault.adapter.exists(filePath);
     }
 
-}
-
-
-class SampleSettingTab extends PluginSettingTab {
-    plugin: LitMojoPlugin;
-
-    constructor(app: App, plugin: LitMojoPlugin) {
-        super(app, plugin);
-        this.plugin = plugin;
-    }
-
-    display(): void {
-        const { containerEl } = this;
-
-        containerEl.empty();
-
-        containerEl.createEl('h2', { text: 'LitMojo Plugin Settings' });
-
-        new Setting(containerEl)
-            .setName('Debug')
-            .setDesc('true | false to log debug messages')
-            .addText(text => text
-                .setPlaceholder('false')
-                .setValue(this.plugin.settings.debug)
-                .onChange(async (value) => {
-                    console.log('Debug: ' + value);
-                    this.plugin.settings.debug = value;
-                    if (this.plugin.settings.debug === 'true') {
-                        this.plugin.debug = true;
-                    } else {
-                        this.plugin.debug = false;
-                    }
-                    await this.plugin.saveSettings();
-                }));
-    }
 }
