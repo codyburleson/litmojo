@@ -4,9 +4,7 @@ import { unified } from 'unified';
 import { remove } from 'unist-util-remove'
 import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter'
-//@ts-expect-error remark-wiki-link does not have declaration file
 import remarkWikiLink from 'remark-wiki-link'
-// import { Console } from 'console';
 
 /*
 export type Options = {

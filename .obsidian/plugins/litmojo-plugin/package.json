@@ -13,6 +13,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
+		"@types/sortablejs": "^1.15.0",
 		"@typescript-eslint/eslint-plugin": "^5.2.0",
 		"@typescript-eslint/parser": "^5.2.0",
 		"builtin-modules": "^3.2.0",
@@ -32,6 +33,7 @@
 		"remark-wiki-link": "^1.0.4",
 		"sortablejs": "^1.15.0",
 		"unified": "^10.1.2",
+		"unist-util-remove": "^3.1.0",
 		"unist-util-visit": "^4.1.1"
 	}
 }

@@ -25,7 +25,6 @@ import remarkStringify from 'remark-stringify';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify'
 import rehypeDocument from 'rehype-document'
-//@ts-expect-error remark-wiki-link does not have declaration file
 import remarkWikiLink from 'remark-wiki-link'
 
 interface LitMojoPluginSettings {
