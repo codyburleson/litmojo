@@ -6,7 +6,7 @@ LitMojo is an Obsidian plugin with for serious writers. Our vision is to release
 
 The Manuscript Compiler allows you to compile multiple markdown documents into a single manuscript in Markdown or HTML.
 
-![LitMojo Compile Types](images/compile-type-icons.png)
+![LitMojo Compile Types](docs/images/compile-type-icons.png)
 
 ### Manuscript Compiler User Guide
 
@@ -49,7 +49,7 @@ litmojo:
 
 Right-click on your manuscript folder and choose Compile. Your manuscript will be compiled into the file specified by the path you gave in the frontmatter of the manuscript's folder note.
 
-![Compile Menu](images/compile-menu.png)
+![Compile Menu](docs/images/compile-menu.png)
 
 #### Tips
 
@@ -61,4 +61,4 @@ Right-click on your manuscript folder and choose Compile. Your manuscript will b
 
 ## Other Documentation
 
-- [Developer Guide](developer-guide/developer-guide.md)
+- [Developer Guide](docs/developer-guide.md)
