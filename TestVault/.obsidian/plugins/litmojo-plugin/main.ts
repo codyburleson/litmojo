@@ -1,71 +1,86 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
+import {
+	App,
+	Editor,
+	MarkdownView,
+	Modal,
+	Notice,
+	Plugin,
+	TAbstractFile,
+	TFile,
+	TFolder,
+	Vault,
+	WorkspaceLeaf
+} from "obsidian";
+
+import { LitMojoSettingTab } from "settings";
 
 import {
-	LitMojoSettingTab
-} from 'settings';
+	ManuscriptSettingsView,
+	VIEW_TYPE_MANUSCRIPT_SETTINGS,
+} from "manuscript-settings-view";
 
-import { CompileSettingsModal } from './compile-settings-modal'
-import { buildMDASTManuscript, CompileSettings, getFilesToCompile, validateAndLoadCompileSettings } from './utils'
+import { CompileSettingsModal } from "./compile-settings-modal";
+import {
+	buildMDASTManuscript,
+	CompileSettings,
+	getFilesToCompile,
+	validateAndLoadCompileSettings,
+} from "./utils";
 
-// You can use the getAPI() function to obtain the Dataview Plugin API; 
-// this returns a DataviewApi object which provides various utilities, 
-// including rendering dataviews, checking dataview's version, hooking 
+// You can use the getAPI() function to obtain the Dataview Plugin API;
+// this returns a DataviewApi object which provides various utilities,
+// including rendering dataviews, checking dataview's version, hooking
 // into the dataview event life cycle, and querying dataview metadata
 // For full API definitions available, check:
 // [index.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/index.ts)
 // or the plugin API definition:
 // [plugin-api.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/api/plugin-api.ts)
 
-import { unified } from 'unified';
-import { remove } from 'unist-util-remove'
+import { unified } from "unified";
+import { remove } from "unist-util-remove";
 
-import remarkParse from 'remark-parse';
-import remarkFrontmatter from 'remark-frontmatter'
+import remarkParse from "remark-parse";
+import remarkFrontmatter from "remark-frontmatter";
 
-import { Options } from 'remark-stringify';
-import remarkStringify from 'remark-stringify';
+import { Options } from "remark-stringify";
+import remarkStringify from "remark-stringify";
 
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify'
-import rehypeDocument from 'rehype-document'
-import remarkWikiLink from 'remark-wiki-link'
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeDocument from "rehype-document";
+import remarkWikiLink from "remark-wiki-link";
 
 interface LitMojoPluginSettings {
-    debug: string;
+	debug: string;
 }
 
 const DEFAULT_SETTINGS: LitMojoPluginSettings = {
-    debug: 'false'
-}
+	debug: "false",
+};
 
 export default class LitMojoPlugin extends Plugin {
+	settings: LitMojoPluginSettings;
 
-    settings: LitMojoPluginSettings;
+	debug: boolean = false;
 
-    debug: boolean = false;
+	compileSettings: CompileSettings;
 
-    compileSettings: CompileSettings;
+	async onload(): Promise<void> {
+		await this.loadSettings();
 
-    async onload(): Promise<void> {
+		if (this.settings.debug === "true") {
+			this.debug = true;
+			console.log("settings loaded");
+		}
 
-        await this.loadSettings();
-
-        if (this.settings.debug === 'true') {
-            this.debug = true;
-            console.log('settings loaded');
-        }
-
-        /**
-         * Registers the Compile menu, which should really only show up when there is a 
-         * folder page with a litmojo compile config in the YAML frontmatter.
-         */
-        this.registerEvent(
-
-            this.app.workspace.on("file-menu", (menu, file) => {
-
-                if (file instanceof TFile) {
-
-                    /*
+		/**
+		 * Registers the Compile menu, which should really only show up when there is a
+		 * folder page with a litmojo compile config in the YAML frontmatter.
+		 */
+		this.registerEvent(
+			this.app.workspace.on("file-menu", (menu, file) => {
+				if (file instanceof TFile) {
+					/*
                     menu.addItem((item) => {
                         item
                             .setTitle("Publish")
@@ -75,156 +90,240 @@ export default class LitMojoPlugin extends Plugin {
                             });
                     });
                     */
+				} else if (file instanceof TFolder) {
+					menu.addItem((item) => {
+						item.setTitle("Compile")
+							.setIcon("wand")
+							.onClick(async () => {
+								if (this.debug) {
+									console.debug(
+										">> LitMojo > Compile > %o",
+										file
+									);
+								}
 
-                } else if (file instanceof TFolder) {
+								// ====================================================================================
+								// LOAD COMPILE SETTINGS FROM FOLDER NOTE
+								// ====================================================================================
 
-                    menu.addItem((item) => {
-                        item
-                            .setTitle("Compile")
-                            .setIcon("wand")
-                            .onClick(async () => {
+								console.log(
+									"-- folder note file path: " +
+										file.path +
+										"/" +
+										file.name +
+										".md"
+								);
+								
 
-                                if (this.debug) {
-                                    console.debug('>> LitMojo > Compile > %o', file);
-                                }
+								this.activateManuscriptSettingsView(file.path + "/" + file.name + ".md");
 
-                                // ====================================================================================
-                                // LOAD COMPILE SETTINGS FROM FOLDER NOTE
-                                // ====================================================================================
+								const folderNote: TAbstractFile =
+									this.app.vault.getAbstractFileByPath(
+										file.path + "/" + file.name + ".md"
+									);
 
-                                const folderNote: TAbstractFile = this.app.vault.getAbstractFileByPath(file.path + '/' + file.name + '.md');
+								this.compileSettings =
+									validateAndLoadCompileSettings(folderNote);
 
-                                this.compileSettings = validateAndLoadCompileSettings(folderNote);
+								if (!this.compileSettings) {
+									return;
+								}
 
-                                if (!this.compileSettings) {
-                                    return;
-                                }
+								if (this.debug) {
+									console.debug(
+										"-- LitMojo > Compile > compileSettings: %o",
+										this.compileSettings
+									);
+								}
 
-                                if (this.debug) {
-                                    console.debug('-- LitMojo > Compile > compileSettings: %o', this.compileSettings);
-                                }
+								// ====================================================================================
+								// SET DEFAULTS FOR MISSING COMPILE SETTINGS
+								// ====================================================================================
 
-                                // ====================================================================================
-                                // SET DEFAULTS FOR MISSING COMPILE SETTINGS
-                                // ====================================================================================
+								//let bulletSetting = (this.compileSettings.bullet) ? this.compileSettings.bullet : '-';
 
-                                //let bulletSetting = (this.compileSettings.bullet) ? this.compileSettings.bullet : '-';                      
+								let compiledContent: string = "";
 
-                                let compiledContent: string = '';
+								new CompileSettingsModal(
+									this.app,
+									file,
+									this.compileSettings,
+									async (result) => {
+										// Uncomment when using compile settings modal...
+										// let filesToCompile = result;
+										// ...and comment out this line:
+										let filesToCompile =
+											getFilesToCompile(file);
 
-                                new CompileSettingsModal(this.app, file, this.compileSettings, async (result) => {
+										if (this.debug) {
+											console.debug(
+												"-- LitMojo > Compile > filesToCompile: %o",
+												filesToCompile
+											);
+										}
 
-                                    // Uncomment when using compile settings modal...
-                                    // let filesToCompile = result;
-                                    // ...and comment out this line:
-                                    let filesToCompile = getFilesToCompile(file);
+										let mdastManuscript: any =
+											await buildMDASTManuscript(
+												this.app,
+												filesToCompile,
+												this.compileSettings
+											);
 
-                                    if (this.debug) {
-                                        console.debug('-- LitMojo > Compile > filesToCompile: %o', filesToCompile);
-                                    }
+										if (this.debug) {
+											console.debug(
+												"-- LitMojo > Compile > mdastManuscript: %o",
+												mdastManuscript
+											);
+										}
 
-                                    let mdastManuscript: any = await buildMDASTManuscript(this.app, filesToCompile, this.compileSettings);
-                                    
-                                    if (this.debug) {
-                                        console.debug('-- LitMojo > Compile > mdastManuscript: %o', mdastManuscript);
-                                    }
+										// ====================================================================================
+										// DELETE EXISTING COMPILED MANUSCRIPT (if it exists)
+										// ====================================================================================
+										// First, try to get the compiled manustcript file to see if it already exists
 
-                                    // ====================================================================================
-                                    // DELETE EXISTING COMPILED MANUSCRIPT (if it exists)
-                                    // ====================================================================================
-                                    // First, try to get the compiled manustcript file to see if it already exists
+										const previouslyCompiledFile: TAbstractFile =
+											this.app.vault.getAbstractFileByPath(
+												this.compileSettings.path
+											);
+										if (previouslyCompiledFile) {
+											// If it exists, delete it before we create a new one
+											this.app.vault.delete(
+												previouslyCompiledFile
+											);
+										}
 
-                                    const previouslyCompiledFile: TAbstractFile = this.app.vault.getAbstractFileByPath(this.compileSettings.path);
-                                    if (previouslyCompiledFile) {
-                                        // If it exists, delete it before we create a new one
-                                        this.app.vault.delete(previouslyCompiledFile);
-                                    }
+										const remarkStringifyOptions: Options =
+											{
+												bullet: this.compileSettings
+													.bullet
+													? this.compileSettings
+															.bullet
+													: "-",
+											};
 
-                                    const remarkStringifyOptions: Options = {
-                                        bullet: this.compileSettings.bullet ? this.compileSettings.bullet : '-',
-                                    };
+										// ====================================================================================
+										// IF MARKDOWN, STRINGIFY MARKDOWN
+										// ====================================================================================
+										if (
+											this.compileSettings.path.endsWith(
+												".md"
+											)
+										) {
+											// CONVERT MDAST TO MARKDOWN
+											const markdown = await unified()
+												.use(remarkWikiLink, {
+													aliasDivider: "|",
+												})
+												.use(
+													remarkStringify,
+													remarkStringifyOptions
+												)
+												.stringify(mdastManuscript);
+											compiledContent += markdown;
+										}
 
-                                    // ====================================================================================
-                                    // IF MARKDOWN, STRINGIFY MARKDOWN
-                                    // ====================================================================================
-                                    if (this.compileSettings.path.endsWith('.md')) {
-                                        // CONVERT MDAST TO MARKDOWN
-                                        const markdown = await unified()
-                                            .use(remarkWikiLink, { aliasDivider: '|' })
-                                            .use(remarkStringify, remarkStringifyOptions)
-                                            .stringify(mdastManuscript);
-                                        compiledContent += markdown;
-                                    }
+										// ====================================================================================
+										// IF HTML STRINGIFY HTML
+										// ====================================================================================
 
-                                    // ====================================================================================
-                                    // IF HTML STRINGIFY HTML
-                                    // ====================================================================================
+										if (
+											this.compileSettings.path.endsWith(
+												".html"
+											)
+										) {
+											// CONVERT MDAST TO MARKDOWN
+											const markdown = await unified()
+												.use(remarkWikiLink, {
+													aliasDivider: "|",
+												})
+												.use(
+													remarkStringify,
+													remarkStringifyOptions
+												)
+												.stringify(mdastManuscript);
 
-                                    if (this.compileSettings.path.endsWith('.html')) {
+											// ABOVE IT REDUNTANT TO ABOVE ABOVE
+											// Also, do I need to concvert MDAST to String and then Parse it yet again?
+											// Certainly there's a way to just use the MDAST I've already got.
+											const htmlFile = await unified()
+												.use(remarkParse) // Parse markdown to MDAST
+												// .use(remarkWikiLink, {
+												//     aliasDivider: '|',
+												//     hrefTemplate: (permalink:string) => `${permalink}`,
+												//     pageResolver: (pageName:string) => [pageName.replace(/ /g, '-').toLowerCase()]
+												//  })
+												.use(remarkFrontmatter, [
+													"yaml",
+												])
+												.use(
+													() => (tree) =>
+														remove(tree, "yaml")
+												) // remove frontmatter // is this needed?
+												.use(remarkRehype) // Convert MDAST to HAST
+												.use(rehypeDocument, {
+													title: this.compileSettings
+														.title,
+												}) // Wrap HAST in HTML document
+												.use(rehypeStringify) // Convert HAST to HTML
+												.process(markdown); // or .process(content);
+											compiledContent = String(htmlFile);
+										}
 
-                                        // CONVERT MDAST TO MARKDOWN
-                                        const markdown = await unified()
-                                            .use(remarkWikiLink, { aliasDivider: '|' })
-                                            .use(remarkStringify, remarkStringifyOptions)
-                                            .stringify(mdastManuscript);
+										// ====================================================================================
+										// WRITE COMPILED MANUSCRIPT AND NOTIFY SUCCESS
+										// ====================================================================================
 
-                                        // ABOVE IT REDUNTANT TO ABOVE ABOVE
-                                        // Also, do I need to concvert MDAST to String and then Parse it yet again?
-                                        // Certainly there's a way to just use the MDAST I've already got.
-                                        const htmlFile = await unified()
-                                            .use(remarkParse) // Parse markdown to MDAST
-                                            // .use(remarkWikiLink, { 
-                                            //     aliasDivider: '|', 
-                                            //     hrefTemplate: (permalink:string) => `${permalink}`,
-                                            //     pageResolver: (pageName:string) => [pageName.replace(/ /g, '-').toLowerCase()]
-                                            //  })
-                                            .use(remarkFrontmatter, ['yaml'])
-                                            .use(() => (tree) => remove(tree, 'yaml')) // remove frontmatter // is this needed?
-                                            .use(remarkRehype) // Convert MDAST to HAST
-                                            .use(rehypeDocument, { title: this.compileSettings.title }) // Wrap HAST in HTML document
-                                            .use(rehypeStringify) // Convert HAST to HTML
-                                            .process(markdown); // or .process(content);
-                                        compiledContent = String(htmlFile);
-                                    }
+										let compileFolder =
+											this.compileSettings.path.substring(
+												0,
+												this.compileSettings.path.lastIndexOf(
+													"/"
+												)
+											);
+										if (this.debug) {
+											console.debug(
+												"-- LitMojo > Compile > compileFolder: %o",
+												compileFolder
+											);
+										}
 
-                                    // ====================================================================================
-                                    // WRITE COMPILED MANUSCRIPT AND NOTIFY SUCCESS
-                                    // ====================================================================================
+										this.fileExists(compileFolder).then(
+											(exists) => {
+												if (exists) {
+													this.app.vault
+														.create(
+															this.compileSettings
+																.path,
+															compiledContent
+														)
+														.then((newFile) => {
+															new Notice(
+																"Manuscript compiled to: " +
+																	newFile.path
+															);
+														});
+												} else {
+													new Notice(
+														"Compile folder does not exist: " +
+															compileFolder,
+														7000
+													);
+												}
+											}
+										);
+									}
+								)//.open();
+							});
+					});
+				}
+			})
+		);
 
-                                    let compileFolder = this.compileSettings.path.substring(0, this.compileSettings.path.lastIndexOf('/'));
-                                    if(this.debug)  {  
-                                        console.debug('-- LitMojo > Compile > compileFolder: %o', compileFolder);
-                                    }
-
-                                    this.fileExists( compileFolder ).then((exists) => {
-
-                                        if (exists) {
-                                            this.app.vault.create(this.compileSettings.path, compiledContent).then((newFile) => {
-                                                new Notice('Manuscript compiled to: ' + newFile.path);
-                                            });
-                                        } else {
-                                            new Notice('Compile folder does not exist: ' + compileFolder,7000);
-                                        }
-
-                                    });
-
-
-                                }).open();
-
-
-                            });
-                    });
-
-                }
-
-            })
-        );
-
-        /**
-         * Registers the Publish menu, which should really only show up when there is a 
-         * folder page with a litmojo publish config in the YAML frontmatter.
-         */
-        /*
+		/**
+		 * Registers the Publish menu, which should really only show up when there is a
+		 * folder page with a litmojo publish config in the YAML frontmatter.
+		 */
+		/*
          this.registerEvent(
             this.app.workspace.on("file-menu", (menu, file) => {
                 menu.addItem((item) => {
@@ -239,29 +338,82 @@ export default class LitMojoPlugin extends Plugin {
         );
         */
 
-        // This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-        //const statusBarItemEl = this.addStatusBarItem();
-        //statusBarItemEl.setText('Status Bar Text');
+		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
+		//const statusBarItemEl = this.addStatusBarItem();
+		//statusBarItemEl.setText('Status Bar Text');
 
-        // This adds a settings tab so the user can configure various aspects of the plugin
-        this.addSettingTab(new LitMojoSettingTab(this.app, this));
+		// This adds a settings tab so the user can configure various aspects of the plugin
+		this.addSettingTab(new LitMojoSettingTab(this.app, this));
 
-    }
+		// const folderNote: TAbstractFile = this.app.vault.getAbstractFileByPath(
+		// 	"Frankenstein/Frankenstein.md"
+		// );
 
-    async onunload() {
-        // this.app.workspace.detachLeavesOfType(VIEW_TYPE_COLLECTION_MANAGER);
-    }
+		// if (folderNote instanceof TFile) {
+		// 	console.log("folderNote is a TFile");
+		// } else {
+		// 	console.log("folderNote is NOT a TFile");
+		// }
 
-    async loadSettings() {
-        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-    }
+		// // convert the abstract file to a TFile
+		// const folderNoteFile: TFile = folderNote as TFile;
 
-    async saveSettings() {
-        await this.saveData(this.settings);
-    }
+		
+		this.registerView(
+			VIEW_TYPE_MANUSCRIPT_SETTINGS, this.manuscriptSettingsViewCreator
+		);
 
-    async fileExists(filePath: string): Promise<boolean> {
-        return await this.app.vault.adapter.exists(filePath);
-    }
+		// this.registerExtensions(["lit"], VIEW_TYPE_MANUSCRIPT_SETTINGS);
 
+		// Just for testing....
+		this.addRibbonIcon("dice", "Activate Manuscript Settings view", () => {
+			this.activateManuscriptSettingsView("Frankenstein/Frankenstein.md");
+		});
+	}
+
+	manuscriptSettingsViewCreator = (leaf: WorkspaceLeaf) => {
+		return new ManuscriptSettingsView(leaf, this);
+	}
+
+	async onunload() {
+		this.app.workspace.detachLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS);
+	}
+
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
+
+	async fileExists(filePath: string): Promise<boolean> {
+		return await this.app.vault.adapter.exists(filePath);
+	}
+
+	async activateManuscriptSettingsView(filePath: string) {
+		
+		this.app.workspace.detachLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS);
+
+		await this.app.workspace.getLeaf(false).setViewState({
+			type: VIEW_TYPE_MANUSCRIPT_SETTINGS,
+			active: true,
+			state: { file: filePath	}
+		});
+
+		//const manuscriptSettingsView = this.app.workspace.getLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS)[0];
+		
+		// cast the manuscriptSettingsView to a ManuscriptSettingsView
+		// and set the manuscriptSettingsView's data to the text string "Hello World"
+		//(manuscriptSettingsView.view as ManuscriptSettingsView).data = "Hello World";
+
+		this.app.workspace.revealLeaf(
+			this.app.workspace.getLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS)[0]
+		);
+
+	}
 }

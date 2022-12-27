@@ -19,5 +19,5 @@
   },
   "include": [
     "**/*.ts"
-, "collection-manager-view.ts"  ]
+, "manuscript-settings-view.ts"  ]
 }

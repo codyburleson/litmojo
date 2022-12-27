@@ -4,15 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "23b520f9561e9a99",
+        "id": "d7e13b6b22b13272",
         "type": "tabs",
         "children": [
           {
-            "id": "1e394bc38dc9d7fb",
+            "id": "21fed01513137677",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "manuscript-settings",
+              "state": {
+                "file": "Frankenstein/Frankenstein.md"
+              }
             }
           }
         ]
@@ -57,7 +59,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 278.5
+    "width": 263.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -73,7 +75,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md",
+                "file": "Frankenstein/Frankenstein.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -90,7 +92,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md"
+                "file": "Frankenstein/Frankenstein.md"
               }
             }
           }
@@ -99,27 +101,28 @@
       }
     ],
     "direction": "horizontal",
-    "width": 212.5
+    "width": 370.5
   },
   "left-ribbon": {
     "hiddenItems": {
       "switcher:Open quick switcher": false,
       "canvas:Create new canvas": false,
       "command-palette:Open command palette": false,
-      "publish:Publish changes": false
+      "publish:Publish changes": false,
+      "litmojo:Activate Manuscript Settings view": false
     }
   },
-  "active": "94f474eee5ba1489",
+  "active": "21fed01513137677",
   "lastOpenFiles": [
+    "Frankenstein/Frankenstein.md",
+    "Frankenstein/Frankenstein_1818_edition_title_page.jpg",
+    "Tables/Tables Page 1.md",
+    "Tables/Tables Page 2.md",
+    "TestLitDoc.lit",
+    "Frankenstein/2 Letters/Letter 0.md",
+    "FolderNoteWithoutCompilePath/FolderNoteWithoutCompilePath.md",
     "Exclude Sections/Exclude Sections.md",
     "Compiled Manuscripts/Tables.md",
-    "Tables/Tables.md",
-    "Frankenstein/Frankenstein.md",
-    "Example Manuscripts/Tables/Tables Page 1.md",
-    "Example Manuscripts/Tables/Tables Page 2.md",
-    "Example Manuscripts/Tables/Tables Page 3.md",
-    "Example Manuscripts/Tables/Tables.md",
-    "Example Manuscripts/Frankenstein/3 Chapters/Chapter 0.md",
-    "Example Manuscripts/Frankenstein/Frankenstein.md"
+    "Tables/Tables.md"
   ]
 }
