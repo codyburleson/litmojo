@@ -102,20 +102,7 @@ export default class LitMojoPlugin extends Plugin {
 									);
 								}
 
-								// ====================================================================================
-								// LOAD COMPILE SETTINGS FROM FOLDER NOTE
-								// ====================================================================================
-
-								console.log(
-									"-- folder note file path: " +
-										file.path +
-										"/" +
-										file.name +
-										".md"
-								);
-								
-
-								this.activateManuscriptSettingsView(file.path + "/" + file.name + ".md");
+								this.activateManuscriptSettingsView(file);
 
 								const folderNote: TAbstractFile =
 									this.app.vault.getAbstractFileByPath(
@@ -366,9 +353,9 @@ export default class LitMojoPlugin extends Plugin {
 		// this.registerExtensions(["lit"], VIEW_TYPE_MANUSCRIPT_SETTINGS);
 
 		// Just for testing....
-		this.addRibbonIcon("dice", "Activate Manuscript Settings view", () => {
-			this.activateManuscriptSettingsView("Frankenstein/Frankenstein.md");
-		});
+		// this.addRibbonIcon("dice", "Activate Manuscript Settings view", () => {
+		// 	this.activateManuscriptSettingsView("Frankenstein/Frankenstein.md");
+		// });
 	}
 
 	manuscriptSettingsViewCreator = (leaf: WorkspaceLeaf) => {
@@ -395,21 +382,17 @@ export default class LitMojoPlugin extends Plugin {
 		return await this.app.vault.adapter.exists(filePath);
 	}
 
-	async activateManuscriptSettingsView(filePath: string) {
+	async activateManuscriptSettingsView(mFolder: TFolder) {
+
+		const folderNoteFilePath = mFolder.path + "/" + mFolder.name + ".md"
 		
 		this.app.workspace.detachLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS);
 
 		await this.app.workspace.getLeaf(false).setViewState({
 			type: VIEW_TYPE_MANUSCRIPT_SETTINGS,
 			active: true,
-			state: { file: filePath	}
+			state: { file: folderNoteFilePath }
 		});
-
-		//const manuscriptSettingsView = this.app.workspace.getLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS)[0];
-		
-		// cast the manuscriptSettingsView to a ManuscriptSettingsView
-		// and set the manuscriptSettingsView's data to the text string "Hello World"
-		//(manuscriptSettingsView.view as ManuscriptSettingsView).data = "Hello World";
 
 		this.app.workspace.revealLeaf(
 			this.app.workspace.getLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS)[0]

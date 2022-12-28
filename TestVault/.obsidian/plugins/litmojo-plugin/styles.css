@@ -55,5 +55,6 @@
 
 #items .is-active {
     background-color: var(--interactive-accent);
+	/* background-color: #D3C6FF; */
     color: var(--text-on-accent);
 }

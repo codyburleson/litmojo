@@ -4,17 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "d7e13b6b22b13272",
+        "id": "c52bca267fe721d5",
         "type": "tabs",
         "children": [
           {
-            "id": "21fed01513137677",
+            "id": "c800683b0be3190c",
             "type": "leaf",
             "state": {
-              "type": "manuscript-settings",
-              "state": {
-                "file": "Frankenstein/Frankenstein.md"
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -75,7 +73,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Frankenstein/Frankenstein.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -91,9 +88,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Frankenstein/Frankenstein.md"
-              }
+              "state": {}
             }
           }
         ],
@@ -101,18 +96,17 @@
       }
     ],
     "direction": "horizontal",
-    "width": 370.5
+    "width": 339.5
   },
   "left-ribbon": {
     "hiddenItems": {
       "switcher:Open quick switcher": false,
       "canvas:Create new canvas": false,
       "command-palette:Open command palette": false,
-      "publish:Publish changes": false,
-      "litmojo:Activate Manuscript Settings view": false
+      "publish:Publish changes": false
     }
   },
-  "active": "21fed01513137677",
+  "active": "c800683b0be3190c",
   "lastOpenFiles": [
     "Frankenstein/Frankenstein.md",
     "Frankenstein/Frankenstein_1818_edition_title_page.jpg",

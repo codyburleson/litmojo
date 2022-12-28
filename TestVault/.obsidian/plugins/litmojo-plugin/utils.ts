@@ -40,6 +40,38 @@ export interface CompileSettings {
     exclude?: { headings?: string[];}
 }
 
+
+export function getFiles(folder: TFolder): TFile[] {
+
+	const folderNoteFilePath = folder.path + "/" + folder.name + ".md"
+
+    let files: TFile[] = [];
+    Vault.recurseChildren(folder, (childFile) => {
+        if (childFile instanceof TFile) {
+            if(childFile.extension === 'md' && childFile.path !== folderNoteFilePath) {
+            //const childFileMeta = this.app.metadataCache.getFileCache(childFile);
+            //if (childFileMeta.frontmatter?.litmojo?.compile) {
+                files.push(childFile);
+            //}
+            }
+        }
+    });
+
+    // ====================================================================================
+    // SORT MANUSCRIPT PAGES
+    // ====================================================================================
+    files.sort((a, b) => {
+        const cacheA = this.app.metadataCache.getFileCache(a);
+        const cacheB = this.app.metadataCache.getFileCache(b);
+        const orderA = cacheA?.frontmatter?.litmojo?.order;
+        const orderB = cacheB?.frontmatter?.litmojo?.order;
+        return orderA - orderB;
+    });
+
+    return files;
+}
+
+// DEPRECATED
 export function getFilesToCompile(folder: TFolder): TFile[] {
     let filesToCompile: TFile[] = [];
     Vault.recurseChildren(folder, (childFile) => {
