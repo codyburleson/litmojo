@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "c52bca267fe721d5",
+        "id": "2e791e81e204429f",
         "type": "tabs",
         "children": [
           {
-            "id": "c800683b0be3190c",
+            "id": "b222bbf500f46ed1",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -57,7 +57,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 263.5
+    "width": 271.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -96,7 +96,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 339.5
+    "width": 257.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -106,7 +106,7 @@
       "publish:Publish changes": false
     }
   },
-  "active": "c800683b0be3190c",
+  "active": "b222bbf500f46ed1",
   "lastOpenFiles": [
     "Frankenstein/Frankenstein.md",
     "Frankenstein/Frankenstein_1818_edition_title_page.jpg",

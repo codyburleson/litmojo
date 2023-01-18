@@ -19,5 +19,5 @@
   },
   "include": [
     "**/*.ts"
-, "manuscript-settings-view.ts"  ]
+, "manuscript-settings-view.ts", "compile-settings-modal.ts.old"  ]
 }

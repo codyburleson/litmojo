@@ -19,7 +19,7 @@ import {
 	VIEW_TYPE_MANUSCRIPT_SETTINGS,
 } from "manuscript-settings-view";
 
-import { CompileSettingsModal } from "./compile-settings-modal";
+// import { CompileSettingsModal } from "./compile-settings-modal.ts.old";
 import {
 	buildMDASTManuscript,
 	CompileSettings,
@@ -131,6 +131,7 @@ export default class LitMojoPlugin extends Plugin {
 
 								let compiledContent: string = "";
 
+								/*
 								new CompileSettingsModal(
 									this.app,
 									file,
@@ -300,6 +301,10 @@ export default class LitMojoPlugin extends Plugin {
 										);
 									}
 								)//.open();
+								*/
+
+
+
 							});
 					});
 				}

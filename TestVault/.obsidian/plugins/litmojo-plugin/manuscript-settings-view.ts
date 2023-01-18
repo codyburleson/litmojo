@@ -1,5 +1,5 @@
 import LitMojoPlugin from "main";
-import {Setting, TextFileView, TFile, WorkspaceLeaf } from "obsidian";
+import {ButtonComponent, DropdownComponent, Setting, TextComponent, TextFileView, TFile, WorkspaceLeaf } from "obsidian";
 import { getFiles } from "utils";
 
 // Core SortableJS (without default plugins)
@@ -36,17 +36,8 @@ export class ManuscriptSettingsView extends TextFileView {
 		const manuscriptPageFiles = getFiles(this.file.parent);
 		console.log('>> ManuscriptSettingsView.setViewData() - allFiles: ', manuscriptPageFiles)
 
-
 		// log the state
 		console.log('-- ManuscriptSettingsView.setViewData() - this.getState(): ', this.getState())
-
-
-		this.plugin.app.fileManager.processFrontMatter(this.file, (frontmatter) => {	
-			console.log('-- ManuscriptSettingsView.setViewData() - frontmatter', frontmatter)
-			if(frontmatter?.litmojo) {
-				console.log('-- frontmatter.litmojo: ', frontmatter.litmojo)
-			}
-		});	
 
 		this.contentEl.empty();
 		//this.contentEl.createDiv({ text: this.data });
@@ -96,22 +87,41 @@ export class ManuscriptSettingsView extends TextFileView {
 			
 									const vTabManuscriptSettings = vTabContent.createEl("div");
 									vTabManuscriptSettings.id = "manuscript-settings-tab";
-			
-										new Setting(vTabManuscriptSettings).addText((text) =>
-										text.setValue("compile settings path").onChange((value) => {
-											console.log(value);
-										})).setName("Path").setDesc("The path to the manuscript output file, including the complete manuscript output file name; for example: 'Compiled Manuscripts/Frankenstein.md'. Supported extensions are .md and .html. Folders specified in the path must already exist in the vault.");
-							
-										new Setting(vTabManuscriptSettings).addText((text) =>
-											text.setValue("compile settings title").onChange((value) => {
-												console.log(value);
-											})).setName("Title").setDesc("Specifies, for example, HTML document title when compiling to HTML.");
+
+
+										let compileSettingsPathTextComponent: TextComponent;
+										new Setting(vTabManuscriptSettings)
+											.addText((text) => {
+												compileSettingsPathTextComponent = text;
+												//text.setValue("compile settings path").onChange((value) => {
+												//console.log(value);
+												//})
+											})
+											.setName("Path")
+											.setDesc("The path to the manuscript output file, including the complete manuscript output file name; for example: 'Compiled Manuscripts/Frankenstein.md'. Supported extensions are .md and .html. Folders specified in the path must already exist in the vault.");
+										
+										let compileSettingsTitleTextComponent: TextComponent;
+										new Setting(vTabManuscriptSettings)
+											.addText((text) => {
+												compileSettingsTitleTextComponent = text;
+												//text.setValue("compile settings title").onChange((value) => {
+												//console.log(value);
+												//})
+											})
+											.setName("Title")
+											.setDesc("Specifies, for example, HTML document title when compiling to HTML.");
 								
+										let compileSettingsBulletDropdownComponent: DropdownComponent;
 										// use this.compile settings bullet instead of the setValue("-")
-										new Setting(vTabManuscriptSettings).addDropdown((dropdown) =>
-											dropdown.addOption("-", "-").addOption("*", "*").addOption("+", "+").setValue("-").onChange((value) => {
-												console.log(value);
-											})).setName("Bullet").setDesc("Specifies the bullet character to use for unordered lists when compiling to Markdown.");
+										new Setting(vTabManuscriptSettings)
+											.addDropdown((dropdown) => {
+												compileSettingsBulletDropdownComponent = dropdown;
+												dropdown.addOption("-", "-").addOption("*", "*").addOption("+", "+").setValue("-").onChange((value) => {
+													console.log(value);
+												})
+											}).
+											setName("Bullet").
+											setDesc("Specifies the bullet character to use for unordered lists when compiling to Markdown.");
 									
 									const vTabPages = vTabContent.createEl("div");
 									vTabPages.id = "pages-tab";
@@ -180,25 +190,57 @@ export class ManuscriptSettingsView extends TextFileView {
 										column2.setText('COLUMN 2')
 										column2.addClass("flex-right");
 			
-			new Setting(root)
-			.addButton((btn) =>
+		
+		let buttons: ButtonComponent[] = [];
+
+		new Setting(root)
+			.addButton((btn) => {
+				buttons.push(btn);
 				btn
 					.setButtonText("Cancel")
 					.onClick(() => {
-						//this.close();
-					}))
-			.addButton((btn) =>
+							//this.close();
+							console.log('-- clicked: Cancel');
+					});
+			})
+			.addButton((btn) => {
+				buttons.push(btn);
+				btn
+					.setButtonText("Save Settings")
+					//.setCta()
+					.onClick(() => {
+						console.log('-- clicked: Save Settings');
+					});
+			})
+			.addButton((btn) => {
+				buttons.push(btn);
 				btn
 					.setButtonText("Compile")
 					.setCta()
 					.onClick(() => {
+						console.log('-- clicked: Compile');
 						//this.close();
 						//console.log('-- sortable: %o', sortable.toArray());
 						//this.onCompile(this.filesToCompile);
-					}));
-							
-			
-		//let files = getFiles(file);
+					});
+			});
+
+		
+		this.plugin.app.fileManager.processFrontMatter(this.file, (frontmatter) => {	
+			console.log('-- ManuscriptSettingsView.setViewData() - frontmatter', frontmatter)
+			if(frontmatter?.litmojo) {
+				console.log('-- frontmatter.litmojo: ', frontmatter.litmojo)
+			}
+			if( frontmatter?.litmojo?.path ) {
+				compileSettingsPathTextComponent.setValue(frontmatter.litmojo.path);
+			}
+			if( frontmatter?.litmojo?.title ) {
+				compileSettingsTitleTextComponent.setValue(frontmatter.litmojo.title);
+			}
+			if( frontmatter?.litmojo?.bullet ) {
+				compileSettingsBulletDropdownComponent.setValue(frontmatter.litmojo.bullet);
+			}
+		});	
 
 	}
 
