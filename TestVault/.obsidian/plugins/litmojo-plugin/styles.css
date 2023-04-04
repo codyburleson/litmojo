@@ -11,13 +11,13 @@
     border-left:1px solid #CCC;
     border-right:1px solid #CCC;
 	box-sizing: border-box;
-	width:25%;
+	width:50%;
 }
 
 #pages-tab .flex-right {
 	/*flex-shrink: 0;*/
 	box-sizing: border-box;
-	width:75%;
+	width:50%;
 	padding-left:30px;
 	padding-right:30px;
 }

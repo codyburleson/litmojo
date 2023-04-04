@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "2e791e81e204429f",
+        "id": "c62af2f08e6af4cd",
         "type": "tabs",
         "children": [
           {
-            "id": "b222bbf500f46ed1",
+            "id": "6e392b8ba4783496",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -57,7 +57,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 271.5
+    "width": 264.5
   },
   "right": {
     "id": "9e3b907cb93400c0",
@@ -103,11 +103,23 @@
       "switcher:Open quick switcher": false,
       "canvas:Create new canvas": false,
       "command-palette:Open command palette": false,
-      "publish:Publish changes": false
+      "publish:Publish changes": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "b222bbf500f46ed1",
+  "active": "6e392b8ba4783496",
   "lastOpenFiles": [
+    "55 ⭐ Beaver Cage/55 ⭐ Beaver Cage.md",
+    "55 ⭐ Beaver Cage/5575 TESTY.md",
+    "55 ⭐ Beaver Cage/5503 Beaver Cage - Frontmatter.md",
+    "55 ⭐ Beaver Cage/55155 Beaver Cage - Gomez is Shot.md",
+    "55 ⭐ Beaver Cage/55130 Beaver Cage - Jesse is WIA.md",
+    "55 ⭐ Beaver Cage/5590 Beaver Cage - Ambushed.md",
+    "55 ⭐ Beaver Cage/5580 Beaver Cage - The Morning Sweep.md",
+    "Excalidraw/LitMojoFlow.md",
+    "Excalidraw",
+    "Compiled Manuscripts/About.md",
+    "55 ⭐ Beaver Cage/Compiled Manuscripts",
     "Frankenstein/Frankenstein.md",
     "Frankenstein/Frankenstein_1818_edition_title_page.jpg",
     "Tables/Tables Page 1.md",

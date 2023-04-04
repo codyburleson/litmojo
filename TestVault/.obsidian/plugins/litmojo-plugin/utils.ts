@@ -40,7 +40,11 @@ export interface CompileSettings {
     exclude?: { headings?: string[];}
 }
 
-
+/**
+ * Gets all manuscript files from a folder and sorts them by litmojo.order.
+ * @param folder the folder to get files from
+ * @returns 
+ */
 export function getFiles(folder: TFolder): TFile[] {
 
 	const folderNoteFilePath = folder.path + "/" + folder.name + ".md"

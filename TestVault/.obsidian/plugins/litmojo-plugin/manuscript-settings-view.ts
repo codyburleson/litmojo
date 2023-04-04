@@ -6,7 +6,7 @@ import { getFiles } from "utils";
 import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 // Complete SortableJS (with all plugins)
-//import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+// import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
 export const VIEW_TYPE_MANUSCRIPT_SETTINGS = "manuscript-settings";
 
@@ -88,7 +88,6 @@ export class ManuscriptSettingsView extends TextFileView {
 									const vTabManuscriptSettings = vTabContent.createEl("div");
 									vTabManuscriptSettings.id = "manuscript-settings-tab";
 
-
 										let compileSettingsPathTextComponent: TextComponent;
 										new Setting(vTabManuscriptSettings)
 											.addText((text) => {
@@ -136,7 +135,17 @@ export class ManuscriptSettingsView extends TextFileView {
 											const uList = column1.createEl("ul");
 											uList.id = "items";
 			
-												manuscriptPageFiles.forEach((file, index) => {
+												manuscriptPageFiles.forEach(async (file, index) => {
+													
+													// set the compilePage flag based on the frontmatter
+													let compilePage = false;
+													await this.plugin.app.fileManager.processFrontMatter(file, (frontmatter) => {
+														if( frontmatter?.litmojo?.compile ) {
+															compilePage = frontmatter.litmojo.compile;
+														} 
+													});	
+
+													//console.log('-- pageB - frontmatter, compilePage: %o', compilePage)
 													
 													const fileEl = uList.createEl("li");
 													fileEl.id = `file-${index}`;
@@ -152,6 +161,7 @@ export class ManuscriptSettingsView extends TextFileView {
 													checkbox.setAttr("title", "Check to include in compile / uncheck to exclude");
 													checkbox.setAttr("data-id", file.path);
 													checkbox.addClass("checkbox");
+													checkbox.checked = compilePage;
 
 													// create a span after the checkbox
 													const span = fileEl.createEl("span");
@@ -219,13 +229,12 @@ export class ManuscriptSettingsView extends TextFileView {
 					.setCta()
 					.onClick(() => {
 						console.log('-- clicked: Compile');
-						//this.close();
-						//console.log('-- sortable: %o', sortable.toArray());
-						//this.onCompile(this.filesToCompile);
+						// This may need to return a promise so that the compile can complete before the ui closes or 
+						// responds with a status message
+						this.compile();
 					});
 			});
 
-		
 		this.plugin.app.fileManager.processFrontMatter(this.file, (frontmatter) => {	
 			console.log('-- ManuscriptSettingsView.setViewData() - frontmatter', frontmatter)
 			if(frontmatter?.litmojo) {
@@ -247,6 +256,10 @@ export class ManuscriptSettingsView extends TextFileView {
 	getViewType() {
 		console.log('>> ManuscriptSettingsView.setViewType()')
 		return VIEW_TYPE_MANUSCRIPT_SETTINGS;
+	}
+
+	compile() {
+		console.log('>> ManuscriptSettingsView.compile()')
 	}
 
 	// async onOpen() {

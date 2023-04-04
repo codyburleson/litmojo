@@ -1,14 +1,14 @@
 import {
-	App,
-	Editor,
-	MarkdownView,
-	Modal,
-	Notice,
+	// App,
+	// Editor,
+	// MarkdownView,
+	// Modal,
+	// Notice,
 	Plugin,
 	TAbstractFile,
 	TFile,
 	TFolder,
-	Vault,
+	// Vault,
 	WorkspaceLeaf
 } from "obsidian";
 
@@ -21,9 +21,9 @@ import {
 
 // import { CompileSettingsModal } from "./compile-settings-modal.ts.old";
 import {
-	buildMDASTManuscript,
+	// buildMDASTManuscript,
 	CompileSettings,
-	getFilesToCompile,
+	// getFilesToCompile,
 	validateAndLoadCompileSettings,
 } from "./utils";
 
@@ -36,19 +36,19 @@ import {
 // or the plugin API definition:
 // [plugin-api.ts](https://github.com/blacksmithgu/obsidian-dataview/blob/master/src/api/plugin-api.ts)
 
-import { unified } from "unified";
-import { remove } from "unist-util-remove";
+// import { unified } from "unified";
+// import { remove } from "unist-util-remove";
 
-import remarkParse from "remark-parse";
-import remarkFrontmatter from "remark-frontmatter";
+// import remarkParse from "remark-parse";
+// import remarkFrontmatter from "remark-frontmatter";
 
-import { Options } from "remark-stringify";
-import remarkStringify from "remark-stringify";
+// import { Options } from "remark-stringify";
+// import remarkStringify from "remark-stringify";
 
-import remarkRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
-import rehypeDocument from "rehype-document";
-import remarkWikiLink from "remark-wiki-link";
+// import remarkRehype from "remark-rehype";
+// import rehypeStringify from "rehype-stringify";
+// import rehypeDocument from "rehype-document";
+// import remarkWikiLink from "remark-wiki-link";
 
 interface LitMojoPluginSettings {
 	debug: string;
@@ -109,6 +109,8 @@ export default class LitMojoPlugin extends Plugin {
 										file.path + "/" + file.name + ".md"
 									);
 
+							    // these compile settings may only be useful in the activeManuscriptSettingsView;
+								// if so, we should move them there
 								this.compileSettings =
 									validateAndLoadCompileSettings(folderNote);
 
@@ -129,7 +131,7 @@ export default class LitMojoPlugin extends Plugin {
 
 								//let bulletSetting = (this.compileSettings.bullet) ? this.compileSettings.bullet : '-';
 
-								let compiledContent: string = "";
+								// let compiledContent: string = "";
 
 								/*
 								new CompileSettingsModal(
@@ -389,6 +391,7 @@ export default class LitMojoPlugin extends Plugin {
 
 	async activateManuscriptSettingsView(mFolder: TFolder) {
 
+		// initialize the full path to the folder note
 		const folderNoteFilePath = mFolder.path + "/" + mFolder.name + ".md"
 		
 		this.app.workspace.detachLeavesOfType(VIEW_TYPE_MANUSCRIPT_SETTINGS);
